@@ -5,37 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>C.A.I.A - Taller</title>
   <style>
-    /* Estilos para la página de inicio */
-    body.landing {
+    /* Reset y base */
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    body {
       font-family: 'Segoe UI', Arial, sans-serif;
-      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+      background-color: #0f0f0f;
       color: #f5f5f5;
-      height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Estilos para la página de inicio */
+    body.landing {
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 20px;
     }
 
     .center-box {
       text-align: center;
       background: #1a1a1a;
-      padding: 40px;
+      padding: 30px 20px;
       border-radius: 15px;
       border: 2px solid #ff9800;
       box-shadow: 0 0 25px rgba(255, 153, 0, 0.3);
+      width: 100%;
+      max-width: 400px;
     }
 
     .center-box h1 {
       color: #ff9800;
-      font-size: 3em;
-      margin-bottom: 20px;
+      font-size: 2.5em;
+      margin-bottom: 15px;
     }
 
     .center-box p {
-      font-size: 1.2em;
-      margin-bottom: 30px;
+      font-size: 1.1em;
+      margin-bottom: 25px;
       color: #ffb84d;
     }
 
@@ -48,6 +61,9 @@
       border-radius: 8px;
       font-weight: bold;
       transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 1em;
     }
 
     .btn:hover {
@@ -62,48 +78,86 @@
 
     /* Estilos para el sistema de gestión */
     body:not(.landing) {
-      font-family: "Segoe UI", Arial, sans-serif;
       background-color: #0f0f0f;
-      color: #f5f5f5;
-      margin: 0;
       padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
 
     /* 🏷️ Header */
     header {
-      width: 100%;
-      text-align: center;
       background-color: #151515;
       border-bottom: 2px solid #ff9800;
-      padding: 20px 0;
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      gap: 15px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header-main {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      width: 100%;
     }
 
     header h1 {
       color: #ff9800;
+      font-size: 1.5em;
+      text-align: center;
       margin: 0;
-      letter-spacing: 1px;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .header-btn {
+      background: #666;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9em;
+      white-space: nowrap;
+    }
+
+    .header-btn.alert {
+      background: #ff4444;
     }
 
     /* 📦 Panel selector */
     #panel {
-      margin-top: 25px;
+      margin: 20px;
       background: #1a1a1a;
-      padding: 15px 25px;
+      padding: 15px;
       border-radius: 12px;
       box-shadow: 0 0 15px rgba(255, 153, 0, 0.3);
       border: 1px solid #ff9800;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     #panel label {
-      margin-right: 10px;
+      display: block;
+      margin-bottom: 8px;
       font-weight: bold;
       color: #ffb84d;
+      font-size: 1.1em;
     }
 
     #selector {
@@ -111,25 +165,29 @@
       color: #fff;
       border: 1px solid #ff9800;
       border-radius: 6px;
-      padding: 6px;
+      padding: 10px;
+      width: 100%;
+      font-size: 1em;
     }
 
     /* 📝 Formulario */
     #form-section {
       background: #1a1a1a;
-      margin-top: 25px;
-      padding: 25px;
+      margin: 20px;
+      padding: 20px;
       border-radius: 15px;
       border: 1px solid #ff9800;
-      width: 90%;
-      max-width: 600px;
-      text-align: center;
       box-shadow: 0 0 25px rgba(255, 153, 0, 0.15);
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     #form-section h2 {
       color: #ff9800;
       margin-bottom: 20px;
+      text-align: center;
+      font-size: 1.3em;
     }
 
     #formulario {
@@ -140,60 +198,82 @@
 
     #formulario label {
       color: #ffb84d;
-      text-align: left;
+      font-weight: bold;
+      margin-bottom: 5px;
     }
 
-    #formulario input, #formulario select {
+    #formulario input, 
+    #formulario select, 
+    #formulario textarea {
       background-color: #222;
       border: 1px solid #ff9800;
       border-radius: 6px;
       color: #fff;
-      padding: 8px;
+      padding: 12px;
+      font-size: 1em;
+      width: 100%;
+    }
+
+    #formulario textarea {
+      min-height: 80px;
+      resize: vertical;
     }
 
     #formulario button {
       margin-top: 10px;
       background-color: #ff9800;
       border: none;
-      padding: 10px;
+      padding: 12px;
       color: #000;
       font-weight: bold;
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease-in-out;
+      font-size: 1em;
     }
 
     #formulario button:hover {
       background-color: #ffa733;
     }
 
-    /* 📊 Tabla */
+    /* 📊 Tabla - Responsive */
     #crud-container {
-      margin-top: 30px;
-      width: 90%;
-      max-width: 900px;
+      margin: 20px;
       overflow-x: auto;
       background: #1a1a1a;
       border-radius: 15px;
       border: 1px solid #ff9800;
       box-shadow: 0 0 25px rgba(255, 153, 0, 0.15);
-      padding: 20px;
+      padding: 15px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 600px;
     }
 
     th, td {
-      padding: 10px 15px;
+      padding: 10px 12px;
       text-align: left;
       border-bottom: 1px solid #333;
+      white-space: nowrap;
     }
 
     th {
       background-color: #222;
       color: #ffb84d;
+      font-weight: bold;
+      position: sticky;
+      top: 0;
     }
 
     td {
@@ -204,22 +284,247 @@
       background-color: #2a2a2a;
     }
 
-    button {
-      cursor: pointer;
+    .alerta-service {
+      background-color: #ff4444 !important;
+      color: white !important;
+      font-weight: bold;
     }
 
-    button:hover {
-      transform: scale(1.1);
+    .alerta-service:hover {
+      background-color: #cc3333 !important;
+    }
+
+    /* Botones de acción en tabla */
+    .acciones-cell {
+      white-space: nowrap;
+    }
+
+    .btn-accion {
+      background: #ff9800;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 2px;
+      font-size: 0.8em;
+      min-width: 60px;
+    }
+
+    .btn-accion.eliminar {
+      background: #ff4444;
+    }
+
+    .btn-accion:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
     }
 
     /* 🦶 Footer */
     footer {
-      margin-top: 40px;
-      padding: 15px;
+      margin-top: 30px;
+      padding: 20px;
       text-align: center;
       font-size: 0.9em;
       color: #888;
       border-top: 1px solid #222;
+    }
+
+    /* Modal de alertas */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.8);
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      background-color: #1a1a1a;
+      margin: 5% auto;
+      padding: 20px;
+      border: 2px solid #ff9800;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 500px;
+      color: #f5f5f5;
+      box-shadow: 0 0 25px rgba(255, 153, 0, 0.3);
+      position: relative;
+    }
+
+    .modal-header {
+      color: #ff9800;
+      border-bottom: 1px solid #333;
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+    }
+
+    .modal-header h2 {
+      font-size: 1.3em;
+    }
+
+    .modal-alerta {
+      background-color: #ff4444;
+      color: white;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border-left: 5px solid #ff9800;
+      font-size: 0.9em;
+    }
+
+    .close {
+      color: #aaa;
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .close:hover {
+      color: #ff9800;
+    }
+
+    /* Información responsive */
+    .info-responsive {
+      display: none;
+      background: #333;
+      color: #ffb84d;
+      padding: 10px;
+      margin: 10px 20px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 0.9em;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Media Queries para Responsive */
+    @media (max-width: 768px) {
+      .center-box {
+        padding: 25px 15px;
+      }
+      
+      .center-box h1 {
+        font-size: 2em;
+      }
+      
+      .header-content {
+        padding: 0 10px;
+      }
+      
+      .header-main {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      header h1 {
+        font-size: 1.3em;
+      }
+      
+      .header-buttons {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .header-btn {
+        flex: 1;
+        min-width: 120px;
+        text-align: center;
+      }
+      
+      #panel, #form-section, #crud-container {
+        margin: 10px;
+        padding: 15px;
+      }
+      
+      th, td {
+        padding: 8px 10px;
+        font-size: 0.9em;
+      }
+      
+      .btn-accion {
+        padding: 5px 8px;
+        font-size: 0.75em;
+        min-width: 50px;
+        margin: 1px;
+      }
+      
+      .modal-content {
+        margin: 10% auto;
+        padding: 15px;
+      }
+      
+      .info-responsive {
+        display: block;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .center-box h1 {
+        font-size: 1.8em;
+      }
+      
+      .center-box p {
+        font-size: 1em;
+      }
+      
+      .btn {
+        padding: 10px 20px;
+        font-size: 0.9em;
+      }
+      
+      header {
+        padding: 10px 15px;
+      }
+      
+      .header-btn {
+        font-size: 0.8em;
+        padding: 6px 10px;
+      }
+      
+      #formulario input, 
+      #formulario select, 
+      #formulario textarea {
+        padding: 10px;
+      }
+      
+      th, td {
+        padding: 6px 8px;
+        font-size: 0.85em;
+      }
+      
+      table {
+        min-width: 500px;
+      }
+    }
+
+    /* Scrollbar personalizado */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #1a1a1a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #ff9800;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ffa733;
     }
   </style>
 </head>
@@ -228,17 +533,29 @@
   <div class="center-box" id="inicio-container">
     <h1>C.A.I.A</h1>
     <p>Bienvenido al Centro de Asistencia Integrativa Automotriz</p>
-    <a href="#" class="btn" onclick="mostrarGestion()">Entrar al sistema</a>
+    <button class="btn" onclick="mostrarGestion()">Entrar al sistema</button>
   </div>
 
   <!-- Sistema de Gestión (oculto inicialmente) -->
   <div id="gestion-container">
     <header>
-      <h1>⚙️ Gestión del Taller</h1>
-      <button onclick="mostrarInicio()" style="background: #666; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-left: 20px;">← Volver</button>
+      <div class="header-content">
+        <div class="header-main">
+          <h1>⚙️ Gestión del Taller</h1>
+          <div class="header-buttons">
+            <button class="header-btn" onclick="mostrarInicio()">← Volver</button>
+            <button class="header-btn alert" onclick="verificarAlertasServices()">🚨 Ver Alertas</button>
+          </div>
+        </div>
+      </div>
     </header>
 
     <main>
+      <!-- Información para móviles -->
+      <div class="info-responsive">
+        💡 Desliza horizontalmente para ver toda la tabla en dispositivos móviles
+      </div>
+
       <section id="panel">
         <label for="selector">Seleccionar tabla:</label>
         <select id="selector">
@@ -254,7 +571,11 @@
         <form id="formulario"></form>
       </section>
 
-      <section id="crud-container"></section>
+      <section id="crud-container">
+        <div class="table-container">
+          <!-- La tabla se generará aquí dinámicamente -->
+        </div>
+      </section>
     </main>
 
     <footer>
@@ -262,8 +583,23 @@
     </footer>
   </div>
 
+  <!-- Modal para alertas -->
+  <div id="modal-alertas" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="cerrarModal()">&times;</span>
+      <div class="modal-header">
+        <h2>🚨 Alertas de Services</h2>
+      </div>
+      <div id="contenido-alertas"></div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    // Variables globales
+    let supabase;
+    let intervaloAlertas;
+
     // Función para mostrar/ocultar las secciones
     function mostrarGestion() {
       document.getElementById('inicio-container').style.display = 'none';
@@ -278,13 +614,108 @@
       document.getElementById('inicio-container').style.display = 'block';
       document.getElementById('gestion-container').style.display = 'none';
       document.body.classList.add('landing');
+      
+      // Detener las alertas cuando volvemos al inicio
+      if (intervaloAlertas) {
+        clearInterval(intervaloAlertas);
+      }
+    }
+
+    function cerrarModal() {
+      document.getElementById('modal-alertas').style.display = 'none';
+    }
+
+    // 🚨 SISTEMA DE ALERTAS PARA SERVICES
+    async function verificarAlertasServices() {
+      if (!supabase) {
+        alert("El sistema no está inicializado. Entra primero al sistema de gestión.");
+        return;
+      }
+
+      try {
+        const { data: services, error } = await supabase
+          .from("service")
+          .select("*")
+          .not("fecha", "is", null)
+          .order("fecha", { ascending: true });
+
+        if (error) throw error;
+
+        const hoy = new Date();
+        const alertas = [];
+
+        services.forEach(service => {
+          const fechaService = new Date(service.fecha);
+          const diferenciaMs = hoy - fechaService;
+          const diferenciaDias = diferenciaMs / (1000 * 60 * 60 * 24);
+          
+          // Alerta a los 365 días (1 año) con margen de ±5 días
+          if (diferenciaDias >= 360 && diferenciaDias <= 370) {
+            const anosTranscurridos = (diferenciaDias / 365).toFixed(1);
+            alertas.push({
+              id: service.id,
+              nombre: service.nombre,
+              vehiculo: service.vehiculo,
+              numero: service.numero,
+              fecha: service.fecha,
+              diasTranscurridos: Math.floor(diferenciaDias),
+              anosTranscurridos: anosTranscurridos
+            });
+          }
+        });
+
+        // Mostrar alertas si las hay
+        if (alertas.length > 0) {
+          mostrarAlertasServices(alertas);
+        } else {
+          alert("✅ No hay services que cumplan 1 año actualmente.");
+        }
+        
+        return alertas;
+      } catch (error) {
+        console.error("Error verificando alertas:", error);
+        alert("Error al verificar alertas: " + error.message);
+      }
+    }
+
+    function mostrarAlertasServices(alertas) {
+      const modal = document.getElementById('modal-alertas');
+      const contenido = document.getElementById('contenido-alertas');
+      
+      let html = '';
+      
+      if (alertas.length === 0) {
+        html = '<p>✅ No hay alertas en este momento.</p>';
+      } else {
+        html = `<p>🚨 <strong>${alertas.length} service(s) cumplen o están por cumplir 1 año:</strong></p>`;
+        
+        alertas.forEach((alerta, index) => {
+          const fechaFormateada = new Date(alerta.fecha).toLocaleDateString('es-ES');
+          html += `
+            <div class="modal-alerta">
+              <strong>${index + 1}. ${alerta.nombre}</strong><br>
+              📞 Teléfono: ${alerta.numero}<br>
+              🚗 Vehículo: ${alerta.vehiculo}<br>
+              📅 Fecha del service: ${fechaFormateada}<br>
+              ⏰ Tiempo transcurrido: ${alerta.diasTranscurridos} días (${alerta.anosTranscurridos} años)<br>
+              <br>
+              <strong>📞 CONTACTAR AL CLIENTE PARA NUEVO SERVICE</strong>
+            </div>
+          `;
+        });
+        
+        html += `<p><strong>Acción requerida:</strong> Contactar a estos clientes para programar un nuevo service de mantenimiento.</p>`;
+      }
+      
+      contenido.innerHTML = html;
+      modal.style.display = 'block';
     }
 
     // Sistema de Gestión - Todo el código JavaScript integrado
     function inicializarSistemaGestion() {
       const SUPABASE_URL = "https://yhisjimuytbvahocmzum.supabase.co";
       const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloaXNqaW11eXRidmFob2NtenVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5MjkzOTgsImV4cCI6MjA3ODUwNTM5OH0.STN1ug49Sy74W-y7Wo-tXfy__beqS9mKH-MG46ZGJvA";
-      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
       // Mapeo de tablas reales y sus claves primarias
       const tablaMap = {
@@ -327,7 +758,7 @@
           return;
         }
 
-        // Caso especial para service - necesitamos mecánicos para el select
+        // Caso especial para service
         if (tabla === "service") {
           await renderFormularioService();
           return;
@@ -433,7 +864,7 @@
         form.onsubmit = crearSubmitHandler("clientes");
       }
 
-      // 📋 Formulario especial para service
+      // 📋 Formulario especial para service con validaciones
       async function renderFormularioService() {
         // Campos del formulario de service
         const camposService = ["nombre", "vehiculo", "numero", "precio", "materiales", "fecha"];
@@ -442,31 +873,48 @@
           const label = document.createElement("label");
           label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1);
 
-          const input = document.createElement("input");
-          input.name = campo;
-          input.required = true;
+          let input;
           
-          if (campo === "numero" || campo === "precio") {
-            input.type = "number";
-            if (campo === "precio") {
-              input.step = "0.01";
-              input.min = "0";
-            }
-          } else if (campo === "fecha") {
-            input.type = "date";
-          } else if (campo === "materiales") {
-            input.type = "text";
-            input.placeholder = "Lista de materiales separados por coma";
+          if (campo === "materiales") {
+            input = document.createElement("textarea");
+            input.rows = 3;
+            input.placeholder = "Lista de materiales utilizados separados por coma...";
           } else {
-            input.type = "text";
+            input = document.createElement("input");
+            
+            if (campo === "numero" || campo === "precio") {
+              input.type = "number";
+              if (campo === "precio") {
+                input.step = "0.01";
+                input.min = "0";
+                input.placeholder = "0.00";
+              }
+            } else if (campo === "fecha") {
+              input.type = "date";
+              // Establecer fecha máxima como hoy
+              const hoy = new Date().toISOString().split('T')[0];
+              input.max = hoy;
+            } else {
+              input.type = "text";
+            }
           }
 
+          input.name = campo;
+          input.required = true;
           form.appendChild(label);
           form.appendChild(input);
         });
 
+        // Información sobre las alertas
+        const infoAlertas = document.createElement("div");
+        infoAlertas.style.color = "#ffb84d";
+        infoAlertas.style.fontSize = "0.9em";
+        infoAlertas.style.marginTop = "10px";
+        infoAlertas.innerHTML = "💡 El sistema alertará automáticamente cuando un service cumpla 1 año para contactar al cliente.";
+        form.appendChild(infoAlertas);
+
         const boton = document.createElement("button");
-        boton.textContent = "Guardar";
+        boton.textContent = "Guardar Service";
         boton.type = "submit";
         form.appendChild(boton);
 
@@ -485,6 +933,13 @@
               alert("Todos los campos son obligatorios");
               return;
             }
+          }
+
+          // Validaciones específicas por tabla
+          const erroresValidacion = validarDatos(tabla, datos);
+          if (erroresValidacion.length > 0) {
+            alert("Errores de validación:\n\n" + erroresValidacion.join("\n"));
+            return;
           }
 
           // Convertir campos numéricos
@@ -516,7 +971,7 @@
               registroEditando = null;
               const tituloForm = document.getElementById("titulo-form");
               tituloForm.textContent = "Agregar registro";
-              container.innerHTML = "<p>Actualizando...</p>";
+              container.querySelector('.table-container').innerHTML = "<p>Actualizando...</p>";
               await renderTabla(tabla);
             }
           } else {
@@ -531,11 +986,57 @@
             } else {
               alert("Registro guardado correctamente");
               form.reset();
-              container.innerHTML = "<p>Actualizando...</p>";
+              container.querySelector('.table-container').innerHTML = "<p>Actualizando...</p>";
               await renderTabla(tabla);
+              
+              // Si es un service nuevo, verificar alertas
+              if (tabla === "service") {
+                setTimeout(verificarAlertasServices, 1000);
+              }
             }
           }
         };
+      }
+
+      // ✅ Validaciones de datos
+      function validarDatos(tabla, datos) {
+        const errores = [];
+        
+        if (tabla === "service") {
+          // Validar fecha no futura
+          const fechaService = new Date(datos.fecha);
+          const hoy = new Date();
+          hoy.setHours(0, 0, 0, 0);
+          
+          if (fechaService > hoy) {
+            errores.push("❌ La fecha del service no puede ser futura");
+          }
+          
+          // Validar fecha no muy antigua (más de 2 años)
+          const dosAniosAtras = new Date();
+          dosAniosAtras.setFullYear(dosAniosAtras.getFullYear() - 2);
+          
+          if (fechaService < dosAniosAtras) {
+            errores.push("❌ La fecha del service no puede ser de hace más de 2 años");
+          }
+          
+          // Validar precio positivo
+          if (datos.precio && parseFloat(datos.precio) <= 0) {
+            errores.push("❌ El precio debe ser mayor a 0");
+          }
+          
+          // Validar número de contacto
+          if (datos.numero && datos.numero.length < 8) {
+            errores.push("❌ El número de contacto debe tener al menos 8 dígitos");
+          }
+          
+          // Validar que el número sea numérico
+          if (datos.numero && isNaN(datos.numero)) {
+            errores.push("❌ El número de contacto debe contener solo dígitos");
+          }
+        }
+        
+        return errores;
       }
 
       // ✏️ Función para editar registro
@@ -663,32 +1164,41 @@
           const label = document.createElement("label");
           label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1);
 
-          const input = document.createElement("input");
-          input.name = campo;
-          input.required = true;
+          let input;
           
-          if (campo === "numero" || campo === "precio") {
-            input.type = "number";
-            if (campo === "precio") {
-              input.step = "0.01";
-              input.min = "0";
-            }
-          } else if (campo === "fecha") {
-            input.type = "date";
-            // Formatear fecha para input type="date"
-            if (data[campo]) {
-              const fecha = new Date(data[campo]);
-              input.value = fecha.toISOString().split('T')[0];
-            }
-          } else if (campo === "materiales") {
-            input.type = "text";
-            input.placeholder = "Lista de materiales separados por coma";
+          if (campo === "materiales") {
+            input = document.createElement("textarea");
+            input.rows = 3;
+            input.placeholder = "Lista de materiales utilizados separados por coma...";
           } else {
-            input.type = "text";
+            input = document.createElement("input");
+            
+            if (campo === "numero" || campo === "precio") {
+              input.type = "number";
+              if (campo === "precio") {
+                input.step = "0.01";
+                input.min = "0";
+              }
+            } else if (campo === "fecha") {
+              input.type = "date";
+              // Establecer fecha máxima como hoy
+              const hoy = new Date().toISOString().split('T')[0];
+              input.max = hoy;
+            } else {
+              input.type = "text";
+            }
           }
 
-          if (data[campo] && campo !== "fecha") {
-            input.value = data[campo];
+          input.name = campo;
+          input.required = true;
+
+          if (data[campo] !== null && data[campo] !== undefined) {
+            if (input.type === 'date' && data[campo]) {
+              const fecha = new Date(data[campo]);
+              input.value = fecha.toISOString().split('T')[0];
+            } else {
+              input.value = data[campo];
+            }
           }
 
           form.appendChild(label);
@@ -751,7 +1261,7 @@
         form.onsubmit = crearSubmitHandler(tabla);
       }
 
-      // 🧾 Renderizar tabla - MOSTRAR NOMBRE DEL MECÁNICO EN LUGAR DEL ID
+      // 🧾 Renderizar tabla - RESPONSIVE
       async function renderTabla(tabla) {
         try {
           const tablaReal = tablaMap[tabla].name;
@@ -782,14 +1292,14 @@
           
           if (error) {
             console.error("Error al cargar datos:", error);
-            container.innerHTML = `<p>Error al cargar datos: ${error.message}</p>`;
+            container.querySelector('.table-container').innerHTML = `<p>Error al cargar datos: ${error.message}</p>`;
             return;
           }
 
           console.log("Datos recibidos:", data);
 
           if (!data || data.length === 0) {
-            container.innerHTML = "<p>No hay registros.</p>";
+            container.querySelector('.table-container').innerHTML = "<p>No hay registros.</p>";
             return;
           }
 
@@ -817,7 +1327,10 @@
 
           // Filas de datos
           for (const row of data) {
-            html += `<tr>`;
+            // Verificar si este service necesita alerta
+            const necesitaAlerta = tabla === "service" && esServiceConAlerta(row.fecha);
+            
+            html += `<tr${necesitaAlerta ? ' class="alerta-service"' : ''}>`;
             for (const col in row) {
               let valor = row[col];
               
@@ -829,6 +1342,14 @@
               // Mostrar nombre y especialidad del mecánico
               if (col === "mecanicos" && tabla === "clientes" && row.mecanicos) {
                 valor = `${row.mecanicos.nombre} - ${row.mecanicos.especialidad}`;
+              }
+              // Formatear fecha
+              else if (col === "fecha" && valor) {
+                valor = new Date(valor).toLocaleDateString('es-ES');
+              }
+              // Formatear precio
+              else if (col === "precio" && valor) {
+                valor = `$${parseFloat(valor).toFixed(2)}`;
               }
               // Manejar valores null o undefined
               else if (valor === null || valor === undefined) {
@@ -846,30 +1367,53 @@
             const pk = tablaMap[tabla].pk;
             const pkValue = row[pk];
             
-            html += `<td>`;
+            html += `<td class="acciones-cell">`;
             
             // Botón editar
             if (tabla === "mecanico" || tabla === "clientes" || tabla === "service") {
-              html += `<button onclick="editarRegistro('${tabla}', ${pkValue})" style="margin-right: 5px; background: #ff9800; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">✏️ Editar</button>`;
+              html += `<button class="btn-accion" onclick="editarRegistro('${tabla}', ${pkValue})">✏️ Editar</button>`;
             }
             
             // Botón eliminar
             if (tabla === "especialidad") {
-              html += `<button onclick="borrar('${tabla}', '${pkValue}')" style="background: #ff4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">🗑️ Eliminar</button>`;
+              html += `<button class="btn-accion eliminar" onclick="borrar('${tabla}', '${pkValue}')">🗑️ Eliminar</button>`;
             } else {
-              html += `<button onclick="borrar('${tabla}', ${pkValue})" style="background: #ff4444; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">🗑️ Eliminar</button>`;
+              html += `<button class="btn-accion eliminar" onclick="borrar('${tabla}', ${pkValue})">🗑️ Eliminar</button>`;
             }
             
             html += `</td></tr>`;
           }
 
           html += `</tbody></table>`;
-          container.innerHTML = html;
+          
+          // Agregar información sobre las alertas si es la tabla de services
+          if (tabla === "service") {
+            const servicesConAlerta = data.filter(row => esServiceConAlerta(row.fecha));
+            if (servicesConAlerta.length > 0) {
+              html += `<div style="margin-top: 20px; padding: 15px; background: #ff4444; color: white; border-radius: 8px; border-left: 5px solid #ff9800;">
+                <strong>🚨 ALERTA:</strong> ${servicesConAlerta.length} service(s) en rojo cumplen o están por cumplir 1 año. Contactar a los clientes.
+              </div>`;
+            }
+          }
+          
+          container.querySelector('.table-container').innerHTML = html;
           
         } catch (error) {
           console.error("Error en renderTabla:", error);
-          container.innerHTML = `<p>Error al renderizar la tabla: ${error.message}</p>`;
+          container.querySelector('.table-container').innerHTML = `<p>Error al renderizar la tabla: ${error.message}</p>`;
         }
+      }
+
+      // Función auxiliar para determinar si un service necesita alerta
+      function esServiceConAlerta(fechaService) {
+        if (!fechaService) return false;
+        
+        const hoy = new Date();
+        const fecha = new Date(fechaService);
+        const diferenciaMs = hoy - fecha;
+        const diferenciaDias = diferenciaMs / (1000 * 60 * 60 * 24);
+        
+        return diferenciaDias >= 360 && diferenciaDias <= 370;
       }
 
       // 🗑️ Eliminar registro
@@ -897,6 +1441,12 @@
         }
       }
 
+      // Iniciar sistema de alertas automáticas
+      function iniciarSistemaAlertas() {
+        // Verificar cada 12 horas
+        intervaloAlertas = setInterval(verificarAlertasServices, 12 * 60 * 60 * 1000);
+      }
+
       // 📂 Eventos
       selector.addEventListener("change", (e) => {
         tablaActual = e.target.value;
@@ -908,10 +1458,15 @@
       tablaActual = selector.value;
       renderFormulario(tablaActual);
       renderTabla(tablaActual);
+      
+      // Iniciar sistema de alertas automáticas
+      iniciarSistemaAlertas();
 
       // Hacer las funciones globales para los botones
       window.editarRegistro = editarRegistro;
       window.borrar = borrar;
+      window.cerrarModal = cerrarModal;
+      window.verificarAlertasServices = verificarAlertasServices;
     }
   </script>
 </body>
