@@ -139,7 +139,7 @@
       background: #ff4444;
     }
 
-    /* 📦 Panel selector */
+    /* 📦 Panel selector y filtros */
     #panel {
       margin: 20px;
       background: #1a1a1a;
@@ -152,6 +152,18 @@
       margin-right: auto;
     }
 
+    .panel-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: end;
+    }
+
+    .filtro-group {
+      flex: 1;
+      min-width: 200px;
+    }
+
     #panel label {
       display: block;
       margin-bottom: 8px;
@@ -160,7 +172,7 @@
       font-size: 1.1em;
     }
 
-    #selector {
+    #selector, .filtro-input, .filtro-select {
       background-color: #222;
       color: #fff;
       border: 1px solid #ff9800;
@@ -168,6 +180,22 @@
       padding: 10px;
       width: 100%;
       font-size: 1em;
+    }
+
+    .btn-filtro {
+      background: #ff9800;
+      color: #000;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      white-space: nowrap;
+      font-size: 0.9em;
+    }
+
+    .btn-filtro:hover {
+      background: #ffa733;
     }
 
     /* 📝 Formulario */
@@ -441,6 +469,14 @@
         min-width: 120px;
         text-align: center;
       }
+
+      .panel-row {
+        flex-direction: column;
+      }
+
+      .filtro-group {
+        min-width: 100%;
+      }
       
       #panel, #form-section, #crud-container {
         margin: 10px;
@@ -557,13 +593,44 @@
       </div>
 
       <section id="panel">
-        <label for="selector">Seleccionar tabla:</label>
-        <select id="selector">
-          <option value="clientes">Clientes</option>
-          <option value="mecanico">Mecánicos</option>
-          <option value="especialidad">Especialidades</option>
-          <option value="service">Service</option>
-        </select>
+        <div class="panel-row">
+          <div class="filtro-group">
+            <label for="selector">Seleccionar tabla:</label>
+            <select id="selector">
+              <option value="clientes">Clientes</option>
+              <option value="mecanico">Mecánicos</option>
+              <option value="especialidad">Especialidades</option>
+              <option value="service">Service</option>
+            </select>
+          </div>
+          
+          <!-- Filtros para Clientes -->
+          <div class="filtro-group" id="filtro-clientes" style="display: none;">
+            <label for="filtro-nombre">Filtrar por nombre:</label>
+            <input type="text" id="filtro-nombre" class="filtro-input" placeholder="Buscar por nombre...">
+          </div>
+          <div class="filtro-group" id="filtro-vehiculo" style="display: none;">
+            <label for="filtro-vehiculo-input">Filtrar por vehículo:</label>
+            <input type="text" id="filtro-vehiculo-input" class="filtro-input" placeholder="Buscar por vehículo...">
+          </div>
+          
+          <!-- Filtros para Mecánicos -->
+          <div class="filtro-group" id="filtro-especialidad" style="display: none;">
+            <label for="filtro-especialidad-select">Filtrar por especialidad:</label>
+            <select id="filtro-especialidad-select" class="filtro-select">
+              <option value="">Todas las especialidades</option>
+            </select>
+          </div>
+          
+          <div class="filtro-group">
+            <label>&nbsp;</label>
+            <button class="btn-filtro" onclick="aplicarFiltros()">🔍 Aplicar Filtros</button>
+          </div>
+          <div class="filtro-group">
+            <label>&nbsp;</label>
+            <button class="btn-filtro" onclick="limpiarFiltros()">🗑️ Limpiar Filtros</button>
+          </div>
+        </div>
       </section>
 
       <section id="form-section">
@@ -599,6 +666,11 @@
     // Variables globales
     let supabase;
     let intervaloAlertas;
+    let datosOriginales = {};
+    let filtrosActivos = {
+      clientes: { nombre: '', vehiculo: '' },
+      mecanico: { especialidad: '' }
+    };
 
     // Función para mostrar/ocultar las secciones
     function mostrarGestion() {
@@ -711,6 +783,96 @@
       modal.style.display = 'block';
     }
 
+    // 🔍 SISTEMA DE FILTRADO
+    function mostrarFiltros(tabla) {
+      // Ocultar todos los filtros primero
+      document.getElementById('filtro-clientes').style.display = 'none';
+      document.getElementById('filtro-vehiculo').style.display = 'none';
+      document.getElementById('filtro-especialidad').style.display = 'none';
+
+      // Mostrar filtros según la tabla seleccionada
+      if (tabla === 'clientes') {
+        document.getElementById('filtro-clientes').style.display = 'block';
+        document.getElementById('filtro-vehiculo').style.display = 'block';
+      } else if (tabla === 'mecanico') {
+        document.getElementById('filtro-especialidad').style.display = 'block';
+        cargarEspecialidadesFiltro();
+      }
+    }
+
+    async function cargarEspecialidadesFiltro() {
+      try {
+        const { data: especialidades, error } = await supabase
+          .from("especialidades")
+          .select("especialidad")
+          .order("especialidad");
+
+        if (error) throw error;
+
+        const select = document.getElementById('filtro-especialidad-select');
+        // Mantener la opción "Todas las especialidades"
+        select.innerHTML = '<option value="">Todas las especialidades</option>';
+        
+        especialidades.forEach(esp => {
+          const option = document.createElement("option");
+          option.value = esp.especialidad;
+          option.textContent = esp.especialidad;
+          select.appendChild(option);
+        });
+      } catch (error) {
+        console.error("Error cargando especialidades para filtro:", error);
+      }
+    }
+
+    function aplicarFiltros() {
+      const tablaActual = document.getElementById('selector').value;
+      
+      if (tablaActual === 'clientes') {
+        filtrosActivos.clientes.nombre = document.getElementById('filtro-nombre').value.toLowerCase();
+        filtrosActivos.clientes.vehiculo = document.getElementById('filtro-vehiculo-input').value.toLowerCase();
+      } else if (tablaActual === 'mecanico') {
+        filtrosActivos.mecanico.especialidad = document.getElementById('filtro-especialidad-select').value;
+      }
+      
+      // Re-renderizar la tabla con los filtros aplicados
+      renderTablaConFiltros(tablaActual);
+    }
+
+    function limpiarFiltros() {
+      const tablaActual = document.getElementById('selector').value;
+      
+      if (tablaActual === 'clientes') {
+        document.getElementById('filtro-nombre').value = '';
+        document.getElementById('filtro-vehiculo-input').value = '';
+        filtrosActivos.clientes.nombre = '';
+        filtrosActivos.clientes.vehiculo = '';
+      } else if (tablaActual === 'mecanico') {
+        document.getElementById('filtro-especialidad-select').value = '';
+        filtrosActivos.mecanico.especialidad = '';
+      }
+      
+      // Re-renderizar la tabla sin filtros
+      renderTablaConFiltros(tablaActual);
+    }
+
+    function filtrarDatos(tabla, datos) {
+      if (tabla === 'clientes') {
+        return datos.filter(item => {
+          const cumpleNombre = !filtrosActivos.clientes.nombre || 
+            item.nombre.toLowerCase().includes(filtrosActivos.clientes.nombre);
+          const cumpleVehiculo = !filtrosActivos.clientes.vehiculo || 
+            item.vehiculo.toLowerCase().includes(filtrosActivos.clientes.vehiculo);
+          return cumpleNombre && cumpleVehiculo;
+        });
+      } else if (tabla === 'mecanico') {
+        return datos.filter(item => {
+          return !filtrosActivos.mecanico.especialidad || 
+            item.especialidad === filtrosActivos.mecanico.especialidad;
+        });
+      }
+      return datos;
+    }
+
     // Sistema de Gestión - Todo el código JavaScript integrado
     function inicializarSistemaGestion() {
       const SUPABASE_URL = "https://yhisjimuytbvahocmzum.supabase.co";
@@ -752,9 +914,18 @@
         const tituloForm = document.getElementById("titulo-form");
         tituloForm.textContent = "Agregar registro";
 
+        // Mostrar filtros correspondientes
+        mostrarFiltros(tabla);
+
         // Caso especial para clientes - necesitamos mecánicos para el select
         if (tabla === "clientes") {
           await renderFormularioClientes();
+          return;
+        }
+
+        // Caso especial para mecánicos - necesitamos especialidades para el select
+        if (tabla === "mecanico") {
+          await renderFormularioMecanico();
           return;
         }
 
@@ -862,6 +1033,68 @@
         form.appendChild(boton);
 
         form.onsubmit = crearSubmitHandler("clientes");
+      }
+
+      // 📋 Formulario especial para mecánicos con select de especialidades
+      async function renderFormularioMecanico() {
+        // Obtener lista de especialidades
+        const { data: especialidades, error } = await supabase
+          .from("especialidades")
+          .select("especialidad")
+          .order("especialidad");
+
+        if (error) {
+          console.error("Error al cargar especialidades:", error);
+          alert("Error al cargar especialidades: " + error.message);
+          return;
+        }
+
+        // Campos del formulario de mecánicos
+        const camposMecanico = ["nombre", "telefono"];
+        
+        camposMecanico.forEach(campo => {
+          const label = document.createElement("label");
+          label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1);
+
+          const input = document.createElement("input");
+          input.name = campo;
+          input.required = true;
+          input.type = "text";
+
+          form.appendChild(label);
+          form.appendChild(input);
+        });
+
+        // Campo especialidad como select
+        const labelEspecialidad = document.createElement("label");
+        labelEspecialidad.textContent = "Especialidad";
+        const selectEspecialidad = document.createElement("select");
+        selectEspecialidad.name = "especialidad";
+        selectEspecialidad.required = true;
+
+        // Opción por defecto
+        const optionDefault = document.createElement("option");
+        optionDefault.value = "";
+        optionDefault.textContent = "Selecciona una especialidad";
+        selectEspecialidad.appendChild(optionDefault);
+
+        // Opciones de especialidades
+        especialidades.forEach(esp => {
+          const option = document.createElement("option");
+          option.value = esp.especialidad;
+          option.textContent = esp.especialidad;
+          selectEspecialidad.appendChild(option);
+        });
+
+        form.appendChild(labelEspecialidad);
+        form.appendChild(selectEspecialidad);
+
+        const boton = document.createElement("button");
+        boton.textContent = "Guardar";
+        boton.type = "submit";
+        form.appendChild(boton);
+
+        form.onsubmit = crearSubmitHandler("mecanico");
       }
 
       // 📋 Formulario especial para service con validaciones
@@ -972,7 +1205,7 @@
               const tituloForm = document.getElementById("titulo-form");
               tituloForm.textContent = "Agregar registro";
               container.querySelector('.table-container').innerHTML = "<p>Actualizando...</p>";
-              await renderTabla(tabla);
+              await renderTablaConFiltros(tabla);
             }
           } else {
             // Modo inserción
@@ -987,7 +1220,7 @@
               alert("Registro guardado correctamente");
               form.reset();
               container.querySelector('.table-container').innerHTML = "<p>Actualizando...</p>";
-              await renderTabla(tabla);
+              await renderTablaConFiltros(tabla);
               
               // Si es un service nuevo, verificar alertas
               if (tabla === "service") {
@@ -1075,6 +1308,8 @@
           // Renderizar formulario específico para edición
           if (tabla === "clientes") {
             await renderFormularioClientesEdicion(data);
+          } else if (tabla === "mecanico") {
+            await renderFormularioMecanicoEdicion(data);
           } else if (tabla === "service") {
             await renderFormularioServiceEdicion(data);
           } else {
@@ -1151,6 +1386,69 @@
         form.appendChild(boton);
 
         form.onsubmit = crearSubmitHandler("clientes");
+      }
+
+      // 📝 Formulario de mecánicos para edición
+      async function renderFormularioMecanicoEdicion(data) {
+        // Obtener lista de especialidades
+        const { data: especialidades, error } = await supabase
+          .from("especialidades")
+          .select("especialidad")
+          .order("especialidad");
+
+        if (error) {
+          console.error("Error al cargar especialidades:", error);
+          alert("Error al cargar especialidades: " + error.message);
+          return;
+        }
+
+        form.innerHTML = "";
+
+        // Campos del formulario de mecánicos
+        const camposMecanico = ["nombre", "telefono"];
+        
+        camposMecanico.forEach(campo => {
+          const label = document.createElement("label");
+          label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1);
+
+          const input = document.createElement("input");
+          input.name = campo;
+          input.required = true;
+          input.type = "text";
+          input.value = data[campo] || "";
+
+          form.appendChild(label);
+          form.appendChild(input);
+        });
+
+        // Campo especialidad como select
+        const labelEspecialidad = document.createElement("label");
+        labelEspecialidad.textContent = "Especialidad";
+        const selectEspecialidad = document.createElement("select");
+        selectEspecialidad.name = "especialidad";
+        selectEspecialidad.required = true;
+
+        // Opciones de especialidades
+        especialidades.forEach(esp => {
+          const option = document.createElement("option");
+          option.value = esp.especialidad;
+          option.textContent = esp.especialidad;
+          // Seleccionar la especialidad actual
+          if (esp.especialidad === data.especialidad) {
+            option.selected = true;
+          }
+          selectEspecialidad.appendChild(option);
+        });
+
+        form.appendChild(labelEspecialidad);
+        form.appendChild(selectEspecialidad);
+
+        const boton = document.createElement("button");
+        boton.textContent = "Actualizar";
+        boton.type = "submit";
+        form.appendChild(boton);
+
+        form.onsubmit = crearSubmitHandler("mecanico");
       }
 
       // 📝 Formulario de service para edición
@@ -1261,8 +1559,8 @@
         form.onsubmit = crearSubmitHandler(tabla);
       }
 
-      // 🧾 Renderizar tabla - RESPONSIVE
-      async function renderTabla(tabla) {
+      // 🧾 Renderizar tabla con filtros
+      async function renderTablaConFiltros(tabla) {
         try {
           const tablaReal = tablaMap[tabla].name;
           console.log("Cargando tabla:", tablaReal);
@@ -1298,16 +1596,29 @@
 
           console.log("Datos recibidos:", data);
 
-          if (!data || data.length === 0) {
-            container.querySelector('.table-container').innerHTML = "<p>No hay registros.</p>";
+          // Guardar datos originales para filtrado
+          datosOriginales[tabla] = data;
+
+          // Aplicar filtros
+          const datosFiltrados = filtrarDatos(tabla, data);
+
+          if (!datosFiltrados || datosFiltrados.length === 0) {
+            container.querySelector('.table-container').innerHTML = "<p>No hay registros que coincidan con los filtros.</p>";
             return;
           }
 
-          let html = `<h2>${tabla.toUpperCase()}</h2>`;
+          let html = `<h2>${tabla.toUpperCase()}`;
+          
+          // Mostrar contador de resultados filtrados
+          if (datosFiltrados.length !== data.length) {
+            html += ` <span style="font-size: 0.7em; color: #ffb84d;">(${datosFiltrados.length} de ${data.length} registros)</span>`;
+          }
+          html += `</h2>`;
+          
           html += `<table><thead><tr>`;
           
           // Encabezados de columnas - OCULTAR la columna "mecanico" y mostrar solo "Mecánico"
-          for (const col in data[0]) {
+          for (const col in datosFiltrados[0]) {
             let nombreColumna = col;
             
             // Saltar la columna "mecanico" (ID) para clientes
@@ -1326,7 +1637,7 @@
           html += `<th>Acciones</th></tr></thead><tbody>`;
 
           // Filas de datos
-          for (const row of data) {
+          for (const row of datosFiltrados) {
             // Verificar si este service necesita alerta
             const necesitaAlerta = tabla === "service" && esServiceConAlerta(row.fecha);
             
@@ -1388,7 +1699,7 @@
           
           // Agregar información sobre las alertas si es la tabla de services
           if (tabla === "service") {
-            const servicesConAlerta = data.filter(row => esServiceConAlerta(row.fecha));
+            const servicesConAlerta = datosFiltrados.filter(row => esServiceConAlerta(row.fecha));
             if (servicesConAlerta.length > 0) {
               html += `<div style="margin-top: 20px; padding: 15px; background: #ff4444; color: white; border-radius: 8px; border-left: 5px solid #ff9800;">
                 <strong>🚨 ALERTA:</strong> ${servicesConAlerta.length} service(s) en rojo cumplen o están por cumplir 1 año. Contactar a los clientes.
@@ -1433,7 +1744,7 @@
             alert("Error al eliminar: " + error.message);
           } else {
             alert("Registro eliminado correctamente");
-            await renderTabla(tabla);
+            await renderTablaConFiltros(tabla);
           }
         } catch (error) {
           console.error("Error en borrar:", error);
@@ -1451,13 +1762,13 @@
       selector.addEventListener("change", (e) => {
         tablaActual = e.target.value;
         renderFormulario(tablaActual);
-        renderTabla(tablaActual);
+        renderTablaConFiltros(tablaActual);
       });
 
       // Inicializar el sistema de gestión
       tablaActual = selector.value;
       renderFormulario(tablaActual);
-      renderTabla(tablaActual);
+      renderTablaConFiltros(tablaActual);
       
       // Iniciar sistema de alertas automáticas
       iniciarSistemaAlertas();
@@ -1467,6 +1778,9 @@
       window.borrar = borrar;
       window.cerrarModal = cerrarModal;
       window.verificarAlertasServices = verificarAlertasServices;
+      window.aplicarFiltros = aplicarFiltros;
+      window.limpiarFiltros = limpiarFiltros;
+      window.renderTablaConFiltros = renderTablaConFiltros;
     }
   </script>
 </body>

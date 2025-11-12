@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión del Taller</title>
+  <link rel="stylesheet" href="./css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header>
+    <h1>⚙️ Gestión del Taller</h1>
+  </header>
+
+  <main>
+    <section id="panel">
+      <label for="selector">Seleccionar tabla:</label>
+      <select id="selector">
+        <option value="clientes">Clientes</option>
+        <option value="mecanico">Mecánicos</option>
+        <option value="especialidad">Especialidades</option>
+        <option value="service">Service</option>
+      </select>
+    </section>
+
+    <section id="form-section">
+      <h2 id="titulo-form">Agregar registro</h2>
+      <form id="formulario"></form>
+    </section>
+
+    <section id="crud-container"></section>
+  </main>
+
+  <footer>
+    <p>Desarrollado con ❤️ y Supabase</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

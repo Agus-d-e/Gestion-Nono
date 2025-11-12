@@ -1,0 +1,157 @@
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: #0f0f0f;
+  color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 🏷️ Header */
+header {
+  width: 100%;
+  text-align: center;
+  background-color: #151515;
+  border-bottom: 2px solid #ff9800;
+  padding: 20px 0;
+}
+
+header h1 {
+  color: #ff9800;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+/* 📦 Panel selector */
+#panel {
+  margin-top: 25px;
+  background: #1a1a1a;
+  padding: 15px 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(255, 153, 0, 0.3);
+  border: 1px solid #ff9800;
+}
+
+#panel label {
+  margin-right: 10px;
+  font-weight: bold;
+  color: #ffb84d;
+}
+
+#selector {
+  background-color: #222;
+  color: #fff;
+  border: 1px solid #ff9800;
+  border-radius: 6px;
+  padding: 6px;
+}
+
+/* 📝 Formulario */
+#form-section {
+  background: #1a1a1a;
+  margin-top: 25px;
+  padding: 25px;
+  border-radius: 15px;
+  border: 1px solid #ff9800;
+  width: 90%;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 0 0 25px rgba(255, 153, 0, 0.15);
+}
+
+#form-section h2 {
+  color: #ff9800;
+  margin-bottom: 20px;
+}
+
+#formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#formulario label {
+  color: #ffb84d;
+  text-align: left;
+}
+
+#formulario input {
+  background-color: #222;
+  border: 1px solid #ff9800;
+  border-radius: 6px;
+  color: #fff;
+  padding: 8px;
+}
+
+#formulario button {
+  margin-top: 10px;
+  background-color: #ff9800;
+  border: none;
+  padding: 10px;
+  color: #000;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+#formulario button:hover {
+  background-color: #ffa733;
+}
+
+/* 📊 Tabla */
+#crud-container {
+  margin-top: 30px;
+  width: 90%;
+  max-width: 900px;
+  overflow-x: auto;
+  background: #1a1a1a;
+  border-radius: 15px;
+  border: 1px solid #ff9800;
+  box-shadow: 0 0 25px rgba(255, 153, 0, 0.15);
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px 15px;
+  text-align: left;
+  border-bottom: 1px solid #333;
+}
+
+th {
+  background-color: #222;
+  color: #ffb84d;
+}
+
+td {
+  color: #f5f5f5;
+}
+
+tr:hover {
+  background-color: #2a2a2a;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+/* 🦶 Footer */
+footer {
+  margin-top: 40px;
+  padding: 15px;
+  text-align: center;
+  font-size: 0.9em;
+  color: #888;
+  border-top: 1px solid #222;
+}
