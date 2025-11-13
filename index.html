@@ -697,7 +697,7 @@
       document.getElementById('modal-alertas').style.display = 'none';
     }
 
-    // 🚨 SISTEMA DE ALERTAS PARA SERVICES
+    // 🚨 SISTEMA DE ALERTAS PARA SERVICES - VERSIÓN ACTUALIZADA
     async function verificarAlertasServices() {
       if (!supabase) {
         alert("El sistema no está inicializado. Entra primero al sistema de gestión.");
@@ -713,70 +713,120 @@
 
         if (error) throw error;
 
-        const hoy = new Date();
-        const alertas = [];
+        const alertasTiempo = [];
+        const alertasDistribucion = [];
 
         services.forEach(service => {
+          // Alerta por tiempo (1 año)
           const fechaService = new Date(service.fecha);
+          const hoy = new Date();
           const diferenciaMs = hoy - fechaService;
           const diferenciaDias = diferenciaMs / (1000 * 60 * 60 * 24);
           
-          // Alerta a los 365 días (1 año) con margen de ±5 días
           if (diferenciaDias >= 360 && diferenciaDias <= 370) {
             const anosTranscurridos = (diferenciaDias / 365).toFixed(1);
-            alertas.push({
+            alertasTiempo.push({
               id: service.id,
               nombre: service.nombre,
               vehiculo: service.vehiculo,
               numero: service.numero,
               fecha: service.fecha,
               diasTranscurridos: Math.floor(diferenciaDias),
-              anosTranscurridos: anosTranscurridos
+              anosTranscurridos: anosTranscurridos,
+              tipo: "tiempo"
             });
+          }
+
+          // Alerta por kilómetros de distribución (40,000 km)
+          if (service.kilometros_actuales && service.kilometros_ultima_distribucion) {
+            const kmRecorridos = service.kilometros_actuales - service.kilometros_ultima_distribucion;
+            
+            if (kmRecorridos >= 38000 && kmRecorridos <= 42000) {
+              alertasDistribucion.push({
+                id: service.id,
+                nombre: service.nombre,
+                vehiculo: service.vehiculo,
+                numero: service.numero,
+                kilometros_actuales: service.kilometros_actuales,
+                kilometros_ultima_distribucion: service.kilometros_ultima_distribucion,
+                kilometros_recorridos: kmRecorridos,
+                tipo: "distribucion"
+              });
+            }
           }
         });
 
-        // Mostrar alertas si las hay
-        if (alertas.length > 0) {
-          mostrarAlertasServices(alertas);
-        } else {
-          alert("✅ No hay services que cumplan 1 año actualmente.");
-        }
+        // Mostrar alertas combinadas
+        mostrarAlertasServicesCombinadas(alertasTiempo, alertasDistribucion);
         
-        return alertas;
+        return {
+          tiempo: alertasTiempo,
+          distribucion: alertasDistribucion
+        };
       } catch (error) {
         console.error("Error verificando alertas:", error);
         alert("Error al verificar alertas: " + error.message);
       }
     }
 
-    function mostrarAlertasServices(alertas) {
+    // 🚨 MOSTRAR ALERTAS COMBINADAS
+    function mostrarAlertasServicesCombinadas(alertasTiempo, alertasDistribucion) {
       const modal = document.getElementById('modal-alertas');
       const contenido = document.getElementById('contenido-alertas');
       
       let html = '';
+      const totalAlertas = alertasTiempo.length + alertasDistribucion.length;
       
-      if (alertas.length === 0) {
+      if (totalAlertas === 0) {
         html = '<p>✅ No hay alertas en este momento.</p>';
       } else {
-        html = `<p>🚨 <strong>${alertas.length} service(s) cumplen o están por cumplir 1 año:</strong></p>`;
+        html = `<p>🚨 <strong>${totalAlertas} alerta(s) activa(s):</strong></p>`;
         
-        alertas.forEach((alerta, index) => {
-          const fechaFormateada = new Date(alerta.fecha).toLocaleDateString('es-ES');
-          html += `
-            <div class="modal-alerta">
-              <strong>${index + 1}. ${alerta.nombre}</strong><br>
-              📞 Teléfono: ${alerta.numero}<br>
-              🚗 Vehículo: ${alerta.vehiculo}<br>
-              📅 Fecha del service: ${fechaFormateada}<br>
-              ⏰ Tiempo transcurrido: ${alerta.diasTranscurridos} días (${alerta.anosTranscurridos} años)<br>
-              <br>
-              <strong>📞 CONTACTAR AL CLIENTE PARA NUEVO SERVICE</strong>
-            </div>
-          `;
-        });
+        // Alertas por tiempo
+        if (alertasTiempo.length > 0) {
+          html += `<div style="margin: 15px 0; padding: 10px; background: #333; border-radius: 8px;">
+                    <strong>📅 ALERTAS POR TIEMPO (${alertasTiempo.length})</strong>
+                  </div>`;
+          
+          alertasTiempo.forEach((alerta, index) => {
+            const fechaFormateada = new Date(alerta.fecha).toLocaleDateString('es-ES');
+            html += `
+              <div class="modal-alerta">
+                <strong>⏰ ${index + 1}. ${alerta.nombre}</strong><br>
+                📞 Teléfono: ${alerta.numero}<br>
+                🚗 Vehículo: ${alerta.vehiculo}<br>
+                📅 Fecha del service: ${fechaFormateada}<br>
+                ⏰ Tiempo transcurrido: ${alerta.diasTranscurridos} días (${alerta.anosTranscurridos} años)<br>
+                <br>
+                <strong>📞 CONTACTAR AL CLIENTE PARA NUEVO SERVICE</strong>
+              </div>
+            `;
+          });
+        }
         
-        html += `<p><strong>Acción requerida:</strong> Contactar a estos clientes para programar un nuevo service de mantenimiento.</p>`;
+        // Alertas por distribución
+        if (alertasDistribucion.length > 0) {
+          html += `<div style="margin: 15px 0; padding: 10px; background: #333; border-radius: 8px;">
+                    <strong>🔧 ALERTAS POR DISTRIBUCIÓN (${alertasDistribucion.length})</strong>
+                  </div>`;
+          
+          alertasDistribucion.forEach((alerta, index) => {
+            html += `
+              <div class="modal-alerta">
+                <strong>🔧 ${index + 1}. ${alerta.nombre}</strong><br>
+                📞 Teléfono: ${alerta.numero}<br>
+                🚗 Vehículo: ${alerta.vehiculo}<br>
+                🛣️ Kilómetros actuales: ${alerta.kilometros_actuales} km<br>
+                🔄 Último cambio distribución: ${alerta.kilometros_ultima_distribucion} km<br>
+                📊 Kilómetros recorridos: ${alerta.kilometros_recorridos} km<br>
+                <br>
+                <strong>🔧 CONTACTAR AL CLIENTE PARA CAMBIO DE DISTRIBUCIÓN</strong>
+              </div>
+            `;
+          });
+        }
+        
+        html += `<p><strong>Acción requerida:</strong> Contactar a estos clientes según el tipo de alerta.</p>`;
       }
       
       contenido.innerHTML = html;
@@ -887,12 +937,12 @@
         service: { name: "service", pk: "id" }
       };
 
-      // Campos de cada tabla
+      // Campos de cada tabla (ACTUALIZADO para service)
       const campos = {
         clientes: ["nombre", "vehiculo", "numero", "mecanico"],
         mecanico: ["nombre", "telefono", "especialidad"],
         especialidad: ["especialidad"],
-        service: ["nombre", "vehiculo", "numero", "precio", "materiales", "fecha"]
+        service: ["nombre", "vehiculo", "numero", "precio", "materiales", "fecha", "kilometros_actuales", "kilometros_ultima_distribucion"]
       };
 
       const selector = document.getElementById("selector");
@@ -1097,14 +1147,14 @@
         form.onsubmit = crearSubmitHandler("mecanico");
       }
 
-      // 📋 Formulario especial para service con validaciones
+      // 📋 Formulario especial para service con validaciones - VERSIÓN ACTUALIZADA
       async function renderFormularioService() {
-        // Campos del formulario de service
-        const camposService = ["nombre", "vehiculo", "numero", "precio", "materiales", "fecha"];
+        // Campos del formulario de service (actualizados)
+        const camposService = ["nombre", "vehiculo", "numero", "precio", "materiales", "fecha", "kilometros_actuales", "kilometros_ultima_distribucion"];
         
         camposService.forEach(campo => {
           const label = document.createElement("label");
-          label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1);
+          label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1).replace(/_/g, " ");
 
           let input;
           
@@ -1112,6 +1162,16 @@
             input = document.createElement("textarea");
             input.rows = 3;
             input.placeholder = "Lista de materiales utilizados separados por coma...";
+          } else if (campo === "kilometros_actuales" || campo === "kilometros_ultima_distribucion") {
+            input = document.createElement("input");
+            input.type = "number";
+            input.min = "0";
+            input.step = "1";
+            input.placeholder = "0";
+            
+            if (campo === "kilometros_ultima_distribucion") {
+              input.placeholder = "Kilómetros en el último cambio de distribución";
+            }
           } else {
             input = document.createElement("input");
             
@@ -1143,7 +1203,9 @@
         infoAlertas.style.color = "#ffb84d";
         infoAlertas.style.fontSize = "0.9em";
         infoAlertas.style.marginTop = "10px";
-        infoAlertas.innerHTML = "💡 El sistema alertará automáticamente cuando un service cumpla 1 año para contactar al cliente.";
+        infoAlertas.innerHTML = "💡 El sistema alertará automáticamente cuando:<br>" +
+                                "• Un service cumpla 1 año para contactar al cliente<br>" +
+                                "• Se alcancen 40,000 km desde el último cambio de distribución";
         form.appendChild(infoAlertas);
 
         const boton = document.createElement("button");
@@ -1179,6 +1241,8 @@
           if (datos.numero) datos.numero = parseInt(datos.numero);
           if (datos.precio) datos.precio = parseFloat(datos.precio);
           if (datos.mecanico) datos.mecanico = parseInt(datos.mecanico);
+          if (datos.kilometros_actuales) datos.kilometros_actuales = parseInt(datos.kilometros_actuales);
+          if (datos.kilometros_ultima_distribucion) datos.kilometros_ultima_distribucion = parseInt(datos.kilometros_ultima_distribucion);
 
           const tablaReal = tablaMap[tabla].name;
           
@@ -1231,7 +1295,7 @@
         };
       }
 
-      // ✅ Validaciones de datos
+      // ✅ Validaciones de datos - VERSIÓN ACTUALIZADA
       function validarDatos(tabla, datos) {
         const errores = [];
         
@@ -1266,6 +1330,25 @@
           // Validar que el número sea numérico
           if (datos.numero && isNaN(datos.numero)) {
             errores.push("❌ El número de contacto debe contener solo dígitos");
+          }
+          
+          // Validar kilómetros (nuevas validaciones)
+          if (datos.kilometros_actuales && parseInt(datos.kilometros_actuales) < 0) {
+            errores.push("❌ Los kilómetros actuales no pueden ser negativos");
+          }
+          
+          if (datos.kilometros_ultima_distribucion && parseInt(datos.kilometros_ultima_distribucion) < 0) {
+            errores.push("❌ Los kilómetros de distribución no pueden ser negativos");
+          }
+          
+          // Validar que kilómetros actuales sean mayores o iguales a los de distribución
+          if (datos.kilometros_actuales && datos.kilometros_ultima_distribucion) {
+            const kmActuales = parseInt(datos.kilometros_actuales);
+            const kmDistribucion = parseInt(datos.kilometros_ultima_distribucion);
+            
+            if (kmActuales < kmDistribucion) {
+              errores.push("❌ Los kilómetros actuales no pueden ser menores a los del último cambio de distribución");
+            }
           }
         }
         
@@ -1451,16 +1534,16 @@
         form.onsubmit = crearSubmitHandler("mecanico");
       }
 
-      // 📝 Formulario de service para edición
+      // 📝 Formulario de service para edición - VERSIÓN ACTUALIZADA
       async function renderFormularioServiceEdicion(data) {
         form.innerHTML = "";
 
-        // Campos del formulario de service
-        const camposService = ["nombre", "vehiculo", "numero", "precio", "materiales", "fecha"];
+        // Campos del formulario de service (actualizados)
+        const camposService = ["nombre", "vehiculo", "numero", "precio", "materiales", "fecha", "kilometros_actuales", "kilometros_ultima_distribucion"];
         
         camposService.forEach(campo => {
           const label = document.createElement("label");
-          label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1);
+          label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1).replace(/_/g, " ");
 
           let input;
           
@@ -1468,6 +1551,16 @@
             input = document.createElement("textarea");
             input.rows = 3;
             input.placeholder = "Lista de materiales utilizados separados por coma...";
+          } else if (campo === "kilometros_actuales" || campo === "kilometros_ultima_distribucion") {
+            input = document.createElement("input");
+            input.type = "number";
+            input.min = "0";
+            input.step = "1";
+            input.placeholder = "0";
+            
+            if (campo === "kilometros_ultima_distribucion") {
+              input.placeholder = "Kilómetros en el último cambio de distribución";
+            }
           } else {
             input = document.createElement("input");
             
@@ -1631,6 +1724,10 @@
               nombreColumna = "ID";
             } else if (col === "mecanicos") {
               nombreColumna = "Mecánico";
+            } else if (col === "kilometros_actuales") {
+              nombreColumna = "Km Actuales";
+            } else if (col === "kilometros_ultima_distribucion") {
+              nombreColumna = "Km Última Distribución";
             }
             html += `<th>${nombreColumna}</th>`;
           }
@@ -1639,7 +1736,7 @@
           // Filas de datos
           for (const row of datosFiltrados) {
             // Verificar si este service necesita alerta
-            const necesitaAlerta = tabla === "service" && esServiceConAlerta(row.fecha);
+            const necesitaAlerta = tabla === "service" && esServiceConAlerta(row);
             
             html += `<tr${necesitaAlerta ? ' class="alerta-service"' : ''}>`;
             for (const col in row) {
@@ -1661,6 +1758,10 @@
               // Formatear precio
               else if (col === "precio" && valor) {
                 valor = `$${parseFloat(valor).toFixed(2)}`;
+              }
+              // Formatear kilómetros
+              else if ((col === "kilometros_actuales" || col === "kilometros_ultima_distribucion") && valor) {
+                valor = `${parseInt(valor).toLocaleString()} km`;
               }
               // Manejar valores null o undefined
               else if (valor === null || valor === undefined) {
@@ -1699,10 +1800,12 @@
           
           // Agregar información sobre las alertas si es la tabla de services
           if (tabla === "service") {
-            const servicesConAlerta = datosFiltrados.filter(row => esServiceConAlerta(row.fecha));
+            const servicesConAlerta = datosFiltrados.filter(row => esServiceConAlerta(row));
             if (servicesConAlerta.length > 0) {
               html += `<div style="margin-top: 20px; padding: 15px; background: #ff4444; color: white; border-radius: 8px; border-left: 5px solid #ff9800;">
-                <strong>🚨 ALERTA:</strong> ${servicesConAlerta.length} service(s) en rojo cumplen o están por cumplir 1 año. Contactar a los clientes.
+                <strong>🚨 ALERTA:</strong> ${servicesConAlerta.length} service(s) en rojo necesitan atención:<br>
+                • Services que cumplen 1 año<br>
+                • Vehículos que alcanzaron ~40,000 km desde último cambio de distribución
               </div>`;
             }
           }
@@ -1715,16 +1818,26 @@
         }
       }
 
-      // Función auxiliar para determinar si un service necesita alerta
-      function esServiceConAlerta(fechaService) {
-        if (!fechaService) return false;
+      // Función auxiliar para determinar si un service necesita alerta - VERSIÓN ACTUALIZADA
+      function esServiceConAlerta(service) {
+        if (!service.fecha) return false;
         
         const hoy = new Date();
-        const fecha = new Date(fechaService);
+        const fecha = new Date(service.fecha);
         const diferenciaMs = hoy - fecha;
         const diferenciaDias = diferenciaMs / (1000 * 60 * 60 * 24);
         
-        return diferenciaDias >= 360 && diferenciaDias <= 370;
+        // Alerta por tiempo (1 año)
+        const alertaTiempo = diferenciaDias >= 360 && diferenciaDias <= 370;
+        
+        // Alerta por distribución (40,000 km)
+        let alertaDistribucion = false;
+        if (service.kilometros_actuales && service.kilometros_ultima_distribucion) {
+          const kmRecorridos = service.kilometros_actuales - service.kilometros_ultima_distribucion;
+          alertaDistribucion = kmRecorridos >= 38000 && kmRecorridos <= 42000;
+        }
+        
+        return alertaTiempo || alertaDistribucion;
       }
 
       // 🗑️ Eliminar registro
