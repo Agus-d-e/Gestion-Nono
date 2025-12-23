@@ -663,16 +663,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // Variables globales
-    let supabase;
-    let intervaloAlertas;
-    let datosOriginales = {};
-    let filtrosActivos = {
-      clientes: { nombre: '', vehiculo: '' },
-      mecanico: { especialidad: '' }
-    };
-
-    // Función para mostrar/ocultar las secciones
+    // Declaración de funciones globales en la parte superior para evitar errores
     function mostrarGestion() {
       document.getElementById('inicio-container').style.display = 'none';
       document.getElementById('gestion-container').style.display = 'block';
@@ -688,8 +679,8 @@
       document.body.classList.add('landing');
       
       // Detener las alertas cuando volvemos al inicio
-      if (intervaloAlertas) {
-        clearInterval(intervaloAlertas);
+      if (window.intervaloAlertas) {
+        clearInterval(window.intervaloAlertas);
       }
     }
 
@@ -697,15 +688,24 @@
       document.getElementById('modal-alertas').style.display = 'none';
     }
 
-    // 🚨 SISTEMA DE ALERTAS PARA SERVICES - VERSIÓN ACTUALIZADA
+    // Variables globales - ahora en el objeto window
+    window.supabase = null;
+    window.intervaloAlertas = null;
+    window.datosOriginales = {};
+    window.filtrosActivos = {
+      clientes: { nombre: '', vehiculo: '' },
+      mecanico: { especialidad: '' }
+    };
+
+    // 🚨 SISTEMA DE ALERTAS PARA SERVICES
     async function verificarAlertasServices() {
-      if (!supabase) {
+      if (!window.supabase) {
         alert("El sistema no está inicializado. Entra primero al sistema de gestión.");
         return;
       }
 
       try {
-        const { data: services, error } = await supabase
+        const { data: services, error } = await window.supabase
           .from("service")
           .select("*")
           .not("fecha", "is", null)
@@ -852,7 +852,7 @@
 
     async function cargarEspecialidadesFiltro() {
       try {
-        const { data: especialidades, error } = await supabase
+        const { data: especialidades, error } = await window.supabase
           .from("especialidades")
           .select("especialidad")
           .order("especialidad");
@@ -860,7 +860,6 @@
         if (error) throw error;
 
         const select = document.getElementById('filtro-especialidad-select');
-        // Mantener la opción "Todas las especialidades"
         select.innerHTML = '<option value="">Todas las especialidades</option>';
         
         especialidades.forEach(esp => {
@@ -878,14 +877,16 @@
       const tablaActual = document.getElementById('selector').value;
       
       if (tablaActual === 'clientes') {
-        filtrosActivos.clientes.nombre = document.getElementById('filtro-nombre').value.toLowerCase();
-        filtrosActivos.clientes.vehiculo = document.getElementById('filtro-vehiculo-input').value.toLowerCase();
+        window.filtrosActivos.clientes.nombre = document.getElementById('filtro-nombre').value.toLowerCase();
+        window.filtrosActivos.clientes.vehiculo = document.getElementById('filtro-vehiculo-input').value.toLowerCase();
       } else if (tablaActual === 'mecanico') {
-        filtrosActivos.mecanico.especialidad = document.getElementById('filtro-especialidad-select').value;
+        window.filtrosActivos.mecanico.especialidad = document.getElementById('filtro-especialidad-select').value;
       }
       
       // Re-renderizar la tabla con los filtros aplicados
-      renderTablaConFiltros(tablaActual);
+      if (window.renderTablaConFiltros) {
+        window.renderTablaConFiltros(tablaActual);
+      }
     }
 
     function limpiarFiltros() {
@@ -894,40 +895,46 @@
       if (tablaActual === 'clientes') {
         document.getElementById('filtro-nombre').value = '';
         document.getElementById('filtro-vehiculo-input').value = '';
-        filtrosActivos.clientes.nombre = '';
-        filtrosActivos.clientes.vehiculo = '';
+        window.filtrosActivos.clientes.nombre = '';
+        window.filtrosActivos.clientes.vehiculo = '';
       } else if (tablaActual === 'mecanico') {
         document.getElementById('filtro-especialidad-select').value = '';
-        filtrosActivos.mecanico.especialidad = '';
+        window.filtrosActivos.mecanico.especialidad = '';
       }
       
       // Re-renderizar la tabla sin filtros
-      renderTablaConFiltros(tablaActual);
+      if (window.renderTablaConFiltros) {
+        window.renderTablaConFiltros(tablaActual);
+      }
     }
 
     function filtrarDatos(tabla, datos) {
       if (tabla === 'clientes') {
         return datos.filter(item => {
-          const cumpleNombre = !filtrosActivos.clientes.nombre || 
-            item.nombre.toLowerCase().includes(filtrosActivos.clientes.nombre);
-          const cumpleVehiculo = !filtrosActivos.clientes.vehiculo || 
-            item.vehiculo.toLowerCase().includes(filtrosActivos.clientes.vehiculo);
+          const cumpleNombre = !window.filtrosActivos.clientes.nombre || 
+            (item.nombre && item.nombre.toLowerCase().includes(window.filtrosActivos.clientes.nombre));
+          const cumpleVehiculo = !window.filtrosActivos.clientes.vehiculo || 
+            (item.vehiculo && item.vehiculo.toLowerCase().includes(window.filtrosActivos.clientes.vehiculo));
           return cumpleNombre && cumpleVehiculo;
         });
       } else if (tabla === 'mecanico') {
         return datos.filter(item => {
-          return !filtrosActivos.mecanico.especialidad || 
-            item.especialidad === filtrosActivos.mecanico.especialidad;
+          return !window.filtrosActivos.mecanico.especialidad || 
+            item.especialidad === window.filtrosActivos.mecanico.especialidad;
         });
       }
       return datos;
     }
 
-    // Sistema de Gestión - Todo el código JavaScript integrado
+    // Sistema de Gestión
     function inicializarSistemaGestion() {
       const SUPABASE_URL = "https://yhisjimuytbvahocmzum.supabase.co";
       const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloaXNqaW11eXRidmFob2NtenVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5MjkzOTgsImV4cCI6MjA3ODUwNTM5OH0.STN1ug49Sy74W-y7Wo-tXfy__beqS9mKH-MG46ZGJvA";
-      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      
+      // Solo crear el cliente Supabase si no existe
+      if (!window.supabase) {
+        window.supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      }
 
       // Mapeo de tablas reales y sus claves primarias
       const tablaMap = {
@@ -937,7 +944,7 @@
         service: { name: "service", pk: "id" }
       };
 
-      // Campos de cada tabla (ACTUALIZADO para service)
+      // Campos de cada tabla
       const campos = {
         clientes: ["nombre", "vehiculo", "numero", "mecanico"],
         mecanico: ["nombre", "telefono", "especialidad"],
@@ -949,7 +956,7 @@
       const container = document.getElementById("crud-container");
       const form = document.getElementById("formulario");
 
-      // Variable para controlar si estamos editando
+      // Variables para controlar edición
       let editando = false;
       let registroEditando = null;
       let tablaActual = "";
@@ -967,13 +974,13 @@
         // Mostrar filtros correspondientes
         mostrarFiltros(tabla);
 
-        // Caso especial para clientes - necesitamos mecánicos para el select
+        // Caso especial para clientes
         if (tabla === "clientes") {
           await renderFormularioClientes();
           return;
         }
 
-        // Caso especial para mecánicos - necesitamos especialidades para el select
+        // Caso especial para mecánicos
         if (tabla === "mecanico") {
           await renderFormularioMecanico();
           return;
@@ -994,7 +1001,6 @@
           input.name = campo;
           input.required = true;
           
-          // Definir tipos de input según el campo
           if (campo === "numero" || campo === "precio") {
             input.type = "number";
             if (campo === "precio") {
@@ -1024,8 +1030,8 @@
 
       // 📋 Formulario especial para clientes
       async function renderFormularioClientes() {
-        // Obtener lista de mecánicos con sus especialidades
-        const { data: mecanicos, error } = await supabase
+        // Obtener lista de mecánicos
+        const { data: mecanicos, error } = await window.supabase
           .from("mecanicos")
           .select("id_mec, nombre, especialidad")
           .order("nombre");
@@ -1059,18 +1065,15 @@
         selectMecanico.name = "mecanico";
         selectMecanico.required = true;
 
-        // Opción por defecto
         const optionDefault = document.createElement("option");
         optionDefault.value = "";
         optionDefault.textContent = "Selecciona un mecánico";
         selectMecanico.appendChild(optionDefault);
 
-        // Opciones de mecánicos con nombre y especialidad
         mecanicos.forEach(mec => {
           const option = document.createElement("option");
-          option.value = mec.id_mec; // Usar el ID numérico
+          option.value = mec.id_mec;
           option.textContent = `${mec.nombre} - ${mec.especialidad}`;
-          option.setAttribute('data-nombre', mec.nombre);
           selectMecanico.appendChild(option);
         });
 
@@ -1085,10 +1088,10 @@
         form.onsubmit = crearSubmitHandler("clientes");
       }
 
-      // 📋 Formulario especial para mecánicos con select de especialidades
+      // 📋 Formulario especial para mecánicos
       async function renderFormularioMecanico() {
         // Obtener lista de especialidades
-        const { data: especialidades, error } = await supabase
+        const { data: especialidades, error } = await window.supabase
           .from("especialidades")
           .select("especialidad")
           .order("especialidad");
@@ -1122,13 +1125,11 @@
         selectEspecialidad.name = "especialidad";
         selectEspecialidad.required = true;
 
-        // Opción por defecto
         const optionDefault = document.createElement("option");
         optionDefault.value = "";
         optionDefault.textContent = "Selecciona una especialidad";
         selectEspecialidad.appendChild(optionDefault);
 
-        // Opciones de especialidades
         especialidades.forEach(esp => {
           const option = document.createElement("option");
           option.value = esp.especialidad;
@@ -1147,9 +1148,9 @@
         form.onsubmit = crearSubmitHandler("mecanico");
       }
 
-      // 📋 Formulario especial para service con validaciones - VERSIÓN ACTUALIZADA
+      // 📋 Formulario especial para service
       async function renderFormularioService() {
-        // Campos del formulario de service (actualizados)
+        // Campos del formulario de service
         const camposService = ["nombre", "vehiculo", "numero", "precio", "materiales", "fecha", "kilometros_actuales", "kilometros_ultima_distribucion"];
         
         camposService.forEach(campo => {
@@ -1184,7 +1185,6 @@
               }
             } else if (campo === "fecha") {
               input.type = "date";
-              // Establecer fecha máxima como hoy
               const hoy = new Date().toISOString().split('T')[0];
               input.max = hoy;
             } else {
@@ -1251,9 +1251,7 @@
             const pk = tablaMap[tabla].pk;
             const id = registroEditando[pk];
             
-            console.log("Actualizando registro:", { tabla: tablaReal, pk, id, datos });
-            
-            const { error } = await supabase
+            const { error } = await window.supabase
               .from(tablaReal)
               .update(datos)
               .eq(pk, id);
@@ -1273,9 +1271,7 @@
             }
           } else {
             // Modo inserción
-            console.log("Insertando en tabla:", tablaReal, "Datos:", datos);
-            
-            const { error } = await supabase.from(tablaReal).insert([datos]);
+            const { error } = await window.supabase.from(tablaReal).insert([datos]);
             
             if (error) {
               console.error("Error al guardar:", error);
@@ -1295,7 +1291,7 @@
         };
       }
 
-      // ✅ Validaciones de datos - VERSIÓN ACTUALIZADA
+      // ✅ Validaciones de datos
       function validarDatos(tabla, datos) {
         const errores = [];
         
@@ -1327,12 +1323,7 @@
             errores.push("❌ El número de contacto debe tener al menos 8 dígitos");
           }
           
-          // Validar que el número sea numérico
-          if (datos.numero && isNaN(datos.numero)) {
-            errores.push("❌ El número de contacto debe contener solo dígitos");
-          }
-          
-          // Validar kilómetros (nuevas validaciones)
+          // Validar kilómetros
           if (datos.kilometros_actuales && parseInt(datos.kilometros_actuales) < 0) {
             errores.push("❌ Los kilómetros actuales no pueden ser negativos");
           }
@@ -1361,10 +1352,8 @@
           const tablaReal = tablaMap[tabla].name;
           const pk = tablaMap[tabla].pk;
           
-          console.log("Editando registro:", { tabla, id, pk });
-          
-          // Obtener el registro completo desde la base de datos
-          const { data, error } = await supabase
+          // Obtener el registro completo
+          const { data, error } = await window.supabase
             .from(tablaReal)
             .select("*")
             .eq(pk, id)
@@ -1399,7 +1388,6 @@
             await renderFormularioNormalEdicion(tabla, data);
           }
           
-          // Scroll al formulario
           form.scrollIntoView({ behavior: 'smooth' });
           
         } catch (error) {
@@ -1410,8 +1398,8 @@
 
       // 📝 Formulario de clientes para edición
       async function renderFormularioClientesEdicion(data) {
-        // Obtener lista de mecánicos para el select
-        const { data: mecanicos, error } = await supabase
+        // Obtener lista de mecánicos
+        const { data: mecanicos, error } = await window.supabase
           .from("mecanicos")
           .select("id_mec, nombre, especialidad")
           .order("nombre");
@@ -1448,12 +1436,10 @@
         selectMecanico.name = "mecanico";
         selectMecanico.required = true;
 
-        // Opciones de mecánicos con nombre y especialidad
         mecanicos.forEach(mec => {
           const option = document.createElement("option");
           option.value = mec.id_mec;
           option.textContent = `${mec.nombre} - ${mec.especialidad}`;
-          // Seleccionar el mecánico actual
           if (mec.id_mec === data.mecanico) {
             option.selected = true;
           }
@@ -1474,7 +1460,7 @@
       // 📝 Formulario de mecánicos para edición
       async function renderFormularioMecanicoEdicion(data) {
         // Obtener lista de especialidades
-        const { data: especialidades, error } = await supabase
+        const { data: especialidades, error } = await window.supabase
           .from("especialidades")
           .select("especialidad")
           .order("especialidad");
@@ -1511,12 +1497,10 @@
         selectEspecialidad.name = "especialidad";
         selectEspecialidad.required = true;
 
-        // Opciones de especialidades
         especialidades.forEach(esp => {
           const option = document.createElement("option");
           option.value = esp.especialidad;
           option.textContent = esp.especialidad;
-          // Seleccionar la especialidad actual
           if (esp.especialidad === data.especialidad) {
             option.selected = true;
           }
@@ -1534,11 +1518,11 @@
         form.onsubmit = crearSubmitHandler("mecanico");
       }
 
-      // 📝 Formulario de service para edición - VERSIÓN ACTUALIZADA
+      // 📝 Formulario de service para edición
       async function renderFormularioServiceEdicion(data) {
         form.innerHTML = "";
 
-        // Campos del formulario de service (actualizados)
+        // Campos del formulario de service
         const camposService = ["nombre", "vehiculo", "numero", "precio", "materiales", "fecha", "kilometros_actuales", "kilometros_ultima_distribucion"];
         
         camposService.forEach(campo => {
@@ -1557,10 +1541,6 @@
             input.min = "0";
             input.step = "1";
             input.placeholder = "0";
-            
-            if (campo === "kilometros_ultima_distribucion") {
-              input.placeholder = "Kilómetros en el último cambio de distribución";
-            }
           } else {
             input = document.createElement("input");
             
@@ -1572,7 +1552,6 @@
               }
             } else if (campo === "fecha") {
               input.type = "date";
-              // Establecer fecha máxima como hoy
               const hoy = new Date().toISOString().split('T')[0];
               input.max = hoy;
             } else {
@@ -1656,14 +1635,13 @@
       async function renderTablaConFiltros(tabla) {
         try {
           const tablaReal = tablaMap[tabla].name;
-          console.log("Cargando tabla:", tablaReal);
           
           let data;
           let error;
 
           // Caso especial para clientes - necesitamos unir con mecánicos
           if (tabla === "clientes") {
-            const { data: clientesData, error: clientesError } = await supabase
+            const { data: clientesData, error: clientesError } = await window.supabase
               .from(tablaReal)
               .select(`
                 *,
@@ -1676,7 +1654,7 @@
             data = clientesData;
             error = clientesError;
           } else {
-            const { data: tablaData, error: tablaError } = await supabase.from(tablaReal).select("*");
+            const { data: tablaData, error: tablaError } = await window.supabase.from(tablaReal).select("*");
             data = tablaData;
             error = tablaError;
           }
@@ -1687,10 +1665,8 @@
             return;
           }
 
-          console.log("Datos recibidos:", data);
-
           // Guardar datos originales para filtrado
-          datosOriginales[tabla] = data;
+          window.datosOriginales[tabla] = data;
 
           // Aplicar filtros
           const datosFiltrados = filtrarDatos(tabla, data);
@@ -1710,7 +1686,7 @@
           
           html += `<table><thead><tr>`;
           
-          // Encabezados de columnas - OCULTAR la columna "mecanico" y mostrar solo "Mecánico"
+          // Encabezados de columnas
           for (const col in datosFiltrados[0]) {
             let nombreColumna = col;
             
@@ -1769,7 +1745,7 @@
               }
               // Si es el objeto mecanicos, mostrar el valor formateado
               else if (col === "mecanicos") {
-                continue; // Ya lo mostramos arriba
+                continue;
               }
               
               html += `<td>${valor}</td>`;
@@ -1783,14 +1759,14 @@
             
             // Botón editar
             if (tabla === "mecanico" || tabla === "clientes" || tabla === "service") {
-              html += `<button class="btn-accion" onclick="editarRegistro('${tabla}', ${pkValue})">✏️ Editar</button>`;
+              html += `<button class="btn-accion" onclick="window.editarRegistro('${tabla}', ${pkValue})">✏️ Editar</button>`;
             }
             
             // Botón eliminar
             if (tabla === "especialidad") {
-              html += `<button class="btn-accion eliminar" onclick="borrar('${tabla}', '${pkValue}')">🗑️ Eliminar</button>`;
+              html += `<button class="btn-accion eliminar" onclick="window.borrar('${tabla}', '${pkValue}')">🗑️ Eliminar</button>`;
             } else {
-              html += `<button class="btn-accion eliminar" onclick="borrar('${tabla}', ${pkValue})">🗑️ Eliminar</button>`;
+              html += `<button class="btn-accion eliminar" onclick="window.borrar('${tabla}', ${pkValue})">🗑️ Eliminar</button>`;
             }
             
             html += `</td></tr>`;
@@ -1818,7 +1794,7 @@
         }
       }
 
-      // Función auxiliar para determinar si un service necesita alerta - VERSIÓN ACTUALIZADA
+      // Función auxiliar para determinar si un service necesita alerta
       function esServiceConAlerta(service) {
         if (!service.fecha) return false;
         
@@ -1848,9 +1824,7 @@
           const tablaReal = tablaMap[tabla].name;
           const pk = tablaMap[tabla].pk;
           
-          console.log(`Eliminando de ${tablaReal} donde ${pk} = ${valor}`);
-          
-          const { error } = await supabase.from(tablaReal).delete().eq(pk, valor);
+          const { error } = await window.supabase.from(tablaReal).delete().eq(pk, valor);
           
           if (error) {
             console.error("Error al eliminar:", error);
@@ -1868,7 +1842,7 @@
       // Iniciar sistema de alertas automáticas
       function iniciarSistemaAlertas() {
         // Verificar cada 12 horas
-        intervaloAlertas = setInterval(verificarAlertasServices, 12 * 60 * 60 * 1000);
+        window.intervaloAlertas = setInterval(verificarAlertasServices, 12 * 60 * 60 * 1000);
       }
 
       // 📂 Eventos
@@ -1889,7 +1863,6 @@
       // Hacer las funciones globales para los botones
       window.editarRegistro = editarRegistro;
       window.borrar = borrar;
-      window.cerrarModal = cerrarModal;
       window.verificarAlertasServices = verificarAlertasServices;
       window.aplicarFiltros = aplicarFiltros;
       window.limpiarFiltros = limpiarFiltros;
