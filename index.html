@@ -663,13 +663,35 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // Declaración de funciones globales en la parte superior para evitar errores
+    // ====================== VARIABLES GLOBALES ======================
+    let sistemaGestion = {
+      supabase: null,
+      intervaloAlertas: null,
+      datosOriginales: {},
+      filtrosActivos: {
+        clientes: { nombre: '', vehiculo: '' },
+        mecanico: { especialidad: '' }
+      },
+      tablaMap: {
+        clientes: { name: "clientes", pk: "id_cliente" },
+        mecanico: { name: "mecanicos", pk: "id_mec" },
+        especialidad: { name: "especialidades", pk: "especialidad" },
+        service: { name: "service", pk: "id" }
+      },
+      campos: {
+        clientes: ["nombre", "vehiculo", "numero", "mecanico"],
+        mecanico: ["nombre", "telefono", "especialidad"],
+        especialidad: ["especialidad"],
+        service: ["nombre", "vehiculo", "numero", "precio", "materiales", "fecha", "kilometros_actuales", "kilometros_ultima_distribucion"]
+      }
+    };
+
+    // ====================== FUNCIONES GLOBALES ======================
     function mostrarGestion() {
       document.getElementById('inicio-container').style.display = 'none';
       document.getElementById('gestion-container').style.display = 'block';
       document.body.classList.remove('landing');
       
-      // Inicializar el sistema de gestión
       inicializarSistemaGestion();
     }
 
@@ -678,9 +700,8 @@
       document.getElementById('gestion-container').style.display = 'none';
       document.body.classList.add('landing');
       
-      // Detener las alertas cuando volvemos al inicio
-      if (window.intervaloAlertas) {
-        clearInterval(window.intervaloAlertas);
+      if (sistemaGestion.intervaloAlertas) {
+        clearInterval(sistemaGestion.intervaloAlertas);
       }
     }
 
@@ -688,24 +709,15 @@
       document.getElementById('modal-alertas').style.display = 'none';
     }
 
-    // Variables globales - ahora en el objeto window
-    window.supabase = null;
-    window.intervaloAlertas = null;
-    window.datosOriginales = {};
-    window.filtrosActivos = {
-      clientes: { nombre: '', vehiculo: '' },
-      mecanico: { especialidad: '' }
-    };
-
-    // 🚨 SISTEMA DE ALERTAS PARA SERVICES
+    // ====================== ALERTAS ======================
     async function verificarAlertasServices() {
-      if (!window.supabase) {
+      if (!sistemaGestion.supabase) {
         alert("El sistema no está inicializado. Entra primero al sistema de gestión.");
         return;
       }
 
       try {
-        const { data: services, error } = await window.supabase
+        const { data: services, error } = await sistemaGestion.supabase
           .from("service")
           .select("*")
           .not("fecha", "is", null)
@@ -756,20 +768,14 @@
           }
         });
 
-        // Mostrar alertas combinadas
         mostrarAlertasServicesCombinadas(alertasTiempo, alertasDistribucion);
         
-        return {
-          tiempo: alertasTiempo,
-          distribucion: alertasDistribucion
-        };
       } catch (error) {
         console.error("Error verificando alertas:", error);
         alert("Error al verificar alertas: " + error.message);
       }
     }
 
-    // 🚨 MOSTRAR ALERTAS COMBINADAS
     function mostrarAlertasServicesCombinadas(alertasTiempo, alertasDistribucion) {
       const modal = document.getElementById('modal-alertas');
       const contenido = document.getElementById('contenido-alertas');
@@ -833,14 +839,12 @@
       modal.style.display = 'block';
     }
 
-    // 🔍 SISTEMA DE FILTRADO
+    // ====================== FILTROS ======================
     function mostrarFiltros(tabla) {
-      // Ocultar todos los filtros primero
       document.getElementById('filtro-clientes').style.display = 'none';
       document.getElementById('filtro-vehiculo').style.display = 'none';
       document.getElementById('filtro-especialidad').style.display = 'none';
 
-      // Mostrar filtros según la tabla seleccionada
       if (tabla === 'clientes') {
         document.getElementById('filtro-clientes').style.display = 'block';
         document.getElementById('filtro-vehiculo').style.display = 'block';
@@ -852,7 +856,7 @@
 
     async function cargarEspecialidadesFiltro() {
       try {
-        const { data: especialidades, error } = await window.supabase
+        const { data: especialidades, error } = await sistemaGestion.supabase
           .from("especialidades")
           .select("especialidad")
           .order("especialidad");
@@ -877,13 +881,12 @@
       const tablaActual = document.getElementById('selector').value;
       
       if (tablaActual === 'clientes') {
-        window.filtrosActivos.clientes.nombre = document.getElementById('filtro-nombre').value.toLowerCase();
-        window.filtrosActivos.clientes.vehiculo = document.getElementById('filtro-vehiculo-input').value.toLowerCase();
+        sistemaGestion.filtrosActivos.clientes.nombre = document.getElementById('filtro-nombre').value.toLowerCase();
+        sistemaGestion.filtrosActivos.clientes.vehiculo = document.getElementById('filtro-vehiculo-input').value.toLowerCase();
       } else if (tablaActual === 'mecanico') {
-        window.filtrosActivos.mecanico.especialidad = document.getElementById('filtro-especialidad-select').value;
+        sistemaGestion.filtrosActivos.mecanico.especialidad = document.getElementById('filtro-especialidad-select').value;
       }
       
-      // Re-renderizar la tabla con los filtros aplicados
       if (window.renderTablaConFiltros) {
         window.renderTablaConFiltros(tablaActual);
       }
@@ -895,14 +898,13 @@
       if (tablaActual === 'clientes') {
         document.getElementById('filtro-nombre').value = '';
         document.getElementById('filtro-vehiculo-input').value = '';
-        window.filtrosActivos.clientes.nombre = '';
-        window.filtrosActivos.clientes.vehiculo = '';
+        sistemaGestion.filtrosActivos.clientes.nombre = '';
+        sistemaGestion.filtrosActivos.clientes.vehiculo = '';
       } else if (tablaActual === 'mecanico') {
         document.getElementById('filtro-especialidad-select').value = '';
-        window.filtrosActivos.mecanico.especialidad = '';
+        sistemaGestion.filtrosActivos.mecanico.especialidad = '';
       }
       
-      // Re-renderizar la tabla sin filtros
       if (window.renderTablaConFiltros) {
         window.renderTablaConFiltros(tablaActual);
       }
@@ -911,46 +913,28 @@
     function filtrarDatos(tabla, datos) {
       if (tabla === 'clientes') {
         return datos.filter(item => {
-          const cumpleNombre = !window.filtrosActivos.clientes.nombre || 
-            (item.nombre && item.nombre.toLowerCase().includes(window.filtrosActivos.clientes.nombre));
-          const cumpleVehiculo = !window.filtrosActivos.clientes.vehiculo || 
-            (item.vehiculo && item.vehiculo.toLowerCase().includes(window.filtrosActivos.clientes.vehiculo));
+          const cumpleNombre = !sistemaGestion.filtrosActivos.clientes.nombre || 
+            (item.nombre && item.nombre.toLowerCase().includes(sistemaGestion.filtrosActivos.clientes.nombre));
+          const cumpleVehiculo = !sistemaGestion.filtrosActivos.clientes.vehiculo || 
+            (item.vehiculo && item.vehiculo.toLowerCase().includes(sistemaGestion.filtrosActivos.clientes.vehiculo));
           return cumpleNombre && cumpleVehiculo;
         });
       } else if (tabla === 'mecanico') {
         return datos.filter(item => {
-          return !window.filtrosActivos.mecanico.especialidad || 
-            item.especialidad === window.filtrosActivos.mecanico.especialidad;
+          return !sistemaGestion.filtrosActivos.mecanico.especialidad || 
+            item.especialidad === sistemaGestion.filtrosActivos.mecanico.especialidad;
         });
       }
       return datos;
     }
 
-    // Sistema de Gestión
+    // ====================== SISTEMA DE GESTIÓN ======================
     function inicializarSistemaGestion() {
+      // Inicializar Supabase
       const SUPABASE_URL = "https://yhisjimuytbvahocmzum.supabase.co";
       const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloaXNqaW11eXRidmFob2NtenVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5MjkzOTgsImV4cCI6MjA3ODUwNTM5OH0.STN1ug49Sy74W-y7Wo-tXfy__beqS9mKH-MG46ZGJvA";
       
-      // Solo crear el cliente Supabase si no existe
-      if (!window.supabase) {
-        window.supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-      }
-
-      // Mapeo de tablas reales y sus claves primarias
-      const tablaMap = {
-        clientes: { name: "clientes", pk: "id_cliente" },
-        mecanico: { name: "mecanicos", pk: "id_mec" },
-        especialidad: { name: "especialidades", pk: "especialidad" },
-        service: { name: "service", pk: "id" }
-      };
-
-      // Campos de cada tabla
-      const campos = {
-        clientes: ["nombre", "vehiculo", "numero", "mecanico"],
-        mecanico: ["nombre", "telefono", "especialidad"],
-        especialidad: ["especialidad"],
-        service: ["nombre", "vehiculo", "numero", "precio", "materiales", "fecha", "kilometros_actuales", "kilometros_ultima_distribucion"]
-      };
+      sistemaGestion.supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
       const selector = document.getElementById("selector");
       const container = document.getElementById("crud-container");
@@ -971,29 +955,24 @@
         const tituloForm = document.getElementById("titulo-form");
         tituloForm.textContent = "Agregar registro";
 
-        // Mostrar filtros correspondientes
         mostrarFiltros(tabla);
 
-        // Caso especial para clientes
         if (tabla === "clientes") {
           await renderFormularioClientes();
           return;
         }
 
-        // Caso especial para mecánicos
         if (tabla === "mecanico") {
           await renderFormularioMecanico();
           return;
         }
 
-        // Caso especial para service
         if (tabla === "service") {
           await renderFormularioService();
           return;
         }
 
-        // Formulario normal para otras tablas
-        campos[tabla].forEach(campo => {
+        sistemaGestion.campos[tabla].forEach(campo => {
           const label = document.createElement("label");
           label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1);
 
@@ -1030,19 +1009,16 @@
 
       // 📋 Formulario especial para clientes
       async function renderFormularioClientes() {
-        // Obtener lista de mecánicos
-        const { data: mecanicos, error } = await window.supabase
+        const { data: mecanicos, error } = await sistemaGestion.supabase
           .from("mecanicos")
           .select("id_mec, nombre, especialidad")
           .order("nombre");
 
         if (error) {
-          console.error("Error al cargar mecánicos:", error);
           alert("Error al cargar mecánicos: " + error.message);
           return;
         }
 
-        // Campos del formulario de clientes
         const camposClientes = ["nombre", "vehiculo", "numero"];
         
         camposClientes.forEach(campo => {
@@ -1058,7 +1034,6 @@
           form.appendChild(input);
         });
 
-        // Campo mecánico como select
         const labelMecanico = document.createElement("label");
         labelMecanico.textContent = "Mecánico";
         const selectMecanico = document.createElement("select");
@@ -1090,19 +1065,16 @@
 
       // 📋 Formulario especial para mecánicos
       async function renderFormularioMecanico() {
-        // Obtener lista de especialidades
-        const { data: especialidades, error } = await window.supabase
+        const { data: especialidades, error } = await sistemaGestion.supabase
           .from("especialidades")
           .select("especialidad")
           .order("especialidad");
 
         if (error) {
-          console.error("Error al cargar especialidades:", error);
           alert("Error al cargar especialidades: " + error.message);
           return;
         }
 
-        // Campos del formulario de mecánicos
         const camposMecanico = ["nombre", "telefono"];
         
         camposMecanico.forEach(campo => {
@@ -1118,7 +1090,6 @@
           form.appendChild(input);
         });
 
-        // Campo especialidad como select
         const labelEspecialidad = document.createElement("label");
         labelEspecialidad.textContent = "Especialidad";
         const selectEspecialidad = document.createElement("select");
@@ -1150,8 +1121,7 @@
 
       // 📋 Formulario especial para service
       async function renderFormularioService() {
-        // Campos del formulario de service
-        const camposService = ["nombre", "vehiculo", "numero", "precio", "materiales", "fecha", "kilometros_actuales", "kilometros_ultima_distribucion"];
+        const camposService = sistemaGestion.campos.service;
         
         camposService.forEach(campo => {
           const label = document.createElement("label");
@@ -1169,10 +1139,6 @@
             input.min = "0";
             input.step = "1";
             input.placeholder = "0";
-            
-            if (campo === "kilometros_ultima_distribucion") {
-              input.placeholder = "Kilómetros en el último cambio de distribución";
-            }
           } else {
             input = document.createElement("input");
             
@@ -1198,7 +1164,6 @@
           form.appendChild(input);
         });
 
-        // Información sobre las alertas
         const infoAlertas = document.createElement("div");
         infoAlertas.style.color = "#ffb84d";
         infoAlertas.style.fontSize = "0.9em";
@@ -1222,7 +1187,6 @@
           e.preventDefault();
           const datos = Object.fromEntries(new FormData(form).entries());
           
-          // Validar campos vacíos
           for (const campo in datos) {
             if (datos[campo].trim() === "") {
               alert("Todos los campos son obligatorios");
@@ -1230,7 +1194,6 @@
             }
           }
 
-          // Validaciones específicas por tabla
           const erroresValidacion = validarDatos(tabla, datos);
           if (erroresValidacion.length > 0) {
             alert("Errores de validación:\n\n" + erroresValidacion.join("\n"));
@@ -1244,45 +1207,37 @@
           if (datos.kilometros_actuales) datos.kilometros_actuales = parseInt(datos.kilometros_actuales);
           if (datos.kilometros_ultima_distribucion) datos.kilometros_ultima_distribucion = parseInt(datos.kilometros_ultima_distribucion);
 
-          const tablaReal = tablaMap[tabla].name;
+          const tablaReal = sistemaGestion.tablaMap[tabla].name;
           
           if (editando && registroEditando) {
-            // Modo edición
-            const pk = tablaMap[tabla].pk;
+            const pk = sistemaGestion.tablaMap[tabla].pk;
             const id = registroEditando[pk];
             
-            const { error } = await window.supabase
+            const { error } = await sistemaGestion.supabase
               .from(tablaReal)
               .update(datos)
               .eq(pk, id);
             
             if (error) {
-              console.error("Error al actualizar:", error);
               alert("Error al actualizar: " + error.message);
             } else {
               alert("Registro actualizado correctamente");
               form.reset();
               editando = false;
               registroEditando = null;
-              const tituloForm = document.getElementById("titulo-form");
-              tituloForm.textContent = "Agregar registro";
-              container.querySelector('.table-container').innerHTML = "<p>Actualizando...</p>";
+              document.getElementById("titulo-form").textContent = "Agregar registro";
               await renderTablaConFiltros(tabla);
             }
           } else {
-            // Modo inserción
-            const { error } = await window.supabase.from(tablaReal).insert([datos]);
+            const { error } = await sistemaGestion.supabase.from(tablaReal).insert([datos]);
             
             if (error) {
-              console.error("Error al guardar:", error);
               alert("Error al guardar: " + error.message);
             } else {
               alert("Registro guardado correctamente");
               form.reset();
-              container.querySelector('.table-container').innerHTML = "<p>Actualizando...</p>";
               await renderTablaConFiltros(tabla);
               
-              // Si es un service nuevo, verificar alertas
               if (tabla === "service") {
                 setTimeout(verificarAlertasServices, 1000);
               }
@@ -1296,7 +1251,6 @@
         const errores = [];
         
         if (tabla === "service") {
-          // Validar fecha no futura
           const fechaService = new Date(datos.fecha);
           const hoy = new Date();
           hoy.setHours(0, 0, 0, 0);
@@ -1305,7 +1259,6 @@
             errores.push("❌ La fecha del service no puede ser futura");
           }
           
-          // Validar fecha no muy antigua (más de 2 años)
           const dosAniosAtras = new Date();
           dosAniosAtras.setFullYear(dosAniosAtras.getFullYear() - 2);
           
@@ -1313,17 +1266,14 @@
             errores.push("❌ La fecha del service no puede ser de hace más de 2 años");
           }
           
-          // Validar precio positivo
           if (datos.precio && parseFloat(datos.precio) <= 0) {
             errores.push("❌ El precio debe ser mayor a 0");
           }
           
-          // Validar número de contacto
           if (datos.numero && datos.numero.length < 8) {
             errores.push("❌ El número de contacto debe tener al menos 8 dígitos");
           }
           
-          // Validar kilómetros
           if (datos.kilometros_actuales && parseInt(datos.kilometros_actuales) < 0) {
             errores.push("❌ Los kilómetros actuales no pueden ser negativos");
           }
@@ -1332,7 +1282,6 @@
             errores.push("❌ Los kilómetros de distribución no pueden ser negativos");
           }
           
-          // Validar que kilómetros actuales sean mayores o iguales a los de distribución
           if (datos.kilometros_actuales && datos.kilometros_ultima_distribucion) {
             const kmActuales = parseInt(datos.kilometros_actuales);
             const kmDistribucion = parseInt(datos.kilometros_ultima_distribucion);
@@ -1347,20 +1296,18 @@
       }
 
       // ✏️ Función para editar registro
-      async function editarRegistro(tabla, id) {
+      window.editarRegistro = async function(tabla, id) {
         try {
-          const tablaReal = tablaMap[tabla].name;
-          const pk = tablaMap[tabla].pk;
+          const tablaReal = sistemaGestion.tablaMap[tabla].name;
+          const pk = sistemaGestion.tablaMap[tabla].pk;
           
-          // Obtener el registro completo
-          const { data, error } = await window.supabase
+          const { data, error } = await sistemaGestion.supabase
             .from(tablaReal)
             .select("*")
             .eq(pk, id)
             .single();
           
           if (error) {
-            console.error("Error al obtener registro:", error);
             alert("Error al cargar registro: " + error.message);
             return;
           }
@@ -1374,8 +1321,7 @@
           registroEditando = data;
           tablaActual = tabla;
           
-          const tituloForm = document.getElementById("titulo-form");
-          tituloForm.textContent = "Editando registro";
+          document.getElementById("titulo-form").textContent = "Editando registro";
           
           // Renderizar formulario específico para edición
           if (tabla === "clientes") {
@@ -1391,28 +1337,24 @@
           form.scrollIntoView({ behavior: 'smooth' });
           
         } catch (error) {
-          console.error("Error en editarRegistro:", error);
           alert("Error al editar registro: " + error.message);
         }
       }
 
       // 📝 Formulario de clientes para edición
       async function renderFormularioClientesEdicion(data) {
-        // Obtener lista de mecánicos
-        const { data: mecanicos, error } = await window.supabase
+        const { data: mecanicos, error } = await sistemaGestion.supabase
           .from("mecanicos")
           .select("id_mec, nombre, especialidad")
           .order("nombre");
 
         if (error) {
-          console.error("Error al cargar mecánicos:", error);
           alert("Error al cargar mecánicos: " + error.message);
           return;
         }
 
         form.innerHTML = "";
 
-        // Campos del formulario de clientes
         const camposClientes = ["nombre", "vehiculo", "numero"];
         
         camposClientes.forEach(campo => {
@@ -1429,7 +1371,6 @@
           form.appendChild(input);
         });
 
-        // Campo mecánico como select
         const labelMecanico = document.createElement("label");
         labelMecanico.textContent = "Mecánico";
         const selectMecanico = document.createElement("select");
@@ -1459,21 +1400,18 @@
 
       // 📝 Formulario de mecánicos para edición
       async function renderFormularioMecanicoEdicion(data) {
-        // Obtener lista de especialidades
-        const { data: especialidades, error } = await window.supabase
+        const { data: especialidades, error } = await sistemaGestion.supabase
           .from("especialidades")
           .select("especialidad")
           .order("especialidad");
 
         if (error) {
-          console.error("Error al cargar especialidades:", error);
           alert("Error al cargar especialidades: " + error.message);
           return;
         }
 
         form.innerHTML = "";
 
-        // Campos del formulario de mecánicos
         const camposMecanico = ["nombre", "telefono"];
         
         camposMecanico.forEach(campo => {
@@ -1490,7 +1428,6 @@
           form.appendChild(input);
         });
 
-        // Campo especialidad como select
         const labelEspecialidad = document.createElement("label");
         labelEspecialidad.textContent = "Especialidad";
         const selectEspecialidad = document.createElement("select");
@@ -1522,8 +1459,7 @@
       async function renderFormularioServiceEdicion(data) {
         form.innerHTML = "";
 
-        // Campos del formulario de service
-        const camposService = ["nombre", "vehiculo", "numero", "precio", "materiales", "fecha", "kilometros_actuales", "kilometros_ultima_distribucion"];
+        const camposService = sistemaGestion.campos.service;
         
         camposService.forEach(campo => {
           const label = document.createElement("label");
@@ -1587,7 +1523,7 @@
       async function renderFormularioNormalEdicion(tabla, data) {
         form.innerHTML = "";
 
-        campos[tabla].forEach(campo => {
+        sistemaGestion.campos[tabla].forEach(campo => {
           const label = document.createElement("label");
           label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1);
 
@@ -1632,16 +1568,15 @@
       }
 
       // 🧾 Renderizar tabla con filtros
-      async function renderTablaConFiltros(tabla) {
+      window.renderTablaConFiltros = async function(tabla) {
         try {
-          const tablaReal = tablaMap[tabla].name;
+          const tablaReal = sistemaGestion.tablaMap[tabla].name;
           
           let data;
           let error;
 
-          // Caso especial para clientes - necesitamos unir con mecánicos
           if (tabla === "clientes") {
-            const { data: clientesData, error: clientesError } = await window.supabase
+            const { data: clientesData, error: clientesError } = await sistemaGestion.supabase
               .from(tablaReal)
               .select(`
                 *,
@@ -1654,7 +1589,7 @@
             data = clientesData;
             error = clientesError;
           } else {
-            const { data: tablaData, error: tablaError } = await window.supabase.from(tablaReal).select("*");
+            const { data: tablaData, error: tablaError } = await sistemaGestion.supabase.from(tablaReal).select("*");
             data = tablaData;
             error = tablaError;
           }
@@ -1665,8 +1600,8 @@
             return;
           }
 
-          // Guardar datos originales para filtrado
-          window.datosOriginales[tabla] = data;
+          // Guardar datos originales
+          sistemaGestion.datosOriginales[tabla] = data;
 
           // Aplicar filtros
           const datosFiltrados = filtrarDatos(tabla, data);
@@ -1678,7 +1613,6 @@
 
           let html = `<h2>${tabla.toUpperCase()}`;
           
-          // Mostrar contador de resultados filtrados
           if (datosFiltrados.length !== data.length) {
             html += ` <span style="font-size: 0.7em; color: #ffb84d;">(${datosFiltrados.length} de ${data.length} registros)</span>`;
           }
@@ -1686,83 +1620,83 @@
           
           html += `<table><thead><tr>`;
           
-          // Encabezados de columnas
-          for (const col in datosFiltrados[0]) {
-            let nombreColumna = col;
-            
-            // Saltar la columna "mecanico" (ID) para clientes
-            if (tabla === "clientes" && col === "mecanico") {
-              continue;
-            }
-            
-            // Renombrar columnas de ID
-            if (col === "id_mec" || col === "id_cliente" || col === "id") {
-              nombreColumna = "ID";
-            } else if (col === "mecanicos") {
-              nombreColumna = "Mecánico";
-            } else if (col === "kilometros_actuales") {
-              nombreColumna = "Km Actuales";
-            } else if (col === "kilometros_ultima_distribucion") {
-              nombreColumna = "Km Última Distribución";
-            }
-            html += `<th>${nombreColumna}</th>`;
-          }
-          html += `<th>Acciones</th></tr></thead><tbody>`;
-
-          // Filas de datos
-          for (const row of datosFiltrados) {
-            // Verificar si este service necesita alerta
-            const necesitaAlerta = tabla === "service" && esServiceConAlerta(row);
-            
-            html += `<tr${necesitaAlerta ? ' class="alerta-service"' : ''}>`;
-            for (const col in row) {
-              let valor = row[col];
+          // Crear encabezados
+          if (datosFiltrados.length > 0) {
+            const firstRow = datosFiltrados[0];
+            for (const col in firstRow) {
+              let nombreColumna = col;
               
-              // Saltar la columna "mecanico" (ID) para clientes
               if (tabla === "clientes" && col === "mecanico") {
                 continue;
               }
               
-              // Mostrar nombre y especialidad del mecánico
+              if (col === "id_mec" || col === "id_cliente" || col === "id") {
+                nombreColumna = "ID";
+              } else if (col === "mecanicos") {
+                nombreColumna = "Mecánico";
+              } else if (col === "kilometros_actuales") {
+                nombreColumna = "Km Actuales";
+              } else if (col === "kilometros_ultima_distribucion") {
+                nombreColumna = "Km Última Distribución";
+              } else if (col === "telefono") {
+                nombreColumna = "Teléfono";
+              } else if (col === "numero") {
+                nombreColumna = "Número";
+              } else if (col === "vehiculo") {
+                nombreColumna = "Vehículo";
+              } else if (col === "precio") {
+                nombreColumna = "Precio";
+              } else if (col === "fecha") {
+                nombreColumna = "Fecha";
+              } else if (col === "materiales") {
+                nombreColumna = "Materiales";
+              }
+              
+              html += `<th>${nombreColumna}</th>`;
+            }
+          }
+          
+          html += `<th>Acciones</th></tr></thead><tbody>`;
+
+          // Crear filas
+          for (const row of datosFiltrados) {
+            const necesitaAlerta = tabla === "service" && esServiceConAlerta(row);
+            
+            html += `<tr${necesitaAlerta ? ' class="alerta-service"' : ''}>`;
+            
+            for (const col in row) {
+              let valor = row[col];
+              
+              if (tabla === "clientes" && col === "mecanico") {
+                continue;
+              }
+              
               if (col === "mecanicos" && tabla === "clientes" && row.mecanicos) {
                 valor = `${row.mecanicos.nombre} - ${row.mecanicos.especialidad}`;
-              }
-              // Formatear fecha
-              else if (col === "fecha" && valor) {
+              } else if (col === "fecha" && valor) {
                 valor = new Date(valor).toLocaleDateString('es-ES');
-              }
-              // Formatear precio
-              else if (col === "precio" && valor) {
+              } else if (col === "precio" && valor) {
                 valor = `$${parseFloat(valor).toFixed(2)}`;
-              }
-              // Formatear kilómetros
-              else if ((col === "kilometros_actuales" || col === "kilometros_ultima_distribucion") && valor) {
+              } else if ((col === "kilometros_actuales" || col === "kilometros_ultima_distribucion") && valor) {
                 valor = `${parseInt(valor).toLocaleString()} km`;
-              }
-              // Manejar valores null o undefined
-              else if (valor === null || valor === undefined) {
+              } else if (valor === null || valor === undefined) {
                 valor = "";
-              }
-              // Si es el objeto mecanicos, mostrar el valor formateado
-              else if (col === "mecanicos") {
+              } else if (col === "mecanicos") {
                 continue;
               }
               
               html += `<td>${valor}</td>`;
             }
             
-            // Botones de acciones
-            const pk = tablaMap[tabla].pk;
+            const pk = sistemaGestion.tablaMap[tabla].pk;
             const pkValue = row[pk];
             
             html += `<td class="acciones-cell">`;
             
-            // Botón editar
             if (tabla === "mecanico" || tabla === "clientes" || tabla === "service") {
               html += `<button class="btn-accion" onclick="window.editarRegistro('${tabla}', ${pkValue})">✏️ Editar</button>`;
             }
             
-            // Botón eliminar
             if (tabla === "especialidad") {
               html += `<button class="btn-accion eliminar" onclick="window.borrar('${tabla}', '${pkValue}')">🗑️ Eliminar</button>`;
             } else {
@@ -1774,7 +1708,6 @@
 
           html += `</tbody></table>`;
           
-          // Agregar información sobre las alertas si es la tabla de services
           if (tabla === "service") {
             const servicesConAlerta = datosFiltrados.filter(row => esServiceConAlerta(row));
             if (servicesConAlerta.length > 0) {
@@ -1803,10 +1736,8 @@
         const diferenciaMs = hoy - fecha;
         const diferenciaDias = diferenciaMs / (1000 * 60 * 60 * 24);
         
-        // Alerta por tiempo (1 año)
         const alertaTiempo = diferenciaDias >= 360 && diferenciaDias <= 370;
         
-        // Alerta por distribución (40,000 km)
         let alertaDistribucion = false;
         if (service.kilometros_actuales && service.kilometros_ultima_distribucion) {
           const kmRecorridos = service.kilometros_actuales - service.kilometros_ultima_distribucion;
@@ -1817,56 +1748,45 @@
       }
 
       // 🗑️ Eliminar registro
-      async function borrar(tabla, valor) {
+      window.borrar = async function(tabla, valor) {
         if (!confirm("¿Eliminar registro?")) return;
         
         try {
-          const tablaReal = tablaMap[tabla].name;
-          const pk = tablaMap[tabla].pk;
+          const tablaReal = sistemaGestion.tablaMap[tabla].name;
+          const pk = sistemaGestion.tablaMap[tabla].pk;
           
-          const { error } = await window.supabase.from(tablaReal).delete().eq(pk, valor);
+          const { error } = await sistemaGestion.supabase.from(tablaReal).delete().eq(pk, valor);
           
           if (error) {
-            console.error("Error al eliminar:", error);
             alert("Error al eliminar: " + error.message);
           } else {
             alert("Registro eliminado correctamente");
-            await renderTablaConFiltros(tabla);
+            await window.renderTablaConFiltros(tabla);
           }
         } catch (error) {
-          console.error("Error en borrar:", error);
           alert("Error al eliminar: " + error.message);
         }
       }
 
       // Iniciar sistema de alertas automáticas
       function iniciarSistemaAlertas() {
-        // Verificar cada 12 horas
-        window.intervaloAlertas = setInterval(verificarAlertasServices, 12 * 60 * 60 * 1000);
+        sistemaGestion.intervaloAlertas = setInterval(verificarAlertasServices, 12 * 60 * 60 * 1000);
       }
 
       // 📂 Eventos
       selector.addEventListener("change", (e) => {
         tablaActual = e.target.value;
         renderFormulario(tablaActual);
-        renderTablaConFiltros(tablaActual);
+        window.renderTablaConFiltros(tablaActual);
       });
 
       // Inicializar el sistema de gestión
       tablaActual = selector.value;
       renderFormulario(tablaActual);
-      renderTablaConFiltros(tablaActual);
+      window.renderTablaConFiltros(tablaActual);
       
       // Iniciar sistema de alertas automáticas
       iniciarSistemaAlertas();
-
-      // Hacer las funciones globales para los botones
-      window.editarRegistro = editarRegistro;
-      window.borrar = borrar;
-      window.verificarAlertasServices = verificarAlertasServices;
-      window.aplicarFiltros = aplicarFiltros;
-      window.limpiarFiltros = limpiarFiltros;
-      window.renderTablaConFiltros = renderTablaConFiltros;
     }
   </script>
 </body>
