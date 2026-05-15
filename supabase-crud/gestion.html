@@ -13,7 +13,7 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #1a1a1a;
       min-height: 100vh;
       padding: 20px;
     }
@@ -25,56 +25,69 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(0, 0, 0, 0.95);
       display: flex;
       justify-content: center;
       align-items: center;
       z-index: 1000;
-      backdrop-filter: blur(5px);
     }
 
     .login-box {
-      background: white;
+      background: #2d2d2d;
       padding: 40px;
       border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
       text-align: center;
       width: 350px;
+      border: 1px solid #ff6b35;
     }
 
     .login-box h2 {
       margin-bottom: 20px;
-      color: #333;
+      color: #ff6b35;
+    }
+
+    .login-box h3 {
+      color: #cccccc;
+      margin-bottom: 20px;
     }
 
     .login-box input {
       width: 100%;
       padding: 12px;
       margin: 10px 0;
-      border: 2px solid #ddd;
+      border: 2px solid #444;
       border-radius: 8px;
       font-size: 16px;
+      background: #1a1a1a;
+      color: white;
+    }
+
+    .login-box input:focus {
+      outline: none;
+      border-color: #ff6b35;
     }
 
     .login-box button {
       width: 100%;
       padding: 12px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #ff6b35;
       color: white;
       border: none;
       border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
       margin-top: 10px;
+      font-weight: bold;
     }
 
     .login-box button:hover {
+      background: #e85d2c;
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 
     .error-msg {
-      color: red;
+      color: #ff6b35;
       margin-top: 10px;
       font-size: 14px;
     }
@@ -85,35 +98,38 @@
     }
 
     header {
-      background: white;
+      background: #1a1a1a;
       padding: 20px;
       border-radius: 15px;
       margin-bottom: 20px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 10px;
+      border: 1px solid #333;
     }
 
     header h1 {
-      color: #333;
+      color: #ff6b35;
       font-size: 24px;
     }
 
     .logout-btn {
-      background: #dc3545;
-      color: white;
-      border: none;
+      background: #333;
+      color: #ff6b35;
+      border: 1px solid #ff6b35;
       padding: 10px 20px;
       border-radius: 8px;
       cursor: pointer;
       font-size: 14px;
+      font-weight: bold;
     }
 
     .logout-btn:hover {
-      background: #c82333;
+      background: #ff6b35;
+      color: #1a1a1a;
     }
 
     /* Navegación */
@@ -125,7 +141,7 @@
     }
 
     .tab-btn {
-      background: white;
+      background: #2d2d2d;
       border: none;
       padding: 12px 24px;
       border-radius: 10px;
@@ -133,30 +149,37 @@
       font-size: 16px;
       font-weight: bold;
       transition: all 0.3s;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      color: #cccccc;
     }
 
     .tab-btn:hover {
       transform: translateY(-2px);
+      background: #3d3d3d;
     }
 
     .tab-btn.active {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      background: #ff6b35;
+      color: #1a1a1a;
     }
 
     /* Paneles */
     .panel {
-      background: white;
+      background: #1a1a1a;
       border-radius: 15px;
       padding: 20px;
       margin-bottom: 20px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
       display: none;
+      border: 1px solid #333;
     }
 
     .panel.active {
       display: block;
+    }
+
+    .panel h2, .panel h3 {
+      color: #ff6b35;
+      margin-bottom: 20px;
     }
 
     /* Formularios */
@@ -168,20 +191,27 @@
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
-      color: #555;
+      color: #cccccc;
     }
 
     input, select, textarea {
       width: 100%;
       padding: 10px;
-      border: 2px solid #ddd;
+      border: 2px solid #333;
       border-radius: 8px;
       font-size: 14px;
+      background: #2d2d2d;
+      color: white;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #ff6b35;
     }
 
     button {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      background: #ff6b35;
+      color: #1a1a1a;
       border: none;
       padding: 10px 20px;
       border-radius: 8px;
@@ -189,24 +219,27 @@
       font-size: 14px;
       margin-right: 10px;
       margin-top: 5px;
+      font-weight: bold;
     }
 
     button:hover {
+      background: #e85d2c;
       transform: translateY(-2px);
-      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
     }
 
     .btn-danger {
       background: #dc3545;
+      color: white;
     }
 
     .btn-success {
       background: #28a745;
+      color: white;
     }
 
     .btn-warning {
       background: #ffc107;
-      color: #333;
+      color: #1a1a1a;
     }
 
     /* Tablas */
@@ -223,17 +256,21 @@
     th, td {
       padding: 12px;
       text-align: left;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #333;
     }
 
     th {
-      background: #f8f9fa;
+      background: #2d2d2d;
       font-weight: bold;
-      color: #555;
+      color: #ff6b35;
+    }
+
+    td {
+      color: #cccccc;
     }
 
     tr:hover {
-      background: #f5f5f5;
+      background: #2d2d2d;
     }
 
     .action-buttons button {
@@ -244,14 +281,16 @@
 
     /* Resumen financiero */
     .resumen-caja {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #2d2d2d;
       color: white;
       padding: 20px;
       border-radius: 10px;
       margin-bottom: 20px;
+      border: 1px solid #ff6b35;
     }
 
     .resumen-caja h3 {
+      color: #ff6b35;
       margin-bottom: 15px;
     }
 
@@ -263,23 +302,24 @@
     }
 
     .stat-card {
-      background: rgba(255,255,255,0.2);
+      background: #1a1a1a;
       padding: 15px;
       border-radius: 10px;
+      border: 1px solid #444;
     }
 
     /* Stock bajo */
     .stock-bajo {
-      background-color: #ffebee;
+      background-color: #3d1a1a;
     }
     
-    .stock-bajo td:first-child {
-      border-left: 4px solid #c62828;
+    .stock-bajo td {
+      color: #ff6b35;
     }
 
     footer {
       text-align: center;
-      color: white;
+      color: #666;
       margin-top: 20px;
     }
 
@@ -303,10 +343,10 @@
   <!-- Pantalla de Login -->
   <div id="loginOverlay" class="login-overlay">
     <div class="login-box">
-      <h2>🔐 Acceso al Sistema</h2>
+      <h2>🔧 ACCESO AL SISTEMA</h2>
       <h3>Taller Mecánico</h3>
-      <input type="password" id="passwordInput" placeholder="Ingrese la contraseña" autofocus>
-      <button onclick="verificarPassword()">Ingresar</button>
+      <input type="password" id="passwordInput" placeholder="Contraseña" autofocus>
+      <button onclick="verificarPassword()">INGRESAR</button>
       <div id="errorMsg" class="error-msg"></div>
     </div>
   </div>
@@ -314,15 +354,15 @@
   <!-- Contenido principal -->
   <div id="mainContent" class="main-content">
     <header>
-      <h1>⚙️ Sistema Integral de Gestión - Taller Mecánico</h1>
-      <button class="logout-btn" onclick="cerrarSesion()">Cerrar Sesión</button>
+      <h1>⚙️ SISTEMA INTEGRAL DE GESTIÓN - TALLER MECÁNICO</h1>
+      <button class="logout-btn" onclick="cerrarSesion()">CERRAR SESIÓN</button>
     </header>
 
     <!-- Navegación -->
     <div class="nav-tabs">
-      <button class="tab-btn active" onclick="cambiarPanel('presupuestos')">📋 Presupuestos</button>
-      <button class="tab-btn" onclick="cambiarPanel('stock')">📦 Control de Stock</button>
-      <button class="tab-btn" onclick="cambiarPanel('caja')">💰 Caja y Finanzas</button>
+      <button class="tab-btn active" onclick="cambiarPanel('presupuestos')">📋 PRESUPUESTOS</button>
+      <button class="tab-btn" onclick="cambiarPanel('stock')">📦 CONTROL DE STOCK</button>
+      <button class="tab-btn" onclick="cambiarPanel('caja')">💰 CAJA Y FINANZAS</button>
     </div>
 
     <!-- Panel Presupuestos -->
@@ -351,15 +391,15 @@
         </div>
         <div class="form-group">
           <label>Total ($):</label>
-          <input type="number" id="totalPresupuesto" readonly style="background:#f0f0f0" value="0">
+          <input type="number" id="totalPresupuesto" readonly style="background:#333" value="0">
         </div>
-        <button type="submit">➕ Crear Presupuesto</button>
-        <button type="button" onclick="limpiarFormPresupuesto()">🗑️ Limpiar</button>
+        <button type="submit">➕ CREAR PRESUPUESTO</button>
+        <button type="button" onclick="limpiarFormPresupuesto()">🗑️ LIMPIAR</button>
       </form>
 
       <div class="table-container">
         <h3>📋 Lista de Presupuestos</h3>
-        <table id="tablaPresupuestos">
+        <table>
           <thead>
             <tr><th>ID</th><th>Fecha</th><th>Cliente</th><th>Vehículo</th><th>Descripción</th><th>Mano Obra</th><th>Repuestos</th><th>Total</th><th>Estado</th><th>Acciones</th></tr>
           </thead>
@@ -395,14 +435,14 @@
             <option value="Otros">Otros</option>
           </select>
         </div>
-        <button type="submit">➕ Agregar Producto</button>
-        <button type="button" onclick="limpiarFormStock()">🗑️ Limpiar</button>
+        <button type="submit">➕ AGREGAR PRODUCTO</button>
+        <button type="button" onclick="limpiarFormStock()">🗑️ LIMPIAR</button>
       </form>
 
       <div class="table-container">
         <h3>📋 Inventario Actual</h3>
         <div id="stockAlerta" style="margin-bottom: 10px;"></div>
-        <table id="tablaStock">
+        <table>
           <thead>
             <tr><th>ID</th><th>Producto</th><th>Cantidad</th><th>Precio Unit.</th><th>Categoría</th><th>Valor Total</th><th>Acciones</th></tr>
           </thead>
@@ -419,20 +459,20 @@
         <h3>📊 Resumen Financiero</h3>
         <div class="stats">
           <div class="stat-card">
-            <strong>💰 Caja Actual:</strong><br>
-            <span id="cajaActual" style="font-size: 24px;">$0</span>
+            <strong>💰 CAJA ACTUAL:</strong><br>
+            <span id="cajaActual" style="font-size: 24px; color:#ff6b35;">$0</span>
           </div>
           <div class="stat-card">
-            <strong>📈 Total Ingresos:</strong><br>
-            <span id="totalIngresos" style="font-size: 24px;">$0</span>
+            <strong>📈 TOTAL INGRESOS:</strong><br>
+            <span id="totalIngresos" style="font-size: 24px; color:#28a745;">$0</span>
           </div>
           <div class="stat-card">
-            <strong>📉 Total Egresos:</strong><br>
-            <span id="totalEgresos" style="font-size: 24px;">$0</span>
+            <strong>📉 TOTAL EGRESOS:</strong><br>
+            <span id="totalEgresos" style="font-size: 24px; color:#dc3545;">$0</span>
           </div>
           <div class="stat-card">
-            <strong>💼 Valor Inventario:</strong><br>
-            <span id="valorInventario" style="font-size: 24px;">$0</span>
+            <strong>💼 VALOR INVENTARIO:</strong><br>
+            <span id="valorInventario" style="font-size: 24px; color:#ffc107;">$0</span>
           </div>
         </div>
       </div>
@@ -458,12 +498,12 @@
           <label>Referencia:</label>
           <input type="text" id="referenciaMovimiento" placeholder="N° presupuesto, factura, etc.">
         </div>
-        <button type="submit">✅ Registrar Movimiento</button>
+        <button type="submit">✅ REGISTRAR MOVIMIENTO</button>
       </form>
 
       <div class="table-container">
         <h3>📋 Historial de Movimientos</h3>
-        <table id="tablaMovimientos">
+        <table>
           <thead>
             <tr><th>Fecha</th><th>Tipo</th><th>Concepto</th><th>Monto</th><th>Referencia</th><th>Acciones</th></tr>
           </thead>
@@ -478,10 +518,10 @@
   </div>
 
   <script>
-    // CONSTANTES Y VARIABLES GLOBALES
+    // CONSTANTES
     const CONTRASENA_CORRECTA = "153624";
     
-    // Almacenamiento local
+    // Variables globales
     let presupuestos = [];
     let stock = [];
     let movimientos = [];
@@ -489,28 +529,25 @@
     let nextIdStock = 1;
     let nextIdMovimiento = 1;
 
-    // Inicializar datos de ejemplo
+    // Inicializar datos
     function inicializarDatos() {
-      // Cargar datos guardados o usar datos de ejemplo
-      const savedPresupuestos = localStorage.getItem('presupuestos');
-      const savedStock = localStorage.getItem('stock');
-      const savedMovimientos = localStorage.getItem('movimientos');
+      const savedPresupuestos = localStorage.getItem('presupuestos_taller');
+      const savedStock = localStorage.getItem('stock_taller');
+      const savedMovimientos = localStorage.getItem('movimientos_taller');
       
       if (savedPresupuestos) {
         presupuestos = JSON.parse(savedPresupuestos);
-        nextIdPresupuesto = parseInt(localStorage.getItem('nextIdPresupuesto')) || 1;
+        nextIdPresupuesto = parseInt(localStorage.getItem('nextIdPresupuesto_taller')) || 1;
       } else {
         presupuestos = [
           { id: 1, cliente: 'Juan Pérez', vehiculo: 'Toyota Corolla', descripcion: 'Cambio de aceite y filtros', manoObra: 5000, repuestos: 3500, total: 8500, estado: 'Pendiente', fecha: new Date().toLocaleString() }
         ];
         nextIdPresupuesto = 2;
-        localStorage.setItem('presupuestos', JSON.stringify(presupuestos));
-        localStorage.setItem('nextIdPresupuesto', nextIdPresupuesto);
       }
       
       if (savedStock) {
         stock = JSON.parse(savedStock);
-        nextIdStock = parseInt(localStorage.getItem('nextIdStock')) || 1;
+        nextIdStock = parseInt(localStorage.getItem('nextIdStock_taller')) || 1;
       } else {
         stock = [
           { id: 1, producto: 'Aceite de motor 5W30', cantidad: 12, precioUnitario: 25.50, categoria: 'Lubricantes' },
@@ -519,34 +556,31 @@
           { id: 4, producto: 'Bujías', cantidad: 15, precioUnitario: 8.50, categoria: 'Motor' }
         ];
         nextIdStock = 5;
-        localStorage.setItem('stock', JSON.stringify(stock));
-        localStorage.setItem('nextIdStock', nextIdStock);
       }
       
       if (savedMovimientos) {
         movimientos = JSON.parse(savedMovimientos);
-        nextIdMovimiento = parseInt(localStorage.getItem('nextIdMovimiento')) || 1;
+        nextIdMovimiento = parseInt(localStorage.getItem('nextIdMovimiento_taller')) || 1;
       } else {
         movimientos = [
           { id: 1, tipo: 'ingreso', concepto: 'Saldo inicial', monto: 5000, referencia: 'Apertura', fecha: new Date().toLocaleString() }
         ];
         nextIdMovimiento = 2;
-        localStorage.setItem('movimientos', JSON.stringify(movimientos));
-        localStorage.setItem('nextIdMovimiento', nextIdMovimiento);
       }
+      
+      guardarDatos();
     }
 
-    // Función para guardar datos
     function guardarDatos() {
-      localStorage.setItem('presupuestos', JSON.stringify(presupuestos));
-      localStorage.setItem('stock', JSON.stringify(stock));
-      localStorage.setItem('movimientos', JSON.stringify(movimientos));
-      localStorage.setItem('nextIdPresupuesto', nextIdPresupuesto);
-      localStorage.setItem('nextIdStock', nextIdStock);
-      localStorage.setItem('nextIdMovimiento', nextIdMovimiento);
+      localStorage.setItem('presupuestos_taller', JSON.stringify(presupuestos));
+      localStorage.setItem('stock_taller', JSON.stringify(stock));
+      localStorage.setItem('movimientos_taller', JSON.stringify(movimientos));
+      localStorage.setItem('nextIdPresupuesto_taller', nextIdPresupuesto);
+      localStorage.setItem('nextIdStock_taller', nextIdStock);
+      localStorage.setItem('nextIdMovimiento_taller', nextIdMovimiento);
     }
 
-    // Verificar contraseña
+    // Login
     function verificarPassword() {
       const password = document.getElementById('passwordInput').value;
       const errorMsg = document.getElementById('errorMsg');
@@ -558,13 +592,12 @@
         inicializarDatos();
         cargarTodosLosDatos();
       } else {
-        errorMsg.textContent = '❌ Contraseña incorrecta. Intente nuevamente.';
+        errorMsg.textContent = '❌ Contraseña incorrecta';
         document.getElementById('passwordInput').value = '';
         document.getElementById('passwordInput').focus();
       }
     }
 
-    // Cerrar sesión
     function cerrarSesion() {
       document.getElementById('loginOverlay').style.display = 'flex';
       document.getElementById('mainContent').style.display = 'none';
@@ -592,15 +625,14 @@
       }
     }
 
-    // Calcular total presupuesto
+    // Calcular total
     function calcularTotalPresupuesto() {
       const manoObra = parseFloat(document.getElementById('manoObra').value) || 0;
       const repuestos = parseFloat(document.getElementById('repuestos').value) || 0;
-      const total = manoObra + repuestos;
-      document.getElementById('totalPresupuesto').value = total.toFixed(2);
+      document.getElementById('totalPresupuesto').value = (manoObra + repuestos).toFixed(2);
     }
 
-    // Crear presupuesto
+    // Presupuestos
     document.getElementById('formPresupuesto').addEventListener('submit', (e) => {
       e.preventDefault();
       const nuevoPresupuesto = {
@@ -618,7 +650,7 @@
       guardarDatos();
       cargarPresupuestos();
       limpiarFormPresupuesto();
-      alert('✅ Presupuesto creado exitosamente');
+      alert('✅ Presupuesto creado');
     });
 
     function limpiarFormPresupuesto() {
@@ -637,22 +669,16 @@
       presupuestos.forEach(p => {
         const row = tbody.insertRow();
         row.innerHTML = `
-          <td>${p.id}</td>
-          <td>${p.fecha}</td>
-          <td>${p.cliente}</td>
-          <td>${p.vehiculo}</td>
+          <td>${p.id}</td><td>${p.fecha}</td><td>${p.cliente}</td><td>${p.vehiculo}</td>
           <td>${p.descripcion.substring(0, 30)}${p.descripcion.length > 30 ? '...' : ''}</td>
-          <td>$${p.manoObra.toFixed(2)}</td>
-          <td>$${p.repuestos.toFixed(2)}</td>
+          <td>$${p.manoObra.toFixed(2)}</td><td>$${p.repuestos.toFixed(2)}</td>
           <td>$${p.total.toFixed(2)}</td>
-          <td>
-            <select onchange="cambiarEstadoPresupuesto(${p.id}, this.value)" style="padding: 5px;">
-              <option value="Pendiente" ${p.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
-              <option value="Aprobado" ${p.estado === 'Aprobado' ? 'selected' : ''}>Aprobado</option>
-              <option value="Pagado" ${p.estado === 'Pagado' ? 'selected' : ''}>Pagado</option>
-              <option value="Rechazado" ${p.estado === 'Rechazado' ? 'selected' : ''}>Rechazado</option>
-            </select>
-          </td>
+          <td><select onchange="cambiarEstadoPresupuesto(${p.id}, this.value)" style="background:#333; color:white;">
+            <option value="Pendiente" ${p.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+            <option value="Aprobado" ${p.estado === 'Aprobado' ? 'selected' : ''}>Aprobado</option>
+            <option value="Pagado" ${p.estado === 'Pagado' ? 'selected' : ''}>Pagado</option>
+            <option value="Rechazado" ${p.estado === 'Rechazado' ? 'selected' : ''}>Rechazado</option>
+          </select></td>
           <td class="action-buttons">
             <button class="btn-success" onclick="marcarPagado(${p.id})" ${p.estado === 'Pagado' ? 'disabled' : ''}>💰 Pagar</button>
             <button class="btn-danger" onclick="eliminarPresupuesto(${p.id})">🗑️ Eliminar</button>
@@ -680,7 +706,7 @@
         const nuevoMovimiento = {
           id: nextIdMovimiento++,
           tipo: 'ingreso',
-          concepto: `Pago de presupuesto #${presupuesto.id} - ${presupuesto.cliente}`,
+          concepto: `Pago presupuesto #${presupuesto.id} - ${presupuesto.cliente}`,
           monto: presupuesto.total,
           referencia: `Presupuesto #${presupuesto.id}`,
           fecha: new Date().toLocaleString()
@@ -688,7 +714,7 @@
         movimientos.push(nuevoMovimiento);
         guardarDatos();
         cargarCaja();
-        alert(`✅ Se registró un ingreso de $${presupuesto.total.toFixed(2)} por el presupuesto #${id}`);
+        alert(`✅ Ingreso de $${presupuesto.total.toFixed(2)} registrado`);
       }
     }
 
@@ -700,7 +726,7 @@
       }
     }
 
-    // STOCK
+    // Stock
     document.getElementById('formStock').addEventListener('submit', (e) => {
       e.preventDefault();
       const nuevoProducto = {
@@ -714,7 +740,7 @@
       guardarDatos();
       cargarStock();
       limpiarFormStock();
-      alert('✅ Producto agregado al inventario');
+      alert('✅ Producto agregado');
     });
 
     function limpiarFormStock() {
@@ -737,11 +763,8 @@
           stockBajoMsg += `⚠️ Stock bajo: ${s.producto} (${s.cantidad} unidades)<br>`;
         }
         row.innerHTML = `
-          <td>${s.id}</td>
-          <td>${s.producto}</td>
-          <td>${s.cantidad}</td>
-          <td>$${s.precioUnitario.toFixed(2)}</td>
-          <td>${s.categoria}</td>
+          <td>${s.id}</td><td>${s.producto}</td><td>${s.cantidad}</td>
+          <td>$${s.precioUnitario.toFixed(2)}</td><td>${s.categoria}</td>
           <td>$${valorTotal.toFixed(2)}</td>
           <td class="action-buttons">
             <button class="btn-warning" onclick="editarStock(${s.id})">✏️ Editar</button>
@@ -752,7 +775,7 @@
       
       const alertaDiv = document.getElementById('stockAlerta');
       if (alertaDiv) {
-        alertaDiv.innerHTML = stockBajoMsg ? `<div style="background:#ffeb3b; padding:10px; border-radius:8px; color:#333;">${stockBajoMsg}</div>` : '';
+        alertaDiv.innerHTML = stockBajoMsg ? `<div style="background:#3d1a1a; padding:10px; border-radius:8px; color:#ff6b35;">${stockBajoMsg}</div>` : '';
       }
       actualizarValorInventario();
     }
@@ -770,7 +793,7 @@
     }
 
     function eliminarStock(id) {
-      if (confirm('¿Eliminar este producto del inventario?')) {
+      if (confirm('¿Eliminar este producto?')) {
         stock = stock.filter(s => s.id !== id);
         guardarDatos();
         cargarStock();
@@ -785,39 +808,36 @@
       }
     }
 
-    // CAJA
-    const formMovimiento = document.getElementById('formMovimiento');
-    if (formMovimiento) {
-      formMovimiento.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const tipo = document.getElementById('tipoMovimiento').value;
-        const monto = parseFloat(document.getElementById('montoMovimiento').value);
-        
-        if (tipo === 'egreso') {
-          const cajaActual = calcularCajaActual();
-          if (monto > cajaActual) {
-            alert('❌ No hay suficiente dinero en caja para realizar este egreso');
-            return;
-          }
+    // Caja
+    document.getElementById('formMovimiento').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const tipo = document.getElementById('tipoMovimiento').value;
+      const monto = parseFloat(document.getElementById('montoMovimiento').value);
+      
+      if (tipo === 'egreso') {
+        const cajaActual = calcularCajaActual();
+        if (monto > cajaActual) {
+          alert('❌ Saldo insuficiente');
+          return;
         }
-        
-        const nuevoMovimiento = {
-          id: nextIdMovimiento++,
-          tipo: tipo,
-          concepto: document.getElementById('conceptoMovimiento').value,
-          monto: monto,
-          referencia: document.getElementById('referenciaMovimiento').value || '-',
-          fecha: new Date().toLocaleString()
-        };
-        movimientos.push(nuevoMovimiento);
-        guardarDatos();
-        cargarCaja();
-        document.getElementById('conceptoMovimiento').value = '';
-        document.getElementById('montoMovimiento').value = '0';
-        document.getElementById('referenciaMovimiento').value = '';
-        alert('✅ Movimiento registrado exitosamente');
-      });
-    }
+      }
+      
+      const nuevoMovimiento = {
+        id: nextIdMovimiento++,
+        tipo: tipo,
+        concepto: document.getElementById('conceptoMovimiento').value,
+        monto: monto,
+        referencia: document.getElementById('referenciaMovimiento').value || '-',
+        fecha: new Date().toLocaleString()
+      };
+      movimientos.push(nuevoMovimiento);
+      guardarDatos();
+      cargarCaja();
+      document.getElementById('conceptoMovimiento').value = '';
+      document.getElementById('montoMovimiento').value = '0';
+      document.getElementById('referenciaMovimiento').value = '';
+      alert('✅ Movimiento registrado');
+    });
 
     function calcularCajaActual() {
       let total = 0;
@@ -855,13 +875,11 @@
       movimientos.slice().reverse().forEach(m => {
         const row = tbody.insertRow();
         row.innerHTML = `
-          <td>${m.fecha}</td>
-          <td>${m.tipo === 'ingreso' ? '💰 Ingreso' : '💸 Egreso'}</td>
+          <td>${m.fecha}</td><td>${m.tipo === 'ingreso' ? '💰 Ingreso' : '💸 Egreso'}</td>
           <td>${m.concepto}</td>
           <td style="color: ${m.tipo === 'ingreso' ? '#28a745' : '#dc3545'}; font-weight: bold;">
             ${m.tipo === 'ingreso' ? '+' : '-'}$${m.monto.toFixed(2)}
-          </td>
-          <td>${m.referencia}</td>
+          </td><td>${m.referencia}</td>
           <td><button class="btn-danger" onclick="eliminarMovimiento(${m.id})">🗑️</button></td>
         `;
       });
@@ -870,7 +888,7 @@
     }
 
     function eliminarMovimiento(id) {
-      if (confirm('¿Eliminar este movimiento? Esta acción puede afectar el balance de caja.')) {
+      if (confirm('¿Eliminar este movimiento?')) {
         movimientos = movimientos.filter(m => m.id !== id);
         guardarDatos();
         cargarCaja();
@@ -883,11 +901,9 @@
       cargarCaja();
     }
 
-    // Event listeners para calcular total automáticamente
-    const manoObraInput = document.getElementById('manoObra');
-    const repuestosInput = document.getElementById('repuestos');
-    if (manoObraInput) manoObraInput.addEventListener('input', calcularTotalPresupuesto);
-    if (repuestosInput) repuestosInput.addEventListener('input', calcularTotalPresupuesto);
+    // Event listeners
+    document.getElementById('manoObra').addEventListener('input', calcularTotalPresupuesto);
+    document.getElementById('repuestos').addEventListener('input', calcularTotalPresupuesto);
   </script>
 </body>
 </html>
