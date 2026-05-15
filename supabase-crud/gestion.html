@@ -93,6 +93,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     header h1 {
@@ -186,6 +188,7 @@
       cursor: pointer;
       font-size: 14px;
       margin-right: 10px;
+      margin-top: 5px;
     }
 
     button:hover {
@@ -199,6 +202,11 @@
 
     .btn-success {
       background: #28a745;
+    }
+
+    .btn-warning {
+      background: #ffc107;
+      color: #333;
     }
 
     /* Tablas */
@@ -263,8 +271,10 @@
     /* Stock bajo */
     .stock-bajo {
       background-color: #ffebee;
-      color: #c62828;
-      font-weight: bold;
+    }
+    
+    .stock-bajo td:first-child {
+      border-left: 4px solid #c62828;
     }
 
     footer {
@@ -281,6 +291,10 @@
       .tab-btn {
         flex: 1;
         text-align: center;
+      }
+      
+      header h1 {
+        font-size: 18px;
       }
     }
   </style>
@@ -329,15 +343,15 @@
         </div>
         <div class="form-group">
           <label>Mano de obra ($):</label>
-          <input type="number" id="manoObra" required step="0.01">
+          <input type="number" id="manoObra" required step="0.01" value="0">
         </div>
         <div class="form-group">
           <label>Repuestos ($):</label>
-          <input type="number" id="repuestos" required step="0.01">
+          <input type="number" id="repuestos" required step="0.01" value="0">
         </div>
         <div class="form-group">
           <label>Total ($):</label>
-          <input type="number" id="totalPresupuesto" readonly style="background:#f0f0f0">
+          <input type="number" id="totalPresupuesto" readonly style="background:#f0f0f0" value="0">
         </div>
         <button type="submit">➕ Crear Presupuesto</button>
         <button type="button" onclick="limpiarFormPresupuesto()">🗑️ Limpiar</button>
@@ -347,7 +361,7 @@
         <h3>📋 Lista de Presupuestos</h3>
         <table id="tablaPresupuestos">
           <thead>
-            <tr><th>ID</th><th>Cliente</th><th>Vehículo</th><th>Descripción</th><th>Mano Obra</th><th>Repuestos</th><th>Total</th><th>Estado</th><th>Acciones</th></tr>
+            <tr><th>ID</th><th>Fecha</th><th>Cliente</th><th>Vehículo</th><th>Descripción</th><th>Mano Obra</th><th>Repuestos</th><th>Total</th><th>Estado</th><th>Acciones</th></tr>
           </thead>
           <tbody id="listaPresupuestos"></tbody>
         </table>
@@ -364,11 +378,11 @@
         </div>
         <div class="form-group">
           <label>Cantidad:</label>
-          <input type="number" id="cantidadStock" required min="0">
+          <input type="number" id="cantidadStock" required min="0" value="0">
         </div>
         <div class="form-group">
           <label>Precio unitario ($):</label>
-          <input type="number" id="precioStock" required step="0.01">
+          <input type="number" id="precioStock" required step="0.01" value="0">
         </div>
         <div class="form-group">
           <label>Categoría:</label>
@@ -438,7 +452,7 @@
         </div>
         <div class="form-group">
           <label>Monto ($):</label>
-          <input type="number" id="montoMovimiento" required step="0.01">
+          <input type="number" id="montoMovimiento" required step="0.01" value="0">
         </div>
         <div class="form-group">
           <label>Referencia:</label>
@@ -468,12 +482,59 @@
     const CONTRASENA_CORRECTA = "153624";
     
     // Almacenamiento local
-    let presupuestos = JSON.parse(localStorage.getItem('presupuestos')) || [];
-    let stock = JSON.parse(localStorage.getItem('stock')) || [];
-    let movimientos = JSON.parse(localStorage.getItem('movimientos')) || [];
-    let nextIdPresupuesto = parseInt(localStorage.getItem('nextIdPresupuesto')) || 1;
-    let nextIdStock = parseInt(localStorage.getItem('nextIdStock')) || 1;
-    let nextIdMovimiento = parseInt(localStorage.getItem('nextIdMovimiento')) || 1;
+    let presupuestos = [];
+    let stock = [];
+    let movimientos = [];
+    let nextIdPresupuesto = 1;
+    let nextIdStock = 1;
+    let nextIdMovimiento = 1;
+
+    // Inicializar datos de ejemplo
+    function inicializarDatos() {
+      // Cargar datos guardados o usar datos de ejemplo
+      const savedPresupuestos = localStorage.getItem('presupuestos');
+      const savedStock = localStorage.getItem('stock');
+      const savedMovimientos = localStorage.getItem('movimientos');
+      
+      if (savedPresupuestos) {
+        presupuestos = JSON.parse(savedPresupuestos);
+        nextIdPresupuesto = parseInt(localStorage.getItem('nextIdPresupuesto')) || 1;
+      } else {
+        presupuestos = [
+          { id: 1, cliente: 'Juan Pérez', vehiculo: 'Toyota Corolla', descripcion: 'Cambio de aceite y filtros', manoObra: 5000, repuestos: 3500, total: 8500, estado: 'Pendiente', fecha: new Date().toLocaleString() }
+        ];
+        nextIdPresupuesto = 2;
+        localStorage.setItem('presupuestos', JSON.stringify(presupuestos));
+        localStorage.setItem('nextIdPresupuesto', nextIdPresupuesto);
+      }
+      
+      if (savedStock) {
+        stock = JSON.parse(savedStock);
+        nextIdStock = parseInt(localStorage.getItem('nextIdStock')) || 1;
+      } else {
+        stock = [
+          { id: 1, producto: 'Aceite de motor 5W30', cantidad: 12, precioUnitario: 25.50, categoria: 'Lubricantes' },
+          { id: 2, producto: 'Filtro de aceite', cantidad: 8, precioUnitario: 12.00, categoria: 'Motor' },
+          { id: 3, producto: 'Pastillas de freno', cantidad: 3, precioUnitario: 45.00, categoria: 'Frenos' },
+          { id: 4, producto: 'Bujías', cantidad: 15, precioUnitario: 8.50, categoria: 'Motor' }
+        ];
+        nextIdStock = 5;
+        localStorage.setItem('stock', JSON.stringify(stock));
+        localStorage.setItem('nextIdStock', nextIdStock);
+      }
+      
+      if (savedMovimientos) {
+        movimientos = JSON.parse(savedMovimientos);
+        nextIdMovimiento = parseInt(localStorage.getItem('nextIdMovimiento')) || 1;
+      } else {
+        movimientos = [
+          { id: 1, tipo: 'ingreso', concepto: 'Saldo inicial', monto: 5000, referencia: 'Apertura', fecha: new Date().toLocaleString() }
+        ];
+        nextIdMovimiento = 2;
+        localStorage.setItem('movimientos', JSON.stringify(movimientos));
+        localStorage.setItem('nextIdMovimiento', nextIdMovimiento);
+      }
+    }
 
     // Función para guardar datos
     function guardarDatos() {
@@ -494,6 +555,7 @@
         document.getElementById('loginOverlay').style.display = 'none';
         document.getElementById('mainContent').style.display = 'block';
         errorMsg.textContent = '';
+        inicializarDatos();
         cargarTodosLosDatos();
       } else {
         errorMsg.textContent = '❌ Contraseña incorrecta. Intente nuevamente.';
@@ -517,7 +579,7 @@
       
       if (panel === 'presupuestos') {
         document.getElementById('panelPresupuestos').classList.add('active');
-        document.querySelector('.tab-btn').classList.add('active');
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
         cargarPresupuestos();
       } else if (panel === 'stock') {
         document.getElementById('panelStock').classList.add('active');
@@ -537,10 +599,6 @@
       const total = manoObra + repuestos;
       document.getElementById('totalPresupuesto').value = total.toFixed(2);
     }
-
-    // Event listeners para presupuesto
-    document.getElementById('manoObra').addEventListener('input', calcularTotalPresupuesto);
-    document.getElementById('repuestos').addEventListener('input', calcularTotalPresupuesto);
 
     // Crear presupuesto
     document.getElementById('formPresupuesto').addEventListener('submit', (e) => {
@@ -567,26 +625,28 @@
       document.getElementById('clientePresupuesto').value = '';
       document.getElementById('vehiculoPresupuesto').value = '';
       document.getElementById('descripcionPresupuesto').value = '';
-      document.getElementById('manoObra').value = '';
-      document.getElementById('repuestos').value = '';
-      document.getElementById('totalPresupuesto').value = '';
+      document.getElementById('manoObra').value = '0';
+      document.getElementById('repuestos').value = '0';
+      document.getElementById('totalPresupuesto').value = '0';
     }
 
     function cargarPresupuestos() {
       const tbody = document.getElementById('listaPresupuestos');
+      if (!tbody) return;
       tbody.innerHTML = '';
       presupuestos.forEach(p => {
         const row = tbody.insertRow();
         row.innerHTML = `
           <td>${p.id}</td>
+          <td>${p.fecha}</td>
           <td>${p.cliente}</td>
           <td>${p.vehiculo}</td>
-          <td>${p.descripcion.substring(0, 30)}...</td>
+          <td>${p.descripcion.substring(0, 30)}${p.descripcion.length > 30 ? '...' : ''}</td>
           <td>$${p.manoObra.toFixed(2)}</td>
           <td>$${p.repuestos.toFixed(2)}</td>
           <td>$${p.total.toFixed(2)}</td>
           <td>
-            <select onchange="cambiarEstadoPresupuesto(${p.id}, this.value)">
+            <select onchange="cambiarEstadoPresupuesto(${p.id}, this.value)" style="padding: 5px;">
               <option value="Pendiente" ${p.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
               <option value="Aprobado" ${p.estado === 'Aprobado' ? 'selected' : ''}>Aprobado</option>
               <option value="Pagado" ${p.estado === 'Pagado' ? 'selected' : ''}>Pagado</option>
@@ -617,7 +677,6 @@
         guardarDatos();
         cargarPresupuestos();
         
-        // Registrar ingreso automático
         const nuevoMovimiento = {
           id: nextIdMovimiento++,
           tipo: 'ingreso',
@@ -660,12 +719,13 @@
 
     function limpiarFormStock() {
       document.getElementById('productoStock').value = '';
-      document.getElementById('cantidadStock').value = '';
-      document.getElementById('precioStock').value = '';
+      document.getElementById('cantidadStock').value = '0';
+      document.getElementById('precioStock').value = '0';
     }
 
     function cargarStock() {
       const tbody = document.getElementById('listaStock');
+      if (!tbody) return;
       tbody.innerHTML = '';
       let stockBajoMsg = '';
       
@@ -684,13 +744,16 @@
           <td>${s.categoria}</td>
           <td>$${valorTotal.toFixed(2)}</td>
           <td class="action-buttons">
-            <button onclick="editarStock(${s.id})">✏️ Editar</button>
+            <button class="btn-warning" onclick="editarStock(${s.id})">✏️ Editar</button>
             <button class="btn-danger" onclick="eliminarStock(${s.id})">🗑️ Eliminar</button>
           </td>
         `;
       });
       
-      document.getElementById('stockAlerta').innerHTML = stockBajoMsg ? `<div style="background:#ffeb3b; padding:10px; border-radius:8px;">${stockBajoMsg}</div>` : '';
+      const alertaDiv = document.getElementById('stockAlerta');
+      if (alertaDiv) {
+        alertaDiv.innerHTML = stockBajoMsg ? `<div style="background:#ffeb3b; padding:10px; border-radius:8px; color:#333;">${stockBajoMsg}</div>` : '';
+      }
       actualizarValorInventario();
     }
 
@@ -698,7 +761,7 @@
       const producto = stock.find(s => s.id === id);
       if (producto) {
         const nuevaCantidad = prompt('Ingrese nueva cantidad:', producto.cantidad);
-        if (nuevaCantidad !== null && !isNaN(nuevaCantidad)) {
+        if (nuevaCantidad !== null && !isNaN(nuevaCantidad) && nuevaCantidad !== '') {
           producto.cantidad = parseInt(nuevaCantidad);
           guardarDatos();
           cargarStock();
@@ -723,38 +786,37 @@
     }
 
     // CAJA
-    document.getElementById('formMovimiento').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const tipo = document.getElementById('tipoMovimiento').value;
-      const monto = parseFloat(document.getElementById('montoMovimiento').value);
-      
-      if (tipo === 'egreso') {
-        const cajaActual = calcularCajaActual();
-        if (monto > cajaActual) {
-          alert('❌ No hay suficiente dinero en caja para realizar este egreso');
-          return;
+    const formMovimiento = document.getElementById('formMovimiento');
+    if (formMovimiento) {
+      formMovimiento.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const tipo = document.getElementById('tipoMovimiento').value;
+        const monto = parseFloat(document.getElementById('montoMovimiento').value);
+        
+        if (tipo === 'egreso') {
+          const cajaActual = calcularCajaActual();
+          if (monto > cajaActual) {
+            alert('❌ No hay suficiente dinero en caja para realizar este egreso');
+            return;
+          }
         }
-      }
-      
-      const nuevoMovimiento = {
-        id: nextIdMovimiento++,
-        tipo: tipo,
-        concepto: document.getElementById('conceptoMovimiento').value,
-        monto: monto,
-        referencia: document.getElementById('referenciaMovimiento').value || '-',
-        fecha: new Date().toLocaleString()
-      };
-      movimientos.push(nuevoMovimiento);
-      guardarDatos();
-      cargarCaja();
-      limpiarFormMovimiento();
-      alert('✅ Movimiento registrado exitosamente');
-    });
-
-    function limpiarFormMovimiento() {
-      document.getElementById('conceptoMovimiento').value = '';
-      document.getElementById('montoMovimiento').value = '';
-      document.getElementById('referenciaMovimiento').value = '';
+        
+        const nuevoMovimiento = {
+          id: nextIdMovimiento++,
+          tipo: tipo,
+          concepto: document.getElementById('conceptoMovimiento').value,
+          monto: monto,
+          referencia: document.getElementById('referenciaMovimiento').value || '-',
+          fecha: new Date().toLocaleString()
+        };
+        movimientos.push(nuevoMovimiento);
+        guardarDatos();
+        cargarCaja();
+        document.getElementById('conceptoMovimiento').value = '';
+        document.getElementById('montoMovimiento').value = '0';
+        document.getElementById('referenciaMovimiento').value = '';
+        alert('✅ Movimiento registrado exitosamente');
+      });
     }
 
     function calcularCajaActual() {
@@ -779,11 +841,16 @@
       const totalIngresos = calcularTotalIngresos();
       const totalEgresos = calcularTotalEgresos();
       
-      document.getElementById('cajaActual').textContent = `$${cajaActual.toFixed(2)}`;
-      document.getElementById('totalIngresos').textContent = `$${totalIngresos.toFixed(2)}`;
-      document.getElementById('totalEgresos').textContent = `$${totalEgresos.toFixed(2)}`;
+      const cajaActualElem = document.getElementById('cajaActual');
+      const totalIngresosElem = document.getElementById('totalIngresos');
+      const totalEgresosElem = document.getElementById('totalEgresos');
+      
+      if (cajaActualElem) cajaActualElem.textContent = `$${cajaActual.toFixed(2)}`;
+      if (totalIngresosElem) totalIngresosElem.textContent = `$${totalIngresos.toFixed(2)}`;
+      if (totalEgresosElem) totalEgresosElem.textContent = `$${totalEgresos.toFixed(2)}`;
       
       const tbody = document.getElementById('listaMovimientos');
+      if (!tbody) return;
       tbody.innerHTML = '';
       movimientos.slice().reverse().forEach(m => {
         const row = tbody.insertRow();
@@ -816,23 +883,11 @@
       cargarCaja();
     }
 
-    // Inicializar datos de ejemplo si están vacíos
-    if (stock.length === 0) {
-      stock = [
-        { id: nextIdStock++, producto: 'Aceite de motor 5W30', cantidad: 12, precioUnitario: 25.50, categoria: 'Lubricantes' },
-        { id: nextIdStock++, producto: 'Filtro de aceite', cantidad: 8, precioUnitario: 12.00, categoria: 'Motor' },
-        { id: nextIdStock++, producto: 'Pastillas de freno', cantidad: 3, precioUnitario: 45.00, categoria: 'Frenos' },
-        { id: nextIdStock++, producto: 'Bujías', cantidad: 15, precioUnitario: 8.50, categoria: 'Motor' }
-      ];
-      guardarDatos();
-    }
-    
-    if (movimientos.length === 0) {
-      movimientos = [
-        { id: nextIdMovimiento++, tipo: 'ingreso', concepto: 'Saldo inicial', monto: 5000, referencia: 'Apertura', fecha: new Date().toLocaleString() }
-      ];
-      guardarDatos();
-    }
+    // Event listeners para calcular total automáticamente
+    const manoObraInput = document.getElementById('manoObra');
+    const repuestosInput = document.getElementById('repuestos');
+    if (manoObraInput) manoObraInput.addEventListener('input', calcularTotalPresupuesto);
+    if (repuestosInput) repuestosInput.addEventListener('input', calcularTotalPresupuesto);
   </script>
 </body>
 </html>
