@@ -247,6 +247,29 @@
       color: white;
     }
 
+    .btn-info {
+      background: #17a2b8;
+      color: white;
+    }
+
+    /* Buscador */
+    .buscador-container {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .buscador-container input {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .buscador-container select {
+      width: auto;
+      min-width: 150px;
+    }
+
     /* Tablas */
     .table-container {
       overflow-x: auto;
@@ -367,6 +390,38 @@
     .medio-debito { background: #6f42c1; color: white; }
     .medio-credito { background: #fd7e14; color: white; }
 
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #1a1a1a;
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 500px;
+      width: 90%;
+      border: 1px solid #FF6D00;
+    }
+
+    .modal-content h3 {
+      color: #FF6D00;
+      margin-bottom: 20px;
+    }
+
+    .modal-content button {
+      margin-top: 15px;
+    }
+
     @media (max-width: 768px) {
       .stats {
         grid-template-columns: 1fr;
@@ -457,8 +512,16 @@
       <h2>📦 Control de Inventario</h2>
       <form id="formStock">
         <div class="form-group">
+          <label>Código Interno:</label>
+          <input type="text" id="codigoInterno" placeholder="Ej: MOT-001, FIL-002">
+        </div>
+        <div class="form-group">
           <label>Producto:</label>
           <input type="text" id="productoStock" required placeholder="Nombre del producto/repuesto">
+        </div>
+        <div class="form-group">
+          <label>Descripción / Equivalencias:</label>
+          <textarea id="descripcionStock" rows="3" placeholder="Ej: Equivalente a: Bosch 0986AF, Mann HU 719/7x, Original VW"></textarea>
         </div>
         <div class="form-group">
           <label>Cantidad:</label>
@@ -483,12 +546,42 @@
         <button type="button" onclick="limpiarFormStock()">🗑️ LIMPIAR</button>
       </form>
 
+      <!-- Buscador Inteligente -->
+      <div class="buscador-container">
+        <input type="text" id="buscadorStock" placeholder="🔍 Buscar por código, producto, descripción o categoría..." onkeyup="filtrarStock()">
+        <select id="filtroCategoria" onchange="filtrarStock()">
+          <option value="">Todas las categorías</option>
+          <option value="Motor">Motor</option>
+          <option value="Frenos">Frenos</option>
+          <option value="Suspensión">Suspensión</option>
+          <option value="Eléctrico">Eléctrico</option>
+          <option value="Lubricantes">Lubricantes</option>
+          <option value="Otros">Otros</option>
+        </select>
+        <select id="filtroStock" onchange="filtrarStock()">
+          <option value="">Todos los stocks</option>
+          <option value="bajo">Stock bajo (&lt;5)</option>
+          <option value="normal">Stock normal (≥5)</option>
+          <option value="agotado">Agotado (0)</option>
+        </select>
+        <button class="btn-info" onclick="limpiarFiltros()">🗑️ Limpiar filtros</button>
+      </div>
+
       <div class="table-container">
         <h3>📋 Inventario Actual</h3>
         <div id="stockAlerta" style="margin-bottom: 10px;"></div>
-        <table>
+        <table id="tablaStock">
           <thead>
-            <tr><th>ID</th><th>Producto</th><th>Cantidad</th><th>Precio Unit.</th><th>Categoría</th><th>Valor Total</th><th>Acciones</th></tr>
+            <tr>
+              <th>Código</th>
+              <th>Producto</th>
+              <th>Descripción</th>
+              <th>Cantidad</th>
+              <th>Precio Unit.</th>
+              <th>Categoría</th>
+              <th>Valor Total</th>
+              <th>Acciones</th>
+            </tr>
           </thead>
           <tbody id="listaStock"></tbody>
         </table>
@@ -609,6 +702,15 @@
     </footer>
   </div>
 
+  <!-- Modal para ver detalles del producto -->
+  <div id="modalDetalle" class="modal">
+    <div class="modal-content">
+      <h3>📦 Detalle del Producto</h3>
+      <div id="detalleProducto"></div>
+      <button onclick="cerrarModal()">Cerrar</button>
+    </div>
+  </div>
+
   <script>
     // CONSTANTES
     const CONTRASENA_CORRECTA = "153624";
@@ -624,11 +726,12 @@
     let nextIdStock = 1;
     let nextIdMovimiento = 1;
     let nextIdCierre = 1;
+    let stockFiltrado = [];
 
     // Inicializar datos
     function inicializarDatos() {
       const savedPresupuestos = localStorage.getItem('presupuestos_taller');
-      const savedStock = localStorage.getItem('stock_taller');
+      const savedStock = localStorage.getItem('stock_taller_v2');
       const savedMovimientos = localStorage.getItem('movimientos_taller_v2');
       const savedCierres = localStorage.getItem('cierres_taller');
       const savedCajaEstado = localStorage.getItem('caja_estado_taller');
@@ -646,10 +749,10 @@
         nextIdStock = parseInt(localStorage.getItem('nextIdStock_taller')) || 1;
       } else {
         stock = [
-          { id: 1, producto: 'Aceite de motor 5W30', cantidad: 12, precioUnitario: 25.50, categoria: 'Lubricantes' },
-          { id: 2, producto: 'Filtro de aceite', cantidad: 8, precioUnitario: 12.00, categoria: 'Motor' },
-          { id: 3, producto: 'Pastillas de freno', cantidad: 3, precioUnitario: 45.00, categoria: 'Frenos' },
-          { id: 4, producto: 'Bujías', cantidad: 15, precioUnitario: 8.50, categoria: 'Motor' }
+          { id: 1, codigoInterno: 'MOT-001', producto: 'Aceite de motor 5W30', descripcion: 'Sintético. Equivalente: Mobil 1, Castrol Edge, Shell Helix', cantidad: 12, precioUnitario: 25.50, categoria: 'Lubricantes' },
+          { id: 2, codigoInterno: 'FIL-002', producto: 'Filtro de aceite', descripcion: 'Equivalente: Bosch 0986AF, Mann HU 719/7x', cantidad: 8, precioUnitario: 12.00, categoria: 'Motor' },
+          { id: 3, codigoInterno: 'FRE-003', producto: 'Pastillas de freno', descripcion: 'Delanteras. Equivalente: Brembo P06023, TRW GDB1550', cantidad: 3, precioUnitario: 45.00, categoria: 'Frenos' },
+          { id: 4, codigoInterno: 'MOT-004', producto: 'Bujías', descripcion: 'Iridio. Equivalente: NGK IFR6T11, Denso IK20', cantidad: 15, precioUnitario: 8.50, categoria: 'Motor' }
         ];
         nextIdStock = 5;
       }
@@ -675,7 +778,6 @@
         cajaAbierta = estado.abierta;
         fechaCajaActual = estado.fecha;
         if (cajaAbierta && fechaCajaActual !== new Date().toLocaleDateString()) {
-          // Si la caja estaba abierta pero es otro día, forzar cierre automático
           cerrarCajaAutomático();
         }
       } else {
@@ -684,11 +786,12 @@
       }
       
       guardarDatos();
+      stockFiltrado = [...stock];
     }
 
     function guardarDatos() {
       localStorage.setItem('presupuestos_taller', JSON.stringify(presupuestos));
-      localStorage.setItem('stock_taller', JSON.stringify(stock));
+      localStorage.setItem('stock_taller_v2', JSON.stringify(stock));
       localStorage.setItem('movimientos_taller_v2', JSON.stringify(movimientos));
       localStorage.setItem('cierres_taller', JSON.stringify(cierres));
       localStorage.setItem('nextIdPresupuesto_taller', nextIdPresupuesto);
@@ -698,333 +801,78 @@
       localStorage.setItem('caja_estado_taller', JSON.stringify({ abierta: cajaAbierta, fecha: fechaCajaActual }));
     }
 
-    // Control de caja
-    function abrirCaja() {
-      if (cajaAbierta) {
-        alert('⚠️ La caja ya está abierta');
-        return;
-      }
-      cajaAbierta = true;
-      fechaCajaActual = new Date().toLocaleDateString();
-      movimientos = []; // Reiniciar movimientos del día
-      guardarDatos();
-      actualizarInterfazCaja();
-      alert('✅ Caja abierta exitosamente');
-    }
-
-    function cerrarCaja() {
-      if (!cajaAbierta) {
-        alert('⚠️ La caja no está abierta');
-        return;
-      }
+    // Funciones de filtrado
+    function filtrarStock() {
+      const busqueda = document.getElementById('buscadorStock').value.toLowerCase();
+      const categoria = document.getElementById('filtroCategoria').value;
+      const filtroStock = document.getElementById('filtroStock').value;
       
-      const totalIngresos = calcularTotalIngresos();
-      const totalEgresos = calcularTotalEgresos();
-      const saldoFinal = calcularCajaActual();
-      const desglose = calcularDesgloseMedios();
-      
-      const cierre = {
-        id: nextIdCierre++,
-        fecha: new Date().toLocaleString(),
-        fechaDia: fechaCajaActual,
-        totalIngresos: totalIngresos,
-        totalEgresos: totalEgresos,
-        saldoFinal: saldoFinal,
-        efectivo: desglose.efectivo,
-        transferencia: desglose.transferencia,
-        debito: desglose.debito,
-        credito: desglose.credito,
-        movimientos: [...movimientos]
-      };
-      
-      cierres.push(cierre);
-      cajaAbierta = false;
-      movimientos = [];
-      guardarDatos();
-      actualizarInterfazCaja();
-      alert(`✅ Caja cerrada exitosamente\n💰 Saldo final: $${saldoFinal.toFixed(2)}`);
-    }
-
-    function cerrarCajaAutomático() {
-      if (movimientos.length > 0) {
-        const totalIngresos = calcularTotalIngresos();
-        const totalEgresos = calcularTotalEgresos();
-        const saldoFinal = calcularCajaActual();
-        const desglose = calcularDesgloseMedios();
-        
-        const cierre = {
-          id: nextIdCierre++,
-          fecha: new Date().toLocaleString(),
-          fechaDia: fechaCajaActual,
-          totalIngresos: totalIngresos,
-          totalEgresos: totalEgresos,
-          saldoFinal: saldoFinal,
-          efectivo: desglose.efectivo,
-          transferencia: desglose.transferencia,
-          debito: desglose.debito,
-          credito: desglose.credito,
-          movimientos: [...movimientos]
-        };
-        cierres.push(cierre);
-      }
-      cajaAbierta = false;
-      movimientos = [];
-      fechaCajaActual = null;
-      guardarDatos();
-    }
-
-    function actualizarInterfazCaja() {
-      const btnAbrir = document.getElementById('btnAbrirCaja');
-      const btnCerrar = document.getElementById('btnCerrarCaja');
-      const cajaEstado = document.getElementById('cajaEstado');
-      
-      if (cajaAbierta) {
-        btnAbrir.style.display = 'none';
-        btnCerrar.style.display = 'inline-block';
-        cajaEstado.innerHTML = `🟢 CAJA ABIERTA - ${fechaCajaActual}`;
-      } else {
-        btnAbrir.style.display = 'inline-block';
-        btnCerrar.style.display = 'none';
-        cajaEstado.innerHTML = '🔴 CAJA CERRADA';
-      }
-      
-      cargarCaja();
-      cargarCierres();
-    }
-
-    function calcularDesgloseMedios() {
-      const desglose = { efectivo: 0, transferencia: 0, debito: 0, credito: 0 };
-      movimientos.forEach(m => {
-        if (m.tipo === 'ingreso' && m.medioPago) {
-          desglose[m.medioPago] += m.monto;
-        }
-      });
-      return desglose;
-    }
-
-    function actualizarDesgloseInterfaz() {
-      const desglose = calcularDesgloseMedios();
-      document.getElementById('totalEfectivo').textContent = `$${desglose.efectivo.toFixed(2)}`;
-      document.getElementById('totalTransferencia').textContent = `$${desglose.transferencia.toFixed(2)}`;
-      document.getElementById('totalDebito').textContent = `$${desglose.debito.toFixed(2)}`;
-      document.getElementById('totalCredito').textContent = `$${desglose.credito.toFixed(2)}`;
-    }
-
-    // Login
-    function verificarPassword() {
-      const password = document.getElementById('passwordInput').value;
-      const errorMsg = document.getElementById('errorMsg');
-      
-      if (password === CONTRASENA_CORRECTA) {
-        document.getElementById('loginOverlay').style.display = 'none';
-        document.getElementById('mainContent').style.display = 'block';
-        errorMsg.textContent = '';
-        inicializarDatos();
-        cargarTodosLosDatos();
-        actualizarInterfazCaja();
-      } else {
-        errorMsg.textContent = '❌ Contraseña incorrecta';
-        document.getElementById('passwordInput').value = '';
-        document.getElementById('passwordInput').focus();
-      }
-    }
-
-    function cerrarSesion() {
-      document.getElementById('loginOverlay').style.display = 'flex';
-      document.getElementById('mainContent').style.display = 'none';
-      document.getElementById('passwordInput').value = '';
-      document.getElementById('errorMsg').textContent = '';
-    }
-
-    // Cambiar panel
-    function cambiarPanel(panel) {
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      
-      if (panel === 'presupuestos') {
-        document.getElementById('panelPresupuestos').classList.add('active');
-        document.querySelectorAll('.tab-btn')[0].classList.add('active');
-        cargarPresupuestos();
-      } else if (panel === 'stock') {
-        document.getElementById('panelStock').classList.add('active');
-        document.querySelectorAll('.tab-btn')[1].classList.add('active');
-        cargarStock();
-      } else if (panel === 'caja') {
-        document.getElementById('panelCaja').classList.add('active');
-        document.querySelectorAll('.tab-btn')[2].classList.add('active');
-        cargarCaja();
-        cargarCierres();
-      }
-    }
-
-    // Calcular total
-    function calcularTotalPresupuesto() {
-      const manoObra = parseFloat(document.getElementById('manoObra').value) || 0;
-      const repuestos = parseFloat(document.getElementById('repuestos').value) || 0;
-      document.getElementById('totalPresupuesto').value = (manoObra + repuestos).toFixed(2);
-    }
-
-    // Presupuestos
-    document.getElementById('formPresupuesto').addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!cajaAbierta) {
-        alert('⚠️ Debe abrir la caja antes de crear presupuestos');
-        return;
-      }
-      const nuevoPresupuesto = {
-        id: nextIdPresupuesto++,
-        cliente: document.getElementById('clientePresupuesto').value,
-        vehiculo: document.getElementById('vehiculoPresupuesto').value,
-        descripcion: document.getElementById('descripcionPresupuesto').value,
-        manoObra: parseFloat(document.getElementById('manoObra').value),
-        repuestos: parseFloat(document.getElementById('repuestos').value),
-        total: parseFloat(document.getElementById('totalPresupuesto').value),
-        estado: 'Pendiente',
-        fecha: new Date().toLocaleString()
-      };
-      presupuestos.push(nuevoPresupuesto);
-      guardarDatos();
-      cargarPresupuestos();
-      limpiarFormPresupuesto();
-      alert('✅ Presupuesto creado');
-    });
-
-    function limpiarFormPresupuesto() {
-      document.getElementById('clientePresupuesto').value = '';
-      document.getElementById('vehiculoPresupuesto').value = '';
-      document.getElementById('descripcionPresupuesto').value = '';
-      document.getElementById('manoObra').value = '0';
-      document.getElementById('repuestos').value = '0';
-      document.getElementById('totalPresupuesto').value = '0';
-    }
-
-    function cargarPresupuestos() {
-      const tbody = document.getElementById('listaPresupuestos');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      presupuestos.forEach(p => {
-        const row = tbody.insertRow();
-        row.innerHTML = `
-          <td>${p.id}</td><td>${p.fecha}</td><td>${p.cliente}</td><td>${p.vehiculo}</td>
-          <td>${p.descripcion.substring(0, 30)}${p.descripcion.length > 30 ? '...' : ''}</td>
-          <td>$${p.manoObra.toFixed(2)}</td><td>$${p.repuestos.toFixed(2)}</td>
-          <td>$${p.total.toFixed(2)}</td>
-          <td><select onchange="cambiarEstadoPresupuesto(${p.id}, this.value)" style="background:#1a1a1a; color:white;">
-            <option value="Pendiente" ${p.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
-            <option value="Aprobado" ${p.estado === 'Aprobado' ? 'selected' : ''}>Aprobado</option>
-            <option value="Pagado" ${p.estado === 'Pagado' ? 'selected' : ''}>Pagado</option>
-            <option value="Rechazado" ${p.estado === 'Rechazado' ? 'selected' : ''}>Rechazado</option>
-          </select></td>
-          <td class="action-buttons">
-            <button class="btn-success" onclick="marcarPagado(${p.id})" ${p.estado === 'Pagado' ? 'disabled' : ''}>💰 Pagar</button>
-            <button class="btn-danger" onclick="eliminarPresupuesto(${p.id})">🗑️ Eliminar</button>
-          </td>
-        `;
-      });
-    }
-
-    function cambiarEstadoPresupuesto(id, nuevoEstado) {
-      const presupuesto = presupuestos.find(p => p.id === id);
-      if (presupuesto) {
-        presupuesto.estado = nuevoEstado;
-        guardarDatos();
-        cargarPresupuestos();
-      }
-    }
-
-    function marcarPagado(id) {
-      if (!cajaAbierta) {
-        alert('⚠️ Debe abrir la caja para registrar pagos');
-        return;
-      }
-      
-      const presupuesto = presupuestos.find(p => p.id === id);
-      if (presupuesto && presupuesto.estado !== 'Pagado') {
-        const medioPago = prompt('Seleccione medio de pago:\n1 - Efectivo\n2 - Transferencia\n3 - Débito\n4 - Crédito');
-        let medio = '';
-        switch(medioPago) {
-          case '1': medio = 'efectivo'; break;
-          case '2': medio = 'transferencia'; break;
-          case '3': medio = 'debito'; break;
-          case '4': medio = 'credito'; break;
-          default: alert('Opción inválida'); return;
+      stockFiltrado = stock.filter(item => {
+        // Búsqueda por texto
+        let coincideBusqueda = true;
+        if (busqueda) {
+          coincideBusqueda = item.codigoInterno?.toLowerCase().includes(busqueda) ||
+                            item.producto.toLowerCase().includes(busqueda) ||
+                            item.descripcion?.toLowerCase().includes(busqueda) ||
+                            item.categoria.toLowerCase().includes(busqueda);
         }
         
-        presupuesto.estado = 'Pagado';
-        guardarDatos();
-        cargarPresupuestos();
+        // Filtro por categoría
+        let coincideCategoria = true;
+        if (categoria) {
+          coincideCategoria = item.categoria === categoria;
+        }
         
-        const nuevoMovimiento = {
-          id: nextIdMovimiento++,
-          tipo: 'ingreso',
-          medioPago: medio,
-          concepto: `Pago presupuesto #${presupuesto.id} - ${presupuesto.cliente}`,
-          monto: presupuesto.total,
-          referencia: `Presupuesto #${presupuesto.id}`,
-          fecha: new Date().toLocaleString(),
-          hora: new Date().toLocaleTimeString()
-        };
-        movimientos.push(nuevoMovimiento);
-        guardarDatos();
-        cargarCaja();
-        alert(`✅ Ingreso de $${presupuesto.total.toFixed(2)} registrado por ${getNombreMedio(medio)}`);
-      }
+        // Filtro por nivel de stock
+        let coincideStock = true;
+        if (filtroStock === 'bajo') {
+          coincideStock = item.cantidad < 5 && item.cantidad > 0;
+        } else if (filtroStock === 'normal') {
+          coincideStock = item.cantidad >= 5;
+        } else if (filtroStock === 'agotado') {
+          coincideStock = item.cantidad === 0;
+        }
+        
+        return coincideBusqueda && coincideCategoria && coincideStock;
+      });
+      
+      renderizarStock();
     }
 
-    function getNombreMedio(medio) {
-      const nombres = { efectivo: 'Efectivo', transferencia: 'Transferencia', debito: 'Débito', credito: 'Crédito' };
-      return nombres[medio] || medio;
+    function limpiarFiltros() {
+      document.getElementById('buscadorStock').value = '';
+      document.getElementById('filtroCategoria').value = '';
+      document.getElementById('filtroStock').value = '';
+      stockFiltrado = [...stock];
+      renderizarStock();
     }
 
-    function eliminarPresupuesto(id) {
-      if (confirm('¿Eliminar este presupuesto?')) {
-        presupuestos = presupuestos.filter(p => p.id !== id);
-        guardarDatos();
-        cargarPresupuestos();
-      }
-    }
-
-    // Stock
-    document.getElementById('formStock').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const nuevoProducto = {
-        id: nextIdStock++,
-        producto: document.getElementById('productoStock').value,
-        cantidad: parseInt(document.getElementById('cantidadStock').value),
-        precioUnitario: parseFloat(document.getElementById('precioStock').value),
-        categoria: document.getElementById('categoriaStock').value
-      };
-      stock.push(nuevoProducto);
-      guardarDatos();
-      cargarStock();
-      limpiarFormStock();
-      alert('✅ Producto agregado');
-    });
-
-    function limpiarFormStock() {
-      document.getElementById('productoStock').value = '';
-      document.getElementById('cantidadStock').value = '0';
-      document.getElementById('precioStock').value = '0';
-    }
-
-    function cargarStock() {
+    function renderizarStock() {
       const tbody = document.getElementById('listaStock');
       if (!tbody) return;
       tbody.innerHTML = '';
       let stockBajoMsg = '';
       
-      stock.forEach(s => {
+      stockFiltrado.forEach(s => {
         const valorTotal = s.cantidad * s.precioUnitario;
         const row = tbody.insertRow();
-        if (s.cantidad < 5) {
+        if (s.cantidad < 5 && s.cantidad > 0) {
           row.classList.add('stock-bajo');
           stockBajoMsg += `⚠️ Stock bajo: ${s.producto} (${s.cantidad} unidades)<br>`;
+        } else if (s.cantidad === 0) {
+          row.classList.add('stock-bajo');
+          stockBajoMsg += `❌ Agotado: ${s.producto}<br>`;
         }
         row.innerHTML = `
-          <td>${s.id}</td><td>${s.producto}</td><td>${s.cantidad}</td>
-          <td>$${s.precioUnitario.toFixed(2)}</td><td>${s.categoria}</td>
+          <td>${s.codigoInterno || '-'}</td>
+          <td>${s.producto}</td>
+          <td>${s.descripcion ? s.descripcion.substring(0, 40) + (s.descripcion.length > 40 ? '...' : '') : '-'}</td>
+          <td>${s.cantidad}</td>
+          <td>$${s.precioUnitario.toFixed(2)}</td>
+          <td>${s.categoria}</td>
           <td>$${valorTotal.toFixed(2)}</td>
           <td class="action-buttons">
+            <button class="btn-info" onclick="verDetalleProducto(${s.id})">🔍 Ver</button>
             <button class="btn-warning" onclick="editarStock(${s.id})">✏️ Editar</button>
             <button class="btn-danger" onclick="eliminarStock(${s.id})">🗑️ Eliminar</button>
           </td>
@@ -1038,173 +886,48 @@
       actualizarValorInventario();
     }
 
-    function editarStock(id) {
+    function verDetalleProducto(id) {
       const producto = stock.find(s => s.id === id);
       if (producto) {
-        const nuevaCantidad = prompt('Ingrese nueva cantidad:', producto.cantidad);
-        if (nuevaCantidad !== null && !isNaN(nuevaCantidad) && nuevaCantidad !== '') {
-          producto.cantidad = parseInt(nuevaCantidad);
-          guardarDatos();
-          cargarStock();
-        }
+        const modal = document.getElementById('modalDetalle');
+        const detalle = document.getElementById('detalleProducto');
+        detalle.innerHTML = `
+          <p><strong>Código Interno:</strong> ${producto.codigoInterno || '-'}</p>
+          <p><strong>Producto:</strong> ${producto.producto}</p>
+          <p><strong>Descripción/Equivalencias:</strong><br>${producto.descripcion || '-'}</p>
+          <p><strong>Cantidad:</strong> ${producto.cantidad} unidades</p>
+          <p><strong>Precio Unitario:</strong> $${producto.precioUnitario.toFixed(2)}</p>
+          <p><strong>Categoría:</strong> ${producto.categoria}</p>
+          <p><strong>Valor Total:</strong> $${(producto.cantidad * producto.precioUnitario).toFixed(2)}</p>
+        `;
+        modal.style.display = 'flex';
       }
     }
 
-    function eliminarStock(id) {
-      if (confirm('¿Eliminar este producto?')) {
-        stock = stock.filter(s => s.id !== id);
-        guardarDatos();
-        cargarStock();
-      }
+    function cerrarModal() {
+      document.getElementById('modalDetalle').style.display = 'none';
     }
 
-    function actualizarValorInventario() {
-      const valorTotal = stock.reduce((sum, s) => sum + (s.cantidad * s.precioUnitario), 0);
-      const valorInventarioElem = document.getElementById('valorInventario');
-      if (valorInventarioElem) {
-        valorInventarioElem.textContent = `$${valorTotal.toFixed(2)}`;
+    // Control de caja
+    function abrirCaja() {
+      if (cajaAbierta) {
+        alert('⚠️ La caja ya está abierta');
+        return;
       }
+      cajaAbierta = true;
+      fechaCajaActual = new Date().toLocaleDateString();
+      movimientos = [];
+      guardarDatos();
+      actualizarInterfazCaja();
+      alert('✅ Caja abierta exitosamente');
     }
 
-    // Caja
-    document.getElementById('formMovimiento').addEventListener('submit', (e) => {
-      e.preventDefault();
+    function cerrarCaja() {
       if (!cajaAbierta) {
-        alert('⚠️ Debe abrir la caja primero');
+        alert('⚠️ La caja no está abierta');
         return;
       }
       
-      const tipo = document.getElementById('tipoMovimiento').value;
-      const medioPago = document.getElementById('medioPago').value;
-      const monto = parseFloat(document.getElementById('montoMovimiento').value);
-      
-      if (tipo === 'egreso') {
-        const cajaActual = calcularCajaActual();
-        if (monto > cajaActual) {
-          alert('❌ Saldo insuficiente');
-          return;
-        }
-      }
-      
-      const nuevoMovimiento = {
-        id: nextIdMovimiento++,
-        tipo: tipo,
-        medioPago: tipo === 'ingreso' ? medioPago : null,
-        concepto: document.getElementById('conceptoMovimiento').value,
-        monto: monto,
-        referencia: document.getElementById('referenciaMovimiento').value || '-',
-        fecha: new Date().toLocaleString(),
-        hora: new Date().toLocaleTimeString()
-      };
-      movimientos.push(nuevoMovimiento);
-      guardarDatos();
-      cargarCaja();
-      document.getElementById('conceptoMovimiento').value = '';
-      document.getElementById('montoMovimiento').value = '0';
-      document.getElementById('referenciaMovimiento').value = '';
-      alert('✅ Movimiento registrado');
-    });
-
-    function calcularCajaActual() {
-      let total = 0;
-      movimientos.forEach(m => {
-        if (m.tipo === 'ingreso') total += m.monto;
-        else if (m.tipo === 'egreso') total -= m.monto;
-      });
-      return total;
-    }
-
-    function calcularTotalIngresos() {
-      return movimientos.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
-    }
-
-    function calcularTotalEgresos() {
-      return movimientos.filter(m => m.tipo === 'egreso').reduce((sum, m) => sum + m.monto, 0);
-    }
-
-    function getMedioPagoIcono(medio) {
-      if (!medio) return '-';
-      const iconos = {
-        efectivo: '<span class="medio-pago medio-efectivo">💵 Efectivo</span>',
-        transferencia: '<span class="medio-pago medio-transferencia">🏦 Transferencia</span>',
-        debito: '<span class="medio-pago medio-debito">💳 Débito</span>',
-        credito: '<span class="medio-pago medio-credito">💎 Crédito</span>'
-      };
-      return iconos[medio] || medio;
-    }
-
-    function cargarCaja() {
-      const cajaActual = calcularCajaActual();
       const totalIngresos = calcularTotalIngresos();
       const totalEgresos = calcularTotalEgresos();
-      
-      const cajaActualElem = document.getElementById('cajaActual');
-      const totalIngresosElem = document.getElementById('totalIngresos');
-      const totalEgresosElem = document.getElementById('totalEgresos');
-      
-      if (cajaActualElem) cajaActualElem.textContent = `$${cajaActual.toFixed(2)}`;
-      if (totalIngresosElem) totalIngresosElem.textContent = `$${totalIngresos.toFixed(2)}`;
-      if (totalEgresosElem) totalEgresosElem.textContent = `$${totalEgresos.toFixed(2)}`;
-      
-      const tbody = document.getElementById('listaMovimientos');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      movimientos.slice().reverse().forEach(m => {
-        const row = tbody.insertRow();
-        row.innerHTML = `
-          <td>${m.hora || m.fecha.split(',')[1]}</td>
-          <td>${m.tipo === 'ingreso' ? '💰 Ingreso' : '💸 Egreso'}</td>
-          <td>${getMedioPagoIcono(m.medioPago)}</td>
-          <td>${m.concepto}</td>
-          <td style="color: ${m.tipo === 'ingreso' ? '#28a745' : '#dc3545'}; font-weight: bold;">
-            ${m.tipo === 'ingreso' ? '+' : '-'}$${m.monto.toFixed(2)}
-          </td>
-          <td>${m.referencia}</td>
-          <td><button class="btn-danger" onclick="eliminarMovimiento(${m.id})">🗑️</button></td>
-        `;
-      });
-      
-      actualizarValorInventario();
-      actualizarDesgloseInterfaz();
-    }
-
-    function cargarCierres() {
-      const tbody = document.getElementById('listaCierres');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      cierres.slice().reverse().forEach(c => {
-        const row = tbody.insertRow();
-        row.innerHTML = `
-          <td>${c.fecha}</td>
-          <td>$${c.totalIngresos.toFixed(2)}</td>
-          <td>$${c.efectivo.toFixed(2)}</td>
-          <td>$${c.transferencia.toFixed(2)}</td>
-          <td>$${c.debito.toFixed(2)}</td>
-          <td>$${c.credito.toFixed(2)}</td>
-          <td>$${c.totalEgresos.toFixed(2)}</td>
-          <td>$${c.saldoFinal.toFixed(2)}</td>
-        `;
-      });
-    }
-
-    function eliminarMovimiento(id) {
-      if (confirm('¿Eliminar este movimiento?')) {
-        movimientos = movimientos.filter(m => m.id !== id);
-        guardarDatos();
-        cargarCaja();
-      }
-    }
-
-    function cargarTodosLosDatos() {
-      cargarPresupuestos();
-      cargarStock();
-      cargarCaja();
-      cargarCierres();
-    }
-
-    // Event listeners
-    document.getElementById('manoObra').addEventListener('input', calcularTotalPresupuesto);
-    document.getElementById('repuestos').addEventListener('input', calcularTotalPresupuesto);
-  </script>
-</body>
-</html>
+      const saldoFinal = calcularCaja
