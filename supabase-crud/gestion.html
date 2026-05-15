@@ -3,38 +3,836 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gestión del Taller</title>
-  <link rel="stylesheet" href="./css/style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <title>Sistema Integral de Taller Mecánico</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* Pantalla de login */
+    .login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .login-box {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      text-align: center;
+      width: 350px;
+    }
+
+    .login-box h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .login-box button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .error-msg {
+      color: red;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    /* Main content */
+    .main-content {
+      display: none;
+    }
+
+    header {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      color: #333;
+      font-size: 24px;
+    }
+
+    .logout-btn {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .logout-btn:hover {
+      background: #c82333;
+    }
+
+    /* Navegación */
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .tab-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    /* Paneles */
+    .panel {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    /* Formularios */
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    }
+
+    .btn-danger {
+      background: #dc3545;
+    }
+
+    .btn-success {
+      background: #28a745;
+    }
+
+    /* Tablas */
+    .table-container {
+      overflow-x: auto;
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background: #f8f9fa;
+      font-weight: bold;
+      color: #555;
+    }
+
+    tr:hover {
+      background: #f5f5f5;
+    }
+
+    .action-buttons button {
+      margin: 2px;
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    /* Resumen financiero */
+    .resumen-caja {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .resumen-caja h3 {
+      margin-bottom: 15px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.2);
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    /* Stock bajo */
+    .stock-bajo {
+      background-color: #ffebee;
+      color: #c62828;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      color: white;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+      
+      .tab-btn {
+        flex: 1;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>⚙️ Gestión del Taller</h1>
-  </header>
+  <!-- Pantalla de Login -->
+  <div id="loginOverlay" class="login-overlay">
+    <div class="login-box">
+      <h2>🔐 Acceso al Sistema</h2>
+      <h3>Taller Mecánico</h3>
+      <input type="password" id="passwordInput" placeholder="Ingrese la contraseña" autofocus>
+      <button onclick="verificarPassword()">Ingresar</button>
+      <div id="errorMsg" class="error-msg"></div>
+    </div>
+  </div>
 
-  <main>
-    <section id="panel">
-      <label for="selector">Seleccionar tabla:</label>
-      <select id="selector">
-        <option value="clientes">Clientes</option>
-        <option value="mecanico">Mecánicos</option>
-        <option value="especialidad">Especialidades</option>
-        <option value="service">Service</option>
-      </select>
-    </section>
+  <!-- Contenido principal -->
+  <div id="mainContent" class="main-content">
+    <header>
+      <h1>⚙️ Sistema Integral de Gestión - Taller Mecánico</h1>
+      <button class="logout-btn" onclick="cerrarSesion()">Cerrar Sesión</button>
+    </header>
 
-    <section id="form-section">
-      <h2 id="titulo-form">Agregar registro</h2>
-      <form id="formulario"></form>
-    </section>
+    <!-- Navegación -->
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="cambiarPanel('presupuestos')">📋 Presupuestos</button>
+      <button class="tab-btn" onclick="cambiarPanel('stock')">📦 Control de Stock</button>
+      <button class="tab-btn" onclick="cambiarPanel('caja')">💰 Caja y Finanzas</button>
+    </div>
 
-    <section id="crud-container"></section>
-  </main>
+    <!-- Panel Presupuestos -->
+    <div id="panelPresupuestos" class="panel active">
+      <h2>📋 Gestión de Presupuestos</h2>
+      <form id="formPresupuesto">
+        <div class="form-group">
+          <label>Cliente:</label>
+          <input type="text" id="clientePresupuesto" required placeholder="Nombre del cliente">
+        </div>
+        <div class="form-group">
+          <label>Vehículo:</label>
+          <input type="text" id="vehiculoPresupuesto" required placeholder="Marca y modelo">
+        </div>
+        <div class="form-group">
+          <label>Descripción del trabajo:</label>
+          <textarea id="descripcionPresupuesto" rows="3" required placeholder="Detalle de las reparaciones/servicios"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Mano de obra ($):</label>
+          <input type="number" id="manoObra" required step="0.01">
+        </div>
+        <div class="form-group">
+          <label>Repuestos ($):</label>
+          <input type="number" id="repuestos" required step="0.01">
+        </div>
+        <div class="form-group">
+          <label>Total ($):</label>
+          <input type="number" id="totalPresupuesto" readonly style="background:#f0f0f0">
+        </div>
+        <button type="submit">➕ Crear Presupuesto</button>
+        <button type="button" onclick="limpiarFormPresupuesto()">🗑️ Limpiar</button>
+      </form>
 
-  <footer>
-    <p>Desarrollado con ❤️ y Supabase</p>
-  </footer>
+      <div class="table-container">
+        <h3>📋 Lista de Presupuestos</h3>
+        <table id="tablaPresupuestos">
+          <thead>
+            <tr><th>ID</th><th>Cliente</th><th>Vehículo</th><th>Descripción</th><th>Mano Obra</th><th>Repuestos</th><th>Total</th><th>Estado</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="listaPresupuestos"></tbody>
+        </table>
+      </div>
+    </div>
 
-  <script src="../js/main.js"></script>
+    <!-- Panel Stock -->
+    <div id="panelStock" class="panel">
+      <h2>📦 Control de Inventario</h2>
+      <form id="formStock">
+        <div class="form-group">
+          <label>Producto:</label>
+          <input type="text" id="productoStock" required placeholder="Nombre del producto/repuesto">
+        </div>
+        <div class="form-group">
+          <label>Cantidad:</label>
+          <input type="number" id="cantidadStock" required min="0">
+        </div>
+        <div class="form-group">
+          <label>Precio unitario ($):</label>
+          <input type="number" id="precioStock" required step="0.01">
+        </div>
+        <div class="form-group">
+          <label>Categoría:</label>
+          <select id="categoriaStock">
+            <option value="Motor">Motor</option>
+            <option value="Frenos">Frenos</option>
+            <option value="Suspensión">Suspensión</option>
+            <option value="Eléctrico">Eléctrico</option>
+            <option value="Lubricantes">Lubricantes</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </div>
+        <button type="submit">➕ Agregar Producto</button>
+        <button type="button" onclick="limpiarFormStock()">🗑️ Limpiar</button>
+      </form>
+
+      <div class="table-container">
+        <h3>📋 Inventario Actual</h3>
+        <div id="stockAlerta" style="margin-bottom: 10px;"></div>
+        <table id="tablaStock">
+          <thead>
+            <tr><th>ID</th><th>Producto</th><th>Cantidad</th><th>Precio Unit.</th><th>Categoría</th><th>Valor Total</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="listaStock"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Panel Caja -->
+    <div id="panelCaja" class="panel">
+      <h2>💰 Gestión de Caja y Finanzas</h2>
+      
+      <div class="resumen-caja">
+        <h3>📊 Resumen Financiero</h3>
+        <div class="stats">
+          <div class="stat-card">
+            <strong>💰 Caja Actual:</strong><br>
+            <span id="cajaActual" style="font-size: 24px;">$0</span>
+          </div>
+          <div class="stat-card">
+            <strong>📈 Total Ingresos:</strong><br>
+            <span id="totalIngresos" style="font-size: 24px;">$0</span>
+          </div>
+          <div class="stat-card">
+            <strong>📉 Total Egresos:</strong><br>
+            <span id="totalEgresos" style="font-size: 24px;">$0</span>
+          </div>
+          <div class="stat-card">
+            <strong>💼 Valor Inventario:</strong><br>
+            <span id="valorInventario" style="font-size: 24px;">$0</span>
+          </div>
+        </div>
+      </div>
+
+      <form id="formMovimiento">
+        <h3>Registrar Movimiento</h3>
+        <div class="form-group">
+          <label>Tipo:</label>
+          <select id="tipoMovimiento">
+            <option value="ingreso">💰 Ingreso</option>
+            <option value="egreso">💸 Egreso</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Concepto:</label>
+          <input type="text" id="conceptoMovimiento" required placeholder="Ej: Pago de presupuesto, compra de repuestos">
+        </div>
+        <div class="form-group">
+          <label>Monto ($):</label>
+          <input type="number" id="montoMovimiento" required step="0.01">
+        </div>
+        <div class="form-group">
+          <label>Referencia:</label>
+          <input type="text" id="referenciaMovimiento" placeholder="N° presupuesto, factura, etc.">
+        </div>
+        <button type="submit">✅ Registrar Movimiento</button>
+      </form>
+
+      <div class="table-container">
+        <h3>📋 Historial de Movimientos</h3>
+        <table id="tablaMovimientos">
+          <thead>
+            <tr><th>Fecha</th><th>Tipo</th><th>Concepto</th><th>Monto</th><th>Referencia</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="listaMovimientos"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <footer>
+      <p>Desarrollado con ❤️ - Sistema Integral de Gestión para Taller Mecánico</p>
+    </footer>
+  </div>
+
+  <script>
+    // CONSTANTES Y VARIABLES GLOBALES
+    const CONTRASENA_CORRECTA = "153624";
+    
+    // Almacenamiento local
+    let presupuestos = JSON.parse(localStorage.getItem('presupuestos')) || [];
+    let stock = JSON.parse(localStorage.getItem('stock')) || [];
+    let movimientos = JSON.parse(localStorage.getItem('movimientos')) || [];
+    let nextIdPresupuesto = parseInt(localStorage.getItem('nextIdPresupuesto')) || 1;
+    let nextIdStock = parseInt(localStorage.getItem('nextIdStock')) || 1;
+    let nextIdMovimiento = parseInt(localStorage.getItem('nextIdMovimiento')) || 1;
+
+    // Función para guardar datos
+    function guardarDatos() {
+      localStorage.setItem('presupuestos', JSON.stringify(presupuestos));
+      localStorage.setItem('stock', JSON.stringify(stock));
+      localStorage.setItem('movimientos', JSON.stringify(movimientos));
+      localStorage.setItem('nextIdPresupuesto', nextIdPresupuesto);
+      localStorage.setItem('nextIdStock', nextIdStock);
+      localStorage.setItem('nextIdMovimiento', nextIdMovimiento);
+    }
+
+    // Verificar contraseña
+    function verificarPassword() {
+      const password = document.getElementById('passwordInput').value;
+      const errorMsg = document.getElementById('errorMsg');
+      
+      if (password === CONTRASENA_CORRECTA) {
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        errorMsg.textContent = '';
+        cargarTodosLosDatos();
+      } else {
+        errorMsg.textContent = '❌ Contraseña incorrecta. Intente nuevamente.';
+        document.getElementById('passwordInput').value = '';
+        document.getElementById('passwordInput').focus();
+      }
+    }
+
+    // Cerrar sesión
+    function cerrarSesion() {
+      document.getElementById('loginOverlay').style.display = 'flex';
+      document.getElementById('mainContent').style.display = 'none';
+      document.getElementById('passwordInput').value = '';
+      document.getElementById('errorMsg').textContent = '';
+    }
+
+    // Cambiar panel
+    function cambiarPanel(panel) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      
+      if (panel === 'presupuestos') {
+        document.getElementById('panelPresupuestos').classList.add('active');
+        document.querySelector('.tab-btn').classList.add('active');
+        cargarPresupuestos();
+      } else if (panel === 'stock') {
+        document.getElementById('panelStock').classList.add('active');
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        cargarStock();
+      } else if (panel === 'caja') {
+        document.getElementById('panelCaja').classList.add('active');
+        document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        cargarCaja();
+      }
+    }
+
+    // Calcular total presupuesto
+    function calcularTotalPresupuesto() {
+      const manoObra = parseFloat(document.getElementById('manoObra').value) || 0;
+      const repuestos = parseFloat(document.getElementById('repuestos').value) || 0;
+      const total = manoObra + repuestos;
+      document.getElementById('totalPresupuesto').value = total.toFixed(2);
+    }
+
+    // Event listeners para presupuesto
+    document.getElementById('manoObra').addEventListener('input', calcularTotalPresupuesto);
+    document.getElementById('repuestos').addEventListener('input', calcularTotalPresupuesto);
+
+    // Crear presupuesto
+    document.getElementById('formPresupuesto').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nuevoPresupuesto = {
+        id: nextIdPresupuesto++,
+        cliente: document.getElementById('clientePresupuesto').value,
+        vehiculo: document.getElementById('vehiculoPresupuesto').value,
+        descripcion: document.getElementById('descripcionPresupuesto').value,
+        manoObra: parseFloat(document.getElementById('manoObra').value),
+        repuestos: parseFloat(document.getElementById('repuestos').value),
+        total: parseFloat(document.getElementById('totalPresupuesto').value),
+        estado: 'Pendiente',
+        fecha: new Date().toLocaleString()
+      };
+      presupuestos.push(nuevoPresupuesto);
+      guardarDatos();
+      cargarPresupuestos();
+      limpiarFormPresupuesto();
+      alert('✅ Presupuesto creado exitosamente');
+    });
+
+    function limpiarFormPresupuesto() {
+      document.getElementById('clientePresupuesto').value = '';
+      document.getElementById('vehiculoPresupuesto').value = '';
+      document.getElementById('descripcionPresupuesto').value = '';
+      document.getElementById('manoObra').value = '';
+      document.getElementById('repuestos').value = '';
+      document.getElementById('totalPresupuesto').value = '';
+    }
+
+    function cargarPresupuestos() {
+      const tbody = document.getElementById('listaPresupuestos');
+      tbody.innerHTML = '';
+      presupuestos.forEach(p => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+          <td>${p.id}</td>
+          <td>${p.cliente}</td>
+          <td>${p.vehiculo}</td>
+          <td>${p.descripcion.substring(0, 30)}...</td>
+          <td>$${p.manoObra.toFixed(2)}</td>
+          <td>$${p.repuestos.toFixed(2)}</td>
+          <td>$${p.total.toFixed(2)}</td>
+          <td>
+            <select onchange="cambiarEstadoPresupuesto(${p.id}, this.value)">
+              <option value="Pendiente" ${p.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+              <option value="Aprobado" ${p.estado === 'Aprobado' ? 'selected' : ''}>Aprobado</option>
+              <option value="Pagado" ${p.estado === 'Pagado' ? 'selected' : ''}>Pagado</option>
+              <option value="Rechazado" ${p.estado === 'Rechazado' ? 'selected' : ''}>Rechazado</option>
+            </select>
+          </td>
+          <td class="action-buttons">
+            <button class="btn-success" onclick="marcarPagado(${p.id})" ${p.estado === 'Pagado' ? 'disabled' : ''}>💰 Pagar</button>
+            <button class="btn-danger" onclick="eliminarPresupuesto(${p.id})">🗑️ Eliminar</button>
+          </td>
+        `;
+      });
+    }
+
+    function cambiarEstadoPresupuesto(id, nuevoEstado) {
+      const presupuesto = presupuestos.find(p => p.id === id);
+      if (presupuesto) {
+        presupuesto.estado = nuevoEstado;
+        guardarDatos();
+        cargarPresupuestos();
+      }
+    }
+
+    function marcarPagado(id) {
+      const presupuesto = presupuestos.find(p => p.id === id);
+      if (presupuesto && presupuesto.estado !== 'Pagado') {
+        presupuesto.estado = 'Pagado';
+        guardarDatos();
+        cargarPresupuestos();
+        
+        // Registrar ingreso automático
+        const nuevoMovimiento = {
+          id: nextIdMovimiento++,
+          tipo: 'ingreso',
+          concepto: `Pago de presupuesto #${presupuesto.id} - ${presupuesto.cliente}`,
+          monto: presupuesto.total,
+          referencia: `Presupuesto #${presupuesto.id}`,
+          fecha: new Date().toLocaleString()
+        };
+        movimientos.push(nuevoMovimiento);
+        guardarDatos();
+        cargarCaja();
+        alert(`✅ Se registró un ingreso de $${presupuesto.total.toFixed(2)} por el presupuesto #${id}`);
+      }
+    }
+
+    function eliminarPresupuesto(id) {
+      if (confirm('¿Eliminar este presupuesto?')) {
+        presupuestos = presupuestos.filter(p => p.id !== id);
+        guardarDatos();
+        cargarPresupuestos();
+      }
+    }
+
+    // STOCK
+    document.getElementById('formStock').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nuevoProducto = {
+        id: nextIdStock++,
+        producto: document.getElementById('productoStock').value,
+        cantidad: parseInt(document.getElementById('cantidadStock').value),
+        precioUnitario: parseFloat(document.getElementById('precioStock').value),
+        categoria: document.getElementById('categoriaStock').value
+      };
+      stock.push(nuevoProducto);
+      guardarDatos();
+      cargarStock();
+      limpiarFormStock();
+      alert('✅ Producto agregado al inventario');
+    });
+
+    function limpiarFormStock() {
+      document.getElementById('productoStock').value = '';
+      document.getElementById('cantidadStock').value = '';
+      document.getElementById('precioStock').value = '';
+    }
+
+    function cargarStock() {
+      const tbody = document.getElementById('listaStock');
+      tbody.innerHTML = '';
+      let stockBajoMsg = '';
+      
+      stock.forEach(s => {
+        const valorTotal = s.cantidad * s.precioUnitario;
+        const row = tbody.insertRow();
+        if (s.cantidad < 5) {
+          row.classList.add('stock-bajo');
+          stockBajoMsg += `⚠️ Stock bajo: ${s.producto} (${s.cantidad} unidades)<br>`;
+        }
+        row.innerHTML = `
+          <td>${s.id}</td>
+          <td>${s.producto}</td>
+          <td>${s.cantidad}</td>
+          <td>$${s.precioUnitario.toFixed(2)}</td>
+          <td>${s.categoria}</td>
+          <td>$${valorTotal.toFixed(2)}</td>
+          <td class="action-buttons">
+            <button onclick="editarStock(${s.id})">✏️ Editar</button>
+            <button class="btn-danger" onclick="eliminarStock(${s.id})">🗑️ Eliminar</button>
+          </td>
+        `;
+      });
+      
+      document.getElementById('stockAlerta').innerHTML = stockBajoMsg ? `<div style="background:#ffeb3b; padding:10px; border-radius:8px;">${stockBajoMsg}</div>` : '';
+      actualizarValorInventario();
+    }
+
+    function editarStock(id) {
+      const producto = stock.find(s => s.id === id);
+      if (producto) {
+        const nuevaCantidad = prompt('Ingrese nueva cantidad:', producto.cantidad);
+        if (nuevaCantidad !== null && !isNaN(nuevaCantidad)) {
+          producto.cantidad = parseInt(nuevaCantidad);
+          guardarDatos();
+          cargarStock();
+        }
+      }
+    }
+
+    function eliminarStock(id) {
+      if (confirm('¿Eliminar este producto del inventario?')) {
+        stock = stock.filter(s => s.id !== id);
+        guardarDatos();
+        cargarStock();
+      }
+    }
+
+    function actualizarValorInventario() {
+      const valorTotal = stock.reduce((sum, s) => sum + (s.cantidad * s.precioUnitario), 0);
+      const valorInventarioElem = document.getElementById('valorInventario');
+      if (valorInventarioElem) {
+        valorInventarioElem.textContent = `$${valorTotal.toFixed(2)}`;
+      }
+    }
+
+    // CAJA
+    document.getElementById('formMovimiento').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const tipo = document.getElementById('tipoMovimiento').value;
+      const monto = parseFloat(document.getElementById('montoMovimiento').value);
+      
+      if (tipo === 'egreso') {
+        const cajaActual = calcularCajaActual();
+        if (monto > cajaActual) {
+          alert('❌ No hay suficiente dinero en caja para realizar este egreso');
+          return;
+        }
+      }
+      
+      const nuevoMovimiento = {
+        id: nextIdMovimiento++,
+        tipo: tipo,
+        concepto: document.getElementById('conceptoMovimiento').value,
+        monto: monto,
+        referencia: document.getElementById('referenciaMovimiento').value || '-',
+        fecha: new Date().toLocaleString()
+      };
+      movimientos.push(nuevoMovimiento);
+      guardarDatos();
+      cargarCaja();
+      limpiarFormMovimiento();
+      alert('✅ Movimiento registrado exitosamente');
+    });
+
+    function limpiarFormMovimiento() {
+      document.getElementById('conceptoMovimiento').value = '';
+      document.getElementById('montoMovimiento').value = '';
+      document.getElementById('referenciaMovimiento').value = '';
+    }
+
+    function calcularCajaActual() {
+      let total = 0;
+      movimientos.forEach(m => {
+        if (m.tipo === 'ingreso') total += m.monto;
+        else if (m.tipo === 'egreso') total -= m.monto;
+      });
+      return total;
+    }
+
+    function calcularTotalIngresos() {
+      return movimientos.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
+    }
+
+    function calcularTotalEgresos() {
+      return movimientos.filter(m => m.tipo === 'egreso').reduce((sum, m) => sum + m.monto, 0);
+    }
+
+    function cargarCaja() {
+      const cajaActual = calcularCajaActual();
+      const totalIngresos = calcularTotalIngresos();
+      const totalEgresos = calcularTotalEgresos();
+      
+      document.getElementById('cajaActual').textContent = `$${cajaActual.toFixed(2)}`;
+      document.getElementById('totalIngresos').textContent = `$${totalIngresos.toFixed(2)}`;
+      document.getElementById('totalEgresos').textContent = `$${totalEgresos.toFixed(2)}`;
+      
+      const tbody = document.getElementById('listaMovimientos');
+      tbody.innerHTML = '';
+      movimientos.slice().reverse().forEach(m => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+          <td>${m.fecha}</td>
+          <td>${m.tipo === 'ingreso' ? '💰 Ingreso' : '💸 Egreso'}</td>
+          <td>${m.concepto}</td>
+          <td style="color: ${m.tipo === 'ingreso' ? '#28a745' : '#dc3545'}; font-weight: bold;">
+            ${m.tipo === 'ingreso' ? '+' : '-'}$${m.monto.toFixed(2)}
+          </td>
+          <td>${m.referencia}</td>
+          <td><button class="btn-danger" onclick="eliminarMovimiento(${m.id})">🗑️</button></td>
+        `;
+      });
+      
+      actualizarValorInventario();
+    }
+
+    function eliminarMovimiento(id) {
+      if (confirm('¿Eliminar este movimiento? Esta acción puede afectar el balance de caja.')) {
+        movimientos = movimientos.filter(m => m.id !== id);
+        guardarDatos();
+        cargarCaja();
+      }
+    }
+
+    function cargarTodosLosDatos() {
+      cargarPresupuestos();
+      cargarStock();
+      cargarCaja();
+    }
+
+    // Inicializar datos de ejemplo si están vacíos
+    if (stock.length === 0) {
+      stock = [
+        { id: nextIdStock++, producto: 'Aceite de motor 5W30', cantidad: 12, precioUnitario: 25.50, categoria: 'Lubricantes' },
+        { id: nextIdStock++, producto: 'Filtro de aceite', cantidad: 8, precioUnitario: 12.00, categoria: 'Motor' },
+        { id: nextIdStock++, producto: 'Pastillas de freno', cantidad: 3, precioUnitario: 45.00, categoria: 'Frenos' },
+        { id: nextIdStock++, producto: 'Bujías', cantidad: 15, precioUnitario: 8.50, categoria: 'Motor' }
+      ];
+      guardarDatos();
+    }
+    
+    if (movimientos.length === 0) {
+      movimientos = [
+        { id: nextIdMovimiento++, tipo: 'ingreso', concepto: 'Saldo inicial', monto: 5000, referencia: 'Apertura', fecha: new Date().toLocaleString() }
+      ];
+      guardarDatos();
+    }
+  </script>
 </body>
 </html>
