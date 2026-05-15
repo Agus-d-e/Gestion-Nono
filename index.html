@@ -18,7 +18,6 @@
       padding: 20px;
     }
 
-    /* Pantalla de login */
     .login-overlay {
       position: fixed;
       top: 0;
@@ -36,7 +35,6 @@
       background: #1a1a1a;
       padding: 40px;
       border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
       text-align: center;
       width: 350px;
       border: 1px solid #FF6D00;
@@ -58,7 +56,6 @@
       margin: 10px 0;
       border: 2px solid #333;
       border-radius: 8px;
-      font-size: 16px;
       background: #0a0a0a;
       color: white;
     }
@@ -77,22 +74,18 @@
       border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
-      margin-top: 10px;
       font-weight: bold;
     }
 
     .login-box button:hover {
       background: #e66200;
-      transform: translateY(-2px);
     }
 
     .error-msg {
       color: #FF6D00;
       margin-top: 10px;
-      font-size: 14px;
     }
 
-    /* Main content */
     .main-content {
       display: none;
     }
@@ -102,7 +95,6 @@
       padding: 20px;
       border-radius: 15px;
       margin-bottom: 20px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -123,16 +115,8 @@
       padding: 10px 20px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 14px;
-      font-weight: bold;
     }
 
-    .logout-btn:hover {
-      background: #FF6D00;
-      color: #0a0a0a;
-    }
-
-    /* Navegación */
     .nav-tabs {
       display: flex;
       gap: 10px;
@@ -148,12 +132,10 @@
       cursor: pointer;
       font-size: 16px;
       font-weight: bold;
-      transition: all 0.3s;
       color: #cccccc;
     }
 
     .tab-btn:hover {
-      transform: translateY(-2px);
       background: #252525;
     }
 
@@ -162,13 +144,11 @@
       color: #0a0a0a;
     }
 
-    /* Paneles */
     .panel {
       background: #0a0a0a;
       border-radius: 15px;
       padding: 20px;
       margin-bottom: 20px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
       display: none;
       border: 1px solid #222;
     }
@@ -182,7 +162,6 @@
       margin-bottom: 20px;
     }
 
-    /* Formularios */
     .form-group {
       margin-bottom: 15px;
     }
@@ -199,7 +178,6 @@
       padding: 10px;
       border: 2px solid #222;
       border-radius: 8px;
-      font-size: 14px;
       background: #1a1a1a;
       color: white;
     }
@@ -216,15 +194,13 @@
       padding: 10px 20px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 14px;
+      font-weight: bold;
       margin-right: 10px;
       margin-top: 5px;
-      font-weight: bold;
     }
 
     button:hover {
       background: #e66200;
-      transform: translateY(-2px);
     }
 
     .btn-danger {
@@ -242,17 +218,11 @@
       color: #0a0a0a;
     }
 
-    .btn-secondary {
-      background: #444;
-      color: white;
-    }
-
     .btn-info {
       background: #17a2b8;
       color: white;
     }
 
-    /* Buscador */
     .buscador-container {
       margin-bottom: 20px;
       display: flex;
@@ -270,7 +240,6 @@
       min-width: 150px;
     }
 
-    /* Tablas */
     .table-container {
       overflow-x: auto;
       margin-top: 20px;
@@ -289,7 +258,6 @@
 
     th {
       background: #1a1a1a;
-      font-weight: bold;
       color: #FF6D00;
     }
 
@@ -301,25 +269,12 @@
       background: #1a1a1a;
     }
 
-    .action-buttons button {
-      margin: 2px;
-      padding: 5px 10px;
-      font-size: 12px;
-    }
-
-    /* Resumen financiero */
     .resumen-caja {
       background: #1a1a1a;
-      color: white;
       padding: 20px;
       border-radius: 10px;
       margin-bottom: 20px;
       border: 1px solid #FF6D00;
-    }
-
-    .resumen-caja h3 {
-      color: #FF6D00;
-      margin-bottom: 15px;
     }
 
     .stats {
@@ -334,6 +289,7 @@
       padding: 15px;
       border-radius: 10px;
       border: 1px solid #333;
+      color: white;
     }
 
     .caja-control {
@@ -351,10 +307,6 @@
       padding: 15px 30px;
     }
 
-    .caja-control button:hover {
-      background: #1a1a1a;
-    }
-
     .caja-estado {
       font-size: 18px;
       margin-top: 10px;
@@ -362,19 +314,8 @@
       font-weight: bold;
     }
 
-    /* Stock bajo */
     .stock-bajo {
       background-color: #2a1a0a;
-    }
-    
-    .stock-bajo td {
-      color: #FF6D00;
-    }
-
-    footer {
-      text-align: center;
-      color: #444;
-      margin-top: 20px;
     }
 
     .medio-pago {
@@ -390,7 +331,6 @@
     .medio-debito { background: #6f42c1; color: white; }
     .medio-credito { background: #fd7e14; color: white; }
 
-    /* Modal */
     .modal {
       display: none;
       position: fixed;
@@ -418,28 +358,20 @@
       margin-bottom: 20px;
     }
 
-    .modal-content button {
-      margin-top: 15px;
+    footer {
+      text-align: center;
+      color: #444;
+      margin-top: 20px;
     }
 
     @media (max-width: 768px) {
-      .stats {
-        grid-template-columns: 1fr;
-      }
-      
-      .tab-btn {
-        flex: 1;
-        text-align: center;
-      }
-      
-      header h1 {
-        font-size: 18px;
-      }
+      .stats { grid-template-columns: 1fr; }
+      .tab-btn { flex: 1; text-align: center; }
+      header h1 { font-size: 18px; }
     }
   </style>
 </head>
 <body>
-  <!-- Pantalla de Login -->
   <div id="loginOverlay" class="login-overlay">
     <div class="login-box">
       <h2>🔧 ACCESO AL SISTEMA</h2>
@@ -450,14 +382,12 @@
     </div>
   </div>
 
-  <!-- Contenido principal -->
   <div id="mainContent" class="main-content">
     <header>
       <h1>⚙️ SISTEMA INTEGRAL DE GESTIÓN - TALLER MECÁNICO</h1>
       <button class="logout-btn" onclick="cerrarSesion()">CERRAR SESIÓN</button>
     </header>
 
-    <!-- Navegación -->
     <div class="nav-tabs">
       <button class="tab-btn active" onclick="cambiarPanel('presupuestos')">📋 PRESUPUESTOS</button>
       <button class="tab-btn" onclick="cambiarPanel('stock')">📦 CONTROL DE STOCK</button>
@@ -495,13 +425,10 @@
         <button type="submit">➕ CREAR PRESUPUESTO</button>
         <button type="button" onclick="limpiarFormPresupuesto()">🗑️ LIMPIAR</button>
       </form>
-
       <div class="table-container">
         <h3>📋 Lista de Presupuestos</h3>
-        <table>
-          <thead>
-            <tr><th>ID</th><th>Fecha</th><th>Cliente</th><th>Vehículo</th><th>Descripción</th><th>Mano Obra</th><th>Repuestos</th><th>Total</th><th>Estado</th><th>Acciones</th></tr>
-          </thead>
+        <table id="tablaPresupuestos">
+          <thead><tr><th>ID</th><th>Fecha</th><th>Cliente</th><th>Vehículo</th><th>Descripción</th><th>Mano Obra</th><th>Repuestos</th><th>Total</th><th>Estado</th><th>Acciones</th></tr></thead>
           <tbody id="listaPresupuestos"></tbody>
         </table>
       </div>
@@ -517,11 +444,11 @@
         </div>
         <div class="form-group">
           <label>Producto:</label>
-          <input type="text" id="productoStock" required placeholder="Nombre del producto/repuesto">
+          <input type="text" id="productoStock" required placeholder="Nombre del producto">
         </div>
         <div class="form-group">
           <label>Descripción / Equivalencias:</label>
-          <textarea id="descripcionStock" rows="3" placeholder="Ej: Equivalente a: Bosch 0986AF, Mann HU 719/7x, Original VW"></textarea>
+          <textarea id="descripcionStock" rows="3" placeholder="Ej: Equivalente a: Bosch 0986AF, Mann HU 719/7x"></textarea>
         </div>
         <div class="form-group">
           <label>Cantidad:</label>
@@ -546,7 +473,6 @@
         <button type="button" onclick="limpiarFormStock()">🗑️ LIMPIAR</button>
       </form>
 
-      <!-- Buscador Inteligente -->
       <div class="buscador-container">
         <input type="text" id="buscadorStock" placeholder="🔍 Buscar por código, producto, descripción o categoría..." onkeyup="filtrarStock()">
         <select id="filtroCategoria" onchange="filtrarStock()">
@@ -564,25 +490,14 @@
           <option value="normal">Stock normal (≥5)</option>
           <option value="agotado">Agotado (0)</option>
         </select>
-        <button class="btn-info" onclick="limpiarFiltros()">🗑️ Limpiar filtros</button>
+        <button type="button" class="btn-info" onclick="limpiarFiltros()">🗑️ Limpiar filtros</button>
       </div>
 
       <div class="table-container">
         <h3>📋 Inventario Actual</h3>
-        <div id="stockAlerta" style="margin-bottom: 10px;"></div>
+        <div id="stockAlerta"></div>
         <table id="tablaStock">
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Producto</th>
-              <th>Descripción</th>
-              <th>Cantidad</th>
-              <th>Precio Unit.</th>
-              <th>Categoría</th>
-              <th>Valor Total</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Código</th><th>Producto</th><th>Descripción</th><th>Cantidad</th><th>Precio</th><th>Categoría</th><th>Valor Total</th><th>Acciones</th></tr></thead>
           <tbody id="listaStock"></tbody>
         </table>
       </div>
@@ -601,45 +516,20 @@
       <div class="resumen-caja">
         <h3>📊 Resumen del Día</h3>
         <div class="stats">
-          <div class="stat-card">
-            <strong>💰 CAJA ACTUAL:</strong><br>
-            <span id="cajaActual" style="font-size: 24px; color:#FF6D00;">$0</span>
-          </div>
-          <div class="stat-card">
-            <strong>📈 INGRESOS HOY:</strong><br>
-            <span id="totalIngresos" style="font-size: 24px; color:#28a745;">$0</span>
-          </div>
-          <div class="stat-card">
-            <strong>📉 EGRESOS HOY:</strong><br>
-            <span id="totalEgresos" style="font-size: 24px; color:#dc3545;">$0</span>
-          </div>
-          <div class="stat-card">
-            <strong>💼 VALOR INVENTARIO:</strong><br>
-            <span id="valorInventario" style="font-size: 24px; color:#ffc107;">$0</span>
-          </div>
+          <div class="stat-card"><strong>💰 CAJA ACTUAL:</strong><br><span id="cajaActual" style="font-size:24px;color:#FF6D00;">$0</span></div>
+          <div class="stat-card"><strong>📈 INGRESOS HOY:</strong><br><span id="totalIngresos" style="font-size:24px;color:#28a745;">$0</span></div>
+          <div class="stat-card"><strong>📉 EGRESOS HOY:</strong><br><span id="totalEgresos" style="font-size:24px;color:#dc3545;">$0</span></div>
+          <div class="stat-card"><strong>💼 VALOR INVENTARIO:</strong><br><span id="valorInventario" style="font-size:24px;color:#ffc107;">$0</span></div>
         </div>
       </div>
 
-      <!-- Desglose por medio de pago -->
-      <div class="resumen-caja" style="margin-top: 20px;">
+      <div class="resumen-caja">
         <h3>📊 DESGLOSE POR MEDIO DE PAGO - HOY</h3>
         <div class="stats">
-          <div class="stat-card">
-            <strong>💵 EFECTIVO:</strong><br>
-            <span id="totalEfectivo" style="font-size: 20px; color:#28a745;">$0</span>
-          </div>
-          <div class="stat-card">
-            <strong>🏦 TRANSFERENCIA:</strong><br>
-            <span id="totalTransferencia" style="font-size: 20px; color:#17a2b8;">$0</span>
-          </div>
-          <div class="stat-card">
-            <strong>💳 DÉBITO:</strong><br>
-            <span id="totalDebito" style="font-size: 20px; color:#6f42c1;">$0</span>
-          </div>
-          <div class="stat-card">
-            <strong>💎 CRÉDITO:</strong><br>
-            <span id="totalCredito" style="font-size: 20px; color:#fd7e14;">$0</span>
-          </div>
+          <div class="stat-card"><strong>💵 EFECTIVO:</strong><br><span id="totalEfectivo" style="font-size:20px;">$0</span></div>
+          <div class="stat-card"><strong>🏦 TRANSFERENCIA:</strong><br><span id="totalTransferencia" style="font-size:20px;">$0</span></div>
+          <div class="stat-card"><strong>💳 DÉBITO:</strong><br><span id="totalDebito" style="font-size:20px;">$0</span></div>
+          <div class="stat-card"><strong>💎 CRÉDITO:</strong><br><span id="totalCredito" style="font-size:20px;">$0</span></div>
         </div>
       </div>
 
@@ -663,7 +553,7 @@
         </div>
         <div class="form-group">
           <label>Concepto:</label>
-          <input type="text" id="conceptoMovimiento" required placeholder="Ej: Pago de presupuesto, compra de repuestos">
+          <input type="text" id="conceptoMovimiento" required placeholder="Ej: Pago de presupuesto">
         </div>
         <div class="form-group">
           <label>Monto ($):</label>
@@ -671,27 +561,23 @@
         </div>
         <div class="form-group">
           <label>Referencia:</label>
-          <input type="text" id="referenciaMovimiento" placeholder="N° presupuesto, factura, etc.">
+          <input type="text" id="referenciaMovimiento" placeholder="N° presupuesto, factura">
         </div>
         <button type="submit">✅ REGISTRAR MOVIMIENTO</button>
       </form>
 
       <div class="table-container">
         <h3>📋 Historial de Movimientos del Día</h3>
-        <table>
-          <thead>
-            <tr><th>Hora</th><th>Tipo</th><th>Medio Pago</th><th>Concepto</th><th>Monto</th><th>Referencia</th><th>Acciones</th></tr>
-          </thead>
+        <table id="tablaMovimientos">
+          <thead><tr><th>Hora</th><th>Tipo</th><th>Medio Pago</th><th>Concepto</th><th>Monto</th><th>Referencia</th><th>Acciones</th></tr></thead>
           <tbody id="listaMovimientos"></tbody>
         </table>
       </div>
       
       <div class="table-container">
         <h3>📋 Historial de Cierres de Caja</h3>
-        <table>
-          <thead>
-            <tr><th>Fecha Cierre</th><th>Total Ventas</th><th>Efectivo</th><th>Transferencia</th><th>Débito</th><th>Crédito</th><th>Total Egresos</th><th>Saldo Final</th></tr>
-          </thead>
+        <table id="tablaCierres">
+          <thead><tr><th>Fecha Cierre</th><th>Total Ventas</th><th>Efectivo</th><th>Transferencia</th><th>Débito</th><th>Crédito</th><th>Total Egresos</th><th>Saldo Final</th></tr></thead>
           <tbody id="listaCierres"></tbody>
         </table>
       </div>
@@ -702,7 +588,6 @@
     </footer>
   </div>
 
-  <!-- Modal para ver detalles del producto -->
   <div id="modalDetalle" class="modal">
     <div class="modal-content">
       <h3>📦 Detalle del Producto</h3>
@@ -712,10 +597,8 @@
   </div>
 
   <script>
-    // CONSTANTES
     const CONTRASENA_CORRECTA = "153624";
     
-    // Variables globales
     let presupuestos = [];
     let stock = [];
     let movimientos = [];
@@ -726,13 +609,11 @@
     let nextIdStock = 1;
     let nextIdMovimiento = 1;
     let nextIdCierre = 1;
-    let stockFiltrado = [];
 
-    // Inicializar datos
     function inicializarDatos() {
       const savedPresupuestos = localStorage.getItem('presupuestos_taller');
-      const savedStock = localStorage.getItem('stock_taller_v2');
-      const savedMovimientos = localStorage.getItem('movimientos_taller_v2');
+      const savedStock = localStorage.getItem('stock_taller_v3');
+      const savedMovimientos = localStorage.getItem('movimientos_taller_v3');
       const savedCierres = localStorage.getItem('cierres_taller');
       const savedCajaEstado = localStorage.getItem('caja_estado_taller');
       
@@ -749,10 +630,10 @@
         nextIdStock = parseInt(localStorage.getItem('nextIdStock_taller')) || 1;
       } else {
         stock = [
-          { id: 1, codigoInterno: 'MOT-001', producto: 'Aceite de motor 5W30', descripcion: 'Sintético. Equivalente: Mobil 1, Castrol Edge, Shell Helix', cantidad: 12, precioUnitario: 25.50, categoria: 'Lubricantes' },
+          { id: 1, codigoInterno: 'MOT-001', producto: 'Aceite de motor 5W30', descripcion: 'Sintético. Equivalente: Mobil 1, Castrol Edge', cantidad: 12, precioUnitario: 25.50, categoria: 'Lubricantes' },
           { id: 2, codigoInterno: 'FIL-002', producto: 'Filtro de aceite', descripcion: 'Equivalente: Bosch 0986AF, Mann HU 719/7x', cantidad: 8, precioUnitario: 12.00, categoria: 'Motor' },
-          { id: 3, codigoInterno: 'FRE-003', producto: 'Pastillas de freno', descripcion: 'Delanteras. Equivalente: Brembo P06023, TRW GDB1550', cantidad: 3, precioUnitario: 45.00, categoria: 'Frenos' },
-          { id: 4, codigoInterno: 'MOT-004', producto: 'Bujías', descripcion: 'Iridio. Equivalente: NGK IFR6T11, Denso IK20', cantidad: 15, precioUnitario: 8.50, categoria: 'Motor' }
+          { id: 3, codigoInterno: 'FRE-003', producto: 'Pastillas de freno', descripcion: 'Delanteras. Equivalente: Brembo P06023', cantidad: 3, precioUnitario: 45.00, categoria: 'Frenos' },
+          { id: 4, codigoInterno: 'MOT-004', producto: 'Bujías', descripcion: 'Iridio. Equivalente: NGK IFR6T11', cantidad: 15, precioUnitario: 8.50, categoria: 'Motor' }
         ];
         nextIdStock = 5;
       }
@@ -778,7 +659,7 @@
         cajaAbierta = estado.abierta;
         fechaCajaActual = estado.fecha;
         if (cajaAbierta && fechaCajaActual !== new Date().toLocaleDateString()) {
-          cerrarCajaAutomático();
+          cerrarCajaAutomatico();
         }
       } else {
         cajaAbierta = false;
@@ -786,13 +667,12 @@
       }
       
       guardarDatos();
-      stockFiltrado = [...stock];
     }
 
     function guardarDatos() {
       localStorage.setItem('presupuestos_taller', JSON.stringify(presupuestos));
-      localStorage.setItem('stock_taller_v2', JSON.stringify(stock));
-      localStorage.setItem('movimientos_taller_v2', JSON.stringify(movimientos));
+      localStorage.setItem('stock_taller_v3', JSON.stringify(stock));
+      localStorage.setItem('movimientos_taller_v3', JSON.stringify(movimientos));
       localStorage.setItem('cierres_taller', JSON.stringify(cierres));
       localStorage.setItem('nextIdPresupuesto_taller', nextIdPresupuesto);
       localStorage.setItem('nextIdStock_taller', nextIdStock);
@@ -801,226 +681,6 @@
       localStorage.setItem('caja_estado_taller', JSON.stringify({ abierta: cajaAbierta, fecha: fechaCajaActual }));
     }
 
-    // Funciones de filtrado
-    function filtrarStock() {
-      const busqueda = document.getElementById('buscadorStock').value.toLowerCase();
-      const categoria = document.getElementById('filtroCategoria').value;
-      const filtroStock = document.getElementById('filtroStock').value;
-      
-      stockFiltrado = stock.filter(item => {
-        // Búsqueda por texto
-        let coincideBusqueda = true;
-        if (busqueda) {
-          coincideBusqueda = item.codigoInterno?.toLowerCase().includes(busqueda) ||
-                            item.producto.toLowerCase().includes(busqueda) ||
-                            item.descripcion?.toLowerCase().includes(busqueda) ||
-                            item.categoria.toLowerCase().includes(busqueda);
-        }
-        
-        // Filtro por categoría
-        let coincideCategoria = true;
-        if (categoria) {
-          coincideCategoria = item.categoria === categoria;
-        }
-        
-        // Filtro por nivel de stock
-        let coincideStock = true;
-        if (filtroStock === 'bajo') {
-          coincideStock = item.cantidad < 5 && item.cantidad > 0;
-        } else if (filtroStock === 'normal') {
-          coincideStock = item.cantidad >= 5;
-        } else if (filtroStock === 'agotado') {
-          coincideStock = item.cantidad === 0;
-        }
-        
-        return coincideBusqueda && coincideCategoria && coincideStock;
-      });
-      
-      renderizarStock();
-    }
-
-    function limpiarFiltros() {
-      document.getElementById('buscadorStock').value = '';
-      document.getElementById('filtroCategoria').value = '';
-      document.getElementById('filtroStock').value = '';
-      stockFiltrado = [...stock];
-      renderizarStock();
-    }
-
-    function renderizarStock() {
-      const tbody = document.getElementById('listaStock');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      let stockBajoMsg = '';
-      
-      stockFiltrado.forEach(s => {
-        const valorTotal = s.cantidad * s.precioUnitario;
-        const row = tbody.insertRow();
-        if (s.cantidad < 5 && s.cantidad > 0) {
-          row.classList.add('stock-bajo');
-          stockBajoMsg += `⚠️ Stock bajo: ${s.producto} (${s.cantidad} unidades)<br>`;
-        } else if (s.cantidad === 0) {
-          row.classList.add('stock-bajo');
-          stockBajoMsg += `❌ Agotado: ${s.producto}<br>`;
-        }
-        row.innerHTML = `
-          <td>${s.codigoInterno || '-'}</td>
-          <td>${s.producto}</td>
-          <td>${s.descripcion ? s.descripcion.substring(0, 40) + (s.descripcion.length > 40 ? '...' : '') : '-'}</td>
-          <td>${s.cantidad}</td>
-          <td>$${s.precioUnitario.toFixed(2)}</td>
-          <td>${s.categoria}</td>
-          <td>$${valorTotal.toFixed(2)}</td>
-          <td class="action-buttons">
-            <button class="btn-info" onclick="verDetalleProducto(${s.id})">🔍 Ver</button>
-            <button class="btn-warning" onclick="editarStock(${s.id})">✏️ Editar</button>
-            <button class="btn-danger" onclick="eliminarStock(${s.id})">🗑️ Eliminar</button>
-          </td>
-        `;
-      });
-      
-      const alertaDiv = document.getElementById('stockAlerta');
-      if (alertaDiv) {
-        alertaDiv.innerHTML = stockBajoMsg ? `<div style="background:#2a1a0a; padding:10px; border-radius:8px; color:#FF6D00;">${stockBajoMsg}</div>` : '';
-      }
-      actualizarValorInventario();
-    }
-
-    function verDetalleProducto(id) {
-      const producto = stock.find(s => s.id === id);
-      if (producto) {
-        const modal = document.getElementById('modalDetalle');
-        const detalle = document.getElementById('detalleProducto');
-        detalle.innerHTML = `
-          <p><strong>Código Interno:</strong> ${producto.codigoInterno || '-'}</p>
-          <p><strong>Producto:</strong> ${producto.producto}</p>
-          <p><strong>Descripción/Equivalencias:</strong><br>${producto.descripcion || '-'}</p>
-          <p><strong>Cantidad:</strong> ${producto.cantidad} unidades</p>
-          <p><strong>Precio Unitario:</strong> $${producto.precioUnitario.toFixed(2)}</p>
-          <p><strong>Categoría:</strong> ${producto.categoria}</p>
-          <p><strong>Valor Total:</strong> $${(producto.cantidad * producto.precioUnitario).toFixed(2)}</p>
-        `;
-        modal.style.display = 'flex';
-      }
-    }
-
-    function cerrarModal() {
-      document.getElementById('modalDetalle').style.display = 'none';
-    }
-
-    // Control de caja
-    function abrirCaja() {
-      if (cajaAbierta) {
-        alert('⚠️ La caja ya está abierta');
-        return;
-      }
-      cajaAbierta = true;
-      fechaCajaActual = new Date().toLocaleDateString();
-      movimientos = [];
-      guardarDatos();
-      actualizarInterfazCaja();
-      alert('✅ Caja abierta exitosamente');
-    }
-
-    function cerrarCaja() {
-      if (!cajaAbierta) {
-        alert('⚠️ La caja no está abierta');
-        return;
-      }
-      
-      const totalIngresos = calcularTotalIngresos();
-      const totalEgresos = calcularTotalEgresos();
-      const saldoFinal = calcularCajaActual();
-      const desglose = calcularDesgloseMedios();
-      
-      const cierre = {
-        id: nextIdCierre++,
-        fecha: new Date().toLocaleString(),
-        fechaDia: fechaCajaActual,
-        totalIngresos: totalIngresos,
-        totalEgresos: totalEgresos,
-        saldoFinal: saldoFinal,
-        efectivo: desglose.efectivo,
-        transferencia: desglose.transferencia,
-        debito: desglose.debito,
-        credito: desglose.credito,
-        movimientos: [...movimientos]
-      };
-      
-      cierres.push(cierre);
-      cajaAbierta = false;
-      movimientos = [];
-      guardarDatos();
-      actualizarInterfazCaja();
-      alert(`✅ Caja cerrada exitosamente\n💰 Saldo final: $${saldoFinal.toFixed(2)}`);
-    }
-
-    function cerrarCajaAutomático() {
-      if (movimientos.length > 0) {
-        const totalIngresos = calcularTotalIngresos();
-        const totalEgresos = calcularTotalEgresos();
-        const saldoFinal = calcularCajaActual();
-        const desglose = calcularDesgloseMedios();
-        
-        const cierre = {
-          id: nextIdCierre++,
-          fecha: new Date().toLocaleString(),
-          fechaDia: fechaCajaActual,
-          totalIngresos: totalIngresos,
-          totalEgresos: totalEgresos,
-          saldoFinal: saldoFinal,
-          efectivo: desglose.efectivo,
-          transferencia: desglose.transferencia,
-          debito: desglose.debito,
-          credito: desglose.credito,
-          movimientos: [...movimientos]
-        };
-        cierres.push(cierre);
-      }
-      cajaAbierta = false;
-      movimientos = [];
-      fechaCajaActual = null;
-      guardarDatos();
-    }
-
-    function actualizarInterfazCaja() {
-      const btnAbrir = document.getElementById('btnAbrirCaja');
-      const btnCerrar = document.getElementById('btnCerrarCaja');
-      const cajaEstado = document.getElementById('cajaEstado');
-      
-      if (cajaAbierta) {
-        btnAbrir.style.display = 'none';
-        btnCerrar.style.display = 'inline-block';
-        cajaEstado.innerHTML = `🟢 CAJA ABIERTA - ${fechaCajaActual}`;
-      } else {
-        btnAbrir.style.display = 'inline-block';
-        btnCerrar.style.display = 'none';
-        cajaEstado.innerHTML = '🔴 CAJA CERRADA';
-      }
-      
-      cargarCaja();
-      cargarCierres();
-    }
-
-    function calcularDesgloseMedios() {
-      const desglose = { efectivo: 0, transferencia: 0, debito: 0, credito: 0 };
-      movimientos.forEach(m => {
-        if (m.tipo === 'ingreso' && m.medioPago) {
-          desglose[m.medioPago] += m.monto;
-        }
-      });
-      return desglose;
-    }
-
-    function actualizarDesgloseInterfaz() {
-      const desglose = calcularDesgloseMedios();
-      document.getElementById('totalEfectivo').textContent = `$${desglose.efectivo.toFixed(2)}`;
-      document.getElementById('totalTransferencia').textContent = `$${desglose.transferencia.toFixed(2)}`;
-      document.getElementById('totalDebito').textContent = `$${desglose.debito.toFixed(2)}`;
-      document.getElementById('totalCredito').textContent = `$${desglose.credito.toFixed(2)}`;
-    }
-
-    // Login
     function verificarPassword() {
       const password = document.getElementById('passwordInput').value;
       const errorMsg = document.getElementById('errorMsg');
@@ -1035,7 +695,6 @@
       } else {
         errorMsg.textContent = '❌ Contraseña incorrecta';
         document.getElementById('passwordInput').value = '';
-        document.getElementById('passwordInput').focus();
       }
     }
 
@@ -1043,10 +702,8 @@
       document.getElementById('loginOverlay').style.display = 'flex';
       document.getElementById('mainContent').style.display = 'none';
       document.getElementById('passwordInput').value = '';
-      document.getElementById('errorMsg').textContent = '';
     }
 
-    // Cambiar panel
     function cambiarPanel(panel) {
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -1067,7 +724,6 @@
       }
     }
 
-    // Calcular total
     function calcularTotalPresupuesto() {
       const manoObra = parseFloat(document.getElementById('manoObra').value) || 0;
       const repuestos = parseFloat(document.getElementById('repuestos').value) || 0;
@@ -1119,16 +775,14 @@
           <td>${p.descripcion.substring(0, 30)}${p.descripcion.length > 30 ? '...' : ''}</td>
           <td>$${p.manoObra.toFixed(2)}</td><td>$${p.repuestos.toFixed(2)}</td>
           <td>$${p.total.toFixed(2)}</td>
-          <td><select onchange="cambiarEstadoPresupuesto(${p.id}, this.value)" style="background:#1a1a1a; color:white;">
+          <td><select onchange="cambiarEstadoPresupuesto(${p.id}, this.value)" style="background:#1a1a1a;color:white;">
             <option value="Pendiente" ${p.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
             <option value="Aprobado" ${p.estado === 'Aprobado' ? 'selected' : ''}>Aprobado</option>
             <option value="Pagado" ${p.estado === 'Pagado' ? 'selected' : ''}>Pagado</option>
             <option value="Rechazado" ${p.estado === 'Rechazado' ? 'selected' : ''}>Rechazado</option>
           </select></td>
-          <td class="action-buttons">
-            <button class="btn-success" onclick="marcarPagado(${p.id})" ${p.estado === 'Pagado' ? 'disabled' : ''}>💰 Pagar</button>
-            <button class="btn-danger" onclick="eliminarPresupuesto(${p.id})">🗑️ Eliminar</button>
-          </td>
+          <td><button class="btn-success" onclick="marcarPagado(${p.id})" ${p.estado === 'Pagado' ? 'disabled' : ''}>💰 Pagar</button>
+          <button class="btn-danger" onclick="eliminarPresupuesto(${p.id})">🗑️</button></td>
         `;
       });
     }
@@ -1147,34 +801,26 @@
         alert('⚠️ Debe abrir la caja para registrar pagos');
         return;
       }
-      
       const presupuesto = presupuestos.find(p => p.id === id);
       if (presupuesto && presupuesto.estado !== 'Pagado') {
-        const medioPago = prompt('Seleccione medio de pago:\n1 - Efectivo\n2 - Transferencia\n3 - Débito\n4 - Crédito');
-        let medio = '';
-        switch(medioPago) {
-          case '1': medio = 'efectivo'; break;
-          case '2': medio = 'transferencia'; break;
-          case '3': medio = 'debito'; break;
-          case '4': medio = 'credito'; break;
-          default: alert('Opción inválida'); return;
-        }
+        const medio = prompt('Medio de pago:\n1-Efectivo\n2-Transferencia\n3-Débito\n4-Crédito');
+        let medioPago = '';
+        if (medio === '1') medioPago = 'efectivo';
+        else if (medio === '2') medioPago = 'transferencia';
+        else if (medio === '3') medioPago = 'debito';
+        else if (medio === '4') medioPago = 'credito';
+        else { alert('Opción inválida'); return; }
         
         presupuesto.estado = 'Pagado';
         guardarDatos();
         cargarPresupuestos();
         
-        const nuevoMovimiento = {
-          id: nextIdMovimiento++,
-          tipo: 'ingreso',
-          medioPago: medio,
+        movimientos.push({
+          id: nextIdMovimiento++, tipo: 'ingreso', medioPago: medioPago,
           concepto: `Pago presupuesto #${presupuesto.id} - ${presupuesto.cliente}`,
-          monto: presupuesto.total,
-          referencia: `Presupuesto #${presupuesto.id}`,
-          fecha: new Date().toLocaleString(),
-          hora: new Date().toLocaleTimeString()
-        };
-        movimientos.push(nuevoMovimiento);
+          monto: presupuesto.total, referencia: `#${presupuesto.id}`,
+          fecha: new Date().toLocaleString(), hora: new Date().toLocaleTimeString()
+        });
         guardarDatos();
         cargarCaja();
         alert(`✅ Ingreso de $${presupuesto.total.toFixed(2)} registrado`);
@@ -1182,17 +828,17 @@
     }
 
     function eliminarPresupuesto(id) {
-      if (confirm('¿Eliminar este presupuesto?')) {
+      if (confirm('¿Eliminar?')) {
         presupuestos = presupuestos.filter(p => p.id !== id);
         guardarDatos();
         cargarPresupuestos();
       }
     }
 
-    // Stock con nuevos campos
+    // Stock
     document.getElementById('formStock').addEventListener('submit', (e) => {
       e.preventDefault();
-      const nuevoProducto = {
+      stock.push({
         id: nextIdStock++,
         codigoInterno: document.getElementById('codigoInterno').value || null,
         producto: document.getElementById('productoStock').value,
@@ -1200,11 +846,10 @@
         cantidad: parseInt(document.getElementById('cantidadStock').value),
         precioUnitario: parseFloat(document.getElementById('precioStock').value),
         categoria: document.getElementById('categoriaStock').value
-      };
-      stock.push(nuevoProducto);
+      });
       guardarDatos();
       limpiarFormStock();
-      filtrarStock();
+      cargarStock();
       alert('✅ Producto agregado');
     });
 
@@ -1217,71 +862,211 @@
     }
 
     function cargarStock() {
-      stockFiltrado = [...stock];
-      renderizarStock();
+      const tbody = document.getElementById('listaStock');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      let alertas = '';
+      stock.forEach(s => {
+        const valorTotal = s.cantidad * s.precioUnitario;
+        const row = tbody.insertRow();
+        if (s.cantidad < 5 && s.cantidad > 0) {
+          row.classList.add('stock-bajo');
+          alertas += `⚠️ Stock bajo: ${s.producto} (${s.cantidad})<br>`;
+        } else if (s.cantidad === 0) {
+          alertas += `❌ Agotado: ${s.producto}<br>`;
+        }
+        row.innerHTML = `
+          <td>${s.codigoInterno || '-'}</td>
+          <td>${s.producto}</td>
+          <td>${s.descripcion ? s.descripcion.substring(0, 40) + (s.descripcion.length > 40 ? '...' : '') : '-'}</td>
+          <td>${s.cantidad}</td>
+          <td>$${s.precioUnitario.toFixed(2)}</td>
+          <td>${s.categoria}</td>
+          <td>$${valorTotal.toFixed(2)}</td>
+          <td><button class="btn-info" onclick="verDetalle(${s.id})">🔍 Ver</button>
+          <button class="btn-warning" onclick="editarStock(${s.id})">✏️</button>
+          <button class="btn-danger" onclick="eliminarStock(${s.id})">🗑️</button></td>
+        `;
+      });
+      document.getElementById('stockAlerta').innerHTML = alertas ? `<div style="background:#2a1a0a;padding:10px;border-radius:8px;color:#FF6D00;">${alertas}</div>` : '';
+      actualizarValorInventario();
+    }
+
+    function filtrarStock() {
+      const busqueda = document.getElementById('buscadorStock').value.toLowerCase();
+      const categoria = document.getElementById('filtroCategoria').value;
+      const filtroStock = document.getElementById('filtroStock').value;
+      
+      const tbody = document.getElementById('listaStock');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      
+      const filtrados = stock.filter(item => {
+        let ok = true;
+        if (busqueda) {
+          ok = (item.codigoInterno || '').toLowerCase().includes(busqueda) ||
+               item.producto.toLowerCase().includes(busqueda) ||
+               (item.descripcion || '').toLowerCase().includes(busqueda) ||
+               item.categoria.toLowerCase().includes(busqueda);
+        }
+        if (ok && categoria) ok = item.categoria === categoria;
+        if (ok && filtroStock === 'bajo') ok = item.cantidad < 5 && item.cantidad > 0;
+        if (ok && filtroStock === 'normal') ok = item.cantidad >= 5;
+        if (ok && filtroStock === 'agotado') ok = item.cantidad === 0;
+        return ok;
+      });
+      
+      filtrados.forEach(s => {
+        const valorTotal = s.cantidad * s.precioUnitario;
+        const row = tbody.insertRow();
+        if (s.cantidad < 5 && s.cantidad > 0) row.classList.add('stock-bajo');
+        row.innerHTML = `
+          <td>${s.codigoInterno || '-'}</td><td>${s.producto}</td>
+          <td>${s.descripcion ? s.descripcion.substring(0, 40) + (s.descripcion.length > 40 ? '...' : '') : '-'}</td>
+          <td>${s.cantidad}</td><td>$${s.precioUnitario.toFixed(2)}</td>
+          <td>${s.categoria}</td><td>$${valorTotal.toFixed(2)}</td>
+          <td><button class="btn-info" onclick="verDetalle(${s.id})">🔍 Ver</button>
+          <button class="btn-warning" onclick="editarStock(${s.id})">✏️</button>
+          <button class="btn-danger" onclick="eliminarStock(${s.id})">🗑️</button></td>
+        `;
+      });
+    }
+
+    function limpiarFiltros() {
+      document.getElementById('buscadorStock').value = '';
+      document.getElementById('filtroCategoria').value = '';
+      document.getElementById('filtroStock').value = '';
+      cargarStock();
+    }
+
+    function verDetalle(id) {
+      const p = stock.find(s => s.id === id);
+      if (p) {
+        document.getElementById('detalleProducto').innerHTML = `
+          <p><strong>Código:</strong> ${p.codigoInterno || '-'}</p>
+          <p><strong>Producto:</strong> ${p.producto}</p>
+          <p><strong>Descripción:</strong><br>${p.descripcion || '-'}</p>
+          <p><strong>Cantidad:</strong> ${p.cantidad}</p>
+          <p><strong>Precio:</strong> $${p.precioUnitario.toFixed(2)}</p>
+          <p><strong>Categoría:</strong> ${p.categoria}</p>
+          <p><strong>Valor Total:</strong> $${(p.cantidad * p.precioUnitario).toFixed(2)}</p>
+        `;
+        document.getElementById('modalDetalle').style.display = 'flex';
+      }
+    }
+
+    function cerrarModal() {
+      document.getElementById('modalDetalle').style.display = 'none';
     }
 
     function editarStock(id) {
-      const producto = stock.find(s => s.id === id);
-      if (producto) {
-        const nuevaCantidad = prompt('Ingrese nueva cantidad:', producto.cantidad);
-        if (nuevaCantidad !== null && !isNaN(nuevaCantidad) && nuevaCantidad !== '') {
-          producto.cantidad = parseInt(nuevaCantidad);
+      const p = stock.find(s => s.id === id);
+      if (p) {
+        const nuevaCantidad = prompt('Nueva cantidad:', p.cantidad);
+        if (nuevaCantidad !== null && !isNaN(nuevaCantidad)) {
+          p.cantidad = parseInt(nuevaCantidad);
           guardarDatos();
           cargarStock();
-          filtrarStock();
         }
       }
     }
 
     function eliminarStock(id) {
-      if (confirm('¿Eliminar este producto?')) {
+      if (confirm('¿Eliminar producto?')) {
         stock = stock.filter(s => s.id !== id);
         guardarDatos();
         cargarStock();
-        filtrarStock();
       }
     }
 
     function actualizarValorInventario() {
-      const valorTotal = stock.reduce((sum, s) => sum + (s.cantidad * s.precioUnitario), 0);
-      const valorInventarioElem = document.getElementById('valorInventario');
-      if (valorInventarioElem) {
-        valorInventarioElem.textContent = `$${valorTotal.toFixed(2)}`;
-      }
+      const total = stock.reduce((s, i) => s + (i.cantidad * i.precioUnitario), 0);
+      document.getElementById('valorInventario').textContent = `$${total.toFixed(2)}`;
     }
 
     // Caja
+    function abrirCaja() {
+      if (cajaAbierta) { alert('Ya está abierta'); return; }
+      cajaAbierta = true;
+      fechaCajaActual = new Date().toLocaleDateString();
+      movimientos = [];
+      guardarDatos();
+      actualizarInterfazCaja();
+      alert('✅ Caja abierta');
+    }
+
+    function cerrarCaja() {
+      if (!cajaAbierta) { alert('No está abierta'); return; }
+      const totalIngresos = movimientos.filter(m => m.tipo === 'ingreso').reduce((s, m) => s + m.monto, 0);
+      const totalEgresos = movimientos.filter(m => m.tipo === 'egreso').reduce((s, m) => s + m.monto, 0);
+      const desglose = { efectivo: 0, transferencia: 0, debito: 0, credito: 0 };
+      movimientos.forEach(m => { if (m.tipo === 'ingreso' && m.medioPago) desglose[m.medioPago] += m.monto; });
+      
+      cierres.push({
+        id: nextIdCierre++, fecha: new Date().toLocaleString(), fechaDia: fechaCajaActual,
+        totalIngresos, totalEgresos, saldoFinal: totalIngresos - totalEgresos,
+        efectivo: desglose.efectivo, transferencia: desglose.transferencia,
+        debito: desglose.debito, credito: desglose.credito
+      });
+      cajaAbierta = false;
+      movimientos = [];
+      guardarDatos();
+      actualizarInterfazCaja();
+      alert(`✅ Caja cerrada - Saldo final: $${(totalIngresos - totalEgresos).toFixed(2)}`);
+    }
+
+    function cerrarCajaAutomatico() {
+      if (movimientos.length > 0) {
+        const totalIngresos = movimientos.filter(m => m.tipo === 'ingreso').reduce((s, m) => s + m.monto, 0);
+        const totalEgresos = movimientos.filter(m => m.tipo === 'egreso').reduce((s, m) => s + m.monto, 0);
+        const desglose = { efectivo: 0, transferencia: 0, debito: 0, credito: 0 };
+        movimientos.forEach(m => { if (m.tipo === 'ingreso' && m.medioPago) desglose[m.medioPago] += m.monto; });
+        cierres.push({
+          id: nextIdCierre++, fecha: new Date().toLocaleString(), fechaDia: fechaCajaActual,
+          totalIngresos, totalEgresos, saldoFinal: totalIngresos - totalEgresos,
+          efectivo: desglose.efectivo, transferencia: desglose.transferencia,
+          debito: desglose.debito, credito: desglose.credito
+        });
+      }
+      cajaAbierta = false;
+      movimientos = [];
+      fechaCajaActual = null;
+      guardarDatos();
+    }
+
+    function actualizarInterfazCaja() {
+      const btnAbrir = document.getElementById('btnAbrirCaja');
+      const btnCerrar = document.getElementById('btnCerrarCaja');
+      const estado = document.getElementById('cajaEstado');
+      if (cajaAbierta) {
+        btnAbrir.style.display = 'none';
+        btnCerrar.style.display = 'inline-block';
+        estado.innerHTML = `🟢 CAJA ABIERTA - ${fechaCajaActual}`;
+      } else {
+        btnAbrir.style.display = 'inline-block';
+        btnCerrar.style.display = 'none';
+        estado.innerHTML = '🔴 CAJA CERRADA';
+      }
+      cargarCaja();
+      cargarCierres();
+    }
+
     document.getElementById('formMovimiento').addEventListener('submit', (e) => {
       e.preventDefault();
-      if (!cajaAbierta) {
-        alert('⚠️ Debe abrir la caja primero');
-        return;
-      }
-      
+      if (!cajaAbierta) { alert('Abra la caja primero'); return; }
       const tipo = document.getElementById('tipoMovimiento').value;
-      const medioPago = document.getElementById('medioPago').value;
       const monto = parseFloat(document.getElementById('montoMovimiento').value);
-      
       if (tipo === 'egreso') {
-        const cajaActual = calcularCajaActual();
-        if (monto > cajaActual) {
-          alert('❌ Saldo insuficiente');
-          return;
-        }
+        const actual = movimientos.reduce((s, m) => s + (m.tipo === 'ingreso' ? m.monto : -m.monto), 0);
+        if (monto > actual) { alert('Saldo insuficiente'); return; }
       }
-      
-      const nuevoMovimiento = {
-        id: nextIdMovimiento++,
-        tipo: tipo,
-        medioPago: tipo === 'ingreso' ? medioPago : null,
+      movimientos.push({
+        id: nextIdMovimiento++, tipo: tipo,
+        medioPago: tipo === 'ingreso' ? document.getElementById('medioPago').value : null,
         concepto: document.getElementById('conceptoMovimiento').value,
-        monto: monto,
-        referencia: document.getElementById('referenciaMovimiento').value || '-',
-        fecha: new Date().toLocaleString(),
-        hora: new Date().toLocaleTimeString()
-      };
-      movimientos.push(nuevoMovimiento);
+        monto: monto, referencia: document.getElementById('referenciaMovimiento').value || '-',
+        fecha: new Date().toLocaleString(), hora: new Date().toLocaleTimeString()
+      });
       guardarDatos();
       cargarCaja();
       document.getElementById('conceptoMovimiento').value = '';
@@ -1289,23 +1074,6 @@
       document.getElementById('referenciaMovimiento').value = '';
       alert('✅ Movimiento registrado');
     });
-
-    function calcularCajaActual() {
-      let total = 0;
-      movimientos.forEach(m => {
-        if (m.tipo === 'ingreso') total += m.monto;
-        else if (m.tipo === 'egreso') total -= m.monto;
-      });
-      return total;
-    }
-
-    function calcularTotalIngresos() {
-      return movimientos.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
-    }
-
-    function calcularTotalEgresos() {
-      return movimientos.filter(m => m.tipo === 'egreso').reduce((sum, m) => sum + m.monto, 0);
-    }
 
     function getMedioPagoIcono(medio) {
       if (!medio) return '-';
@@ -1319,57 +1087,55 @@
     }
 
     function cargarCaja() {
-      const cajaActual = calcularCajaActual();
-      const totalIngresos = calcularTotalIngresos();
-      const totalEgresos = calcularTotalEgresos();
+      const actual = movimientos.reduce((s, m) => s + (m.tipo === 'ingreso' ? m.monto : -m.monto), 0);
+      const ingresos = movimientos.filter(m => m.tipo === 'ingreso').reduce((s, m) => s + m.monto, 0);
+      const egresos = movimientos.filter(m => m.tipo === 'egreso').reduce((s, m) => s + m.monto, 0);
+      const desglose = { efectivo: 0, transferencia: 0, debito: 0, credito: 0 };
+      movimientos.forEach(m => { if (m.tipo === 'ingreso' && m.medioPago) desglose[m.medioPago] += m.monto; });
       
-      document.getElementById('cajaActual').textContent = `$${cajaActual.toFixed(2)}`;
-      document.getElementById('totalIngresos').textContent = `$${totalIngresos.toFixed(2)}`;
-      document.getElementById('totalEgresos').textContent = `$${totalEgresos.toFixed(2)}`;
+      document.getElementById('cajaActual').textContent = `$${actual.toFixed(2)}`;
+      document.getElementById('totalIngresos').textContent = `$${ingresos.toFixed(2)}`;
+      document.getElementById('totalEgresos').textContent = `$${egresos.toFixed(2)}`;
+      document.getElementById('totalEfectivo').textContent = `$${desglose.efectivo.toFixed(2)}`;
+      document.getElementById('totalTransferencia').textContent = `$${desglose.transferencia.toFixed(2)}`;
+      document.getElementById('totalDebito').textContent = `$${desglose.debito.toFixed(2)}`;
+      document.getElementById('totalCredito').textContent = `$${desglose.credito.toFixed(2)}`;
       
       const tbody = document.getElementById('listaMovimientos');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      movimientos.slice().reverse().forEach(m => {
-        const row = tbody.insertRow();
-        row.innerHTML = `
-          <td>${m.hora || m.fecha.split(',')[1]}</td>
-          <td>${m.tipo === 'ingreso' ? '💰 Ingreso' : '💸 Egreso'}</td>
-          <td>${getMedioPagoIcono(m.medioPago)}</td>
-          <td>${m.concepto}</td>
-          <td style="color: ${m.tipo === 'ingreso' ? '#28a745' : '#dc3545'}; font-weight: bold;">
-            ${m.tipo === 'ingreso' ? '+' : '-'}$${m.monto.toFixed(2)}
-          </td>
-          <td>${m.referencia}</td>
-          <td><button class="btn-danger" onclick="eliminarMovimiento(${m.id})">🗑️</button></td>
-        `;
-      });
-      
+      if (tbody) {
+        tbody.innerHTML = '';
+        movimientos.slice().reverse().forEach(m => {
+          const row = tbody.insertRow();
+          row.innerHTML = `
+            <td>${m.hora}</td><td>${m.tipo === 'ingreso' ? '💰 Ingreso' : '💸 Egreso'}</td>
+            <td>${getMedioPagoIcono(m.medioPago)}</td><td>${m.concepto}</td>
+            <td style="color:${m.tipo === 'ingreso' ? '#28a745' : '#dc3545'}">${m.tipo === 'ingreso' ? '+' : '-'}$${m.monto.toFixed(2)}</td>
+            <td>${m.referencia}</td>
+            <td><button class="btn-danger" onclick="eliminarMovimiento(${m.id})">🗑️</button></td>
+          `;
+        });
+      }
       actualizarValorInventario();
-      actualizarDesgloseInterfaz();
     }
 
     function cargarCierres() {
       const tbody = document.getElementById('listaCierres');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      cierres.slice().reverse().forEach(c => {
-        const row = tbody.insertRow();
-        row.innerHTML = `
-          <td>${c.fecha}</td>
-          <td>$${c.totalIngresos.toFixed(2)}</td>
-          <td>$${c.efectivo.toFixed(2)}</td>
-          <td>$${c.transferencia.toFixed(2)}</td>
-          <td>$${c.debito.toFixed(2)}</td>
-          <td>$${c.credito.toFixed(2)}</td>
-          <td>$${c.totalEgresos.toFixed(2)}</td>
-          <td>$${c.saldoFinal.toFixed(2)}</td>
-        `;
-      });
+      if (tbody) {
+        tbody.innerHTML = '';
+        cierres.slice().reverse().forEach(c => {
+          const row = tbody.insertRow();
+          row.innerHTML = `
+            <td>${c.fecha}</td><td>$${c.totalIngresos.toFixed(2)}</td>
+            <td>$${c.efectivo.toFixed(2)}</td><td>$${c.transferencia.toFixed(2)}</td>
+            <td>$${c.debito.toFixed(2)}</td><td>$${c.credito.toFixed(2)}</td>
+            <td>$${c.totalEgresos.toFixed(2)}</td><td>$${c.saldoFinal.toFixed(2)}</td>
+          `;
+        });
+      }
     }
 
     function eliminarMovimiento(id) {
-      if (confirm('¿Eliminar este movimiento?')) {
+      if (confirm('¿Eliminar movimiento?')) {
         movimientos = movimientos.filter(m => m.id !== id);
         guardarDatos();
         cargarCaja();
@@ -1383,7 +1149,6 @@
       cargarCierres();
     }
 
-    // Event listeners
     document.getElementById('manoObra').addEventListener('input', calcularTotalPresupuesto);
     document.getElementById('repuestos').addEventListener('input', calcularTotalPresupuesto);
   </script>
