@@ -13,7 +13,7 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #1a1a1a;
+      background: #0a0a0a;
       min-height: 100vh;
       padding: 20px;
     }
@@ -25,7 +25,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.95);
+      background: rgba(0, 0, 0, 0.98);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -33,18 +33,18 @@
     }
 
     .login-box {
-      background: #2d2d2d;
+      background: #1a1a1a;
       padding: 40px;
       border-radius: 20px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.5);
       text-align: center;
       width: 350px;
-      border: 1px solid #da8405;
+      border: 1px solid #FF6D00;
     }
 
     .login-box h2 {
       margin-bottom: 20px;
-      color: #da8405;
+      color: #FF6D00;
     }
 
     .login-box h3 {
@@ -56,23 +56,23 @@
       width: 100%;
       padding: 12px;
       margin: 10px 0;
-      border: 2px solid #444;
+      border: 2px solid #333;
       border-radius: 8px;
       font-size: 16px;
-      background: #1a1a1a;
+      background: #0a0a0a;
       color: white;
     }
 
     .login-box input:focus {
       outline: none;
-      border-color: #da8405;
+      border-color: #FF6D00;
     }
 
     .login-box button {
       width: 100%;
       padding: 12px;
-      background: #da8405;
-      color: white;
+      background: #FF6D00;
+      color: #0a0a0a;
       border: none;
       border-radius: 8px;
       font-size: 16px;
@@ -82,12 +82,12 @@
     }
 
     .login-box button:hover {
-      background: #e85d2c;
+      background: #e66200;
       transform: translateY(-2px);
     }
 
     .error-msg {
-      color: #da8405;
+      color: #FF6D00;
       margin-top: 10px;
       font-size: 14px;
     }
@@ -98,7 +98,7 @@
     }
 
     header {
-      background: #1a1a1a;
+      background: #0a0a0a;
       padding: 20px;
       border-radius: 15px;
       margin-bottom: 20px;
@@ -108,18 +108,18 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 10px;
-      border: 1px solid #333;
+      border: 1px solid #222;
     }
 
     header h1 {
-      color: #da8405;
+      color: #FF6D00;
       font-size: 24px;
     }
 
     .logout-btn {
-      background: #333;
-      color: #da8405;
-      border: 1px solid #da8405;
+      background: #1a1a1a;
+      color: #FF6D00;
+      border: 1px solid #FF6D00;
       padding: 10px 20px;
       border-radius: 8px;
       cursor: pointer;
@@ -128,8 +128,8 @@
     }
 
     .logout-btn:hover {
-      background: #da8405;
-      color: #1a1a1a;
+      background: #FF6D00;
+      color: #0a0a0a;
     }
 
     /* Navegación */
@@ -141,7 +141,7 @@
     }
 
     .tab-btn {
-      background: #2d2d2d;
+      background: #1a1a1a;
       border: none;
       padding: 12px 24px;
       border-radius: 10px;
@@ -154,23 +154,23 @@
 
     .tab-btn:hover {
       transform: translateY(-2px);
-      background: #3d3d3d;
+      background: #252525;
     }
 
     .tab-btn.active {
-      background: #da8405;
-      color: #1a1a1a;
+      background: #FF6D00;
+      color: #0a0a0a;
     }
 
     /* Paneles */
     .panel {
-      background: #1a1a1a;
+      background: #0a0a0a;
       border-radius: 15px;
       padding: 20px;
       margin-bottom: 20px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
       display: none;
-      border: 1px solid #333;
+      border: 1px solid #222;
     }
 
     .panel.active {
@@ -178,7 +178,7 @@
     }
 
     .panel h2, .panel h3 {
-      color: #da8405;
+      color: #FF6D00;
       margin-bottom: 20px;
     }
 
@@ -197,21 +197,21 @@
     input, select, textarea {
       width: 100%;
       padding: 10px;
-      border: 2px solid #333;
+      border: 2px solid #222;
       border-radius: 8px;
       font-size: 14px;
-      background: #2d2d2d;
+      background: #1a1a1a;
       color: white;
     }
 
     input:focus, select:focus, textarea:focus {
       outline: none;
-      border-color: #da8405;
+      border-color: #FF6D00;
     }
 
     button {
-      background: #da8405;
-      color: #1a1a1a;
+      background: #FF6D00;
+      color: #0a0a0a;
       border: none;
       padding: 10px 20px;
       border-radius: 8px;
@@ -223,7 +223,7 @@
     }
 
     button:hover {
-      background: #e85d2c;
+      background: #e66200;
       transform: translateY(-2px);
     }
 
@@ -239,7 +239,12 @@
 
     .btn-warning {
       background: #ffc107;
-      color: #1a1a1a;
+      color: #0a0a0a;
+    }
+
+    .btn-secondary {
+      background: #444;
+      color: white;
     }
 
     /* Tablas */
@@ -256,13 +261,13 @@
     th, td {
       padding: 12px;
       text-align: left;
-      border-bottom: 1px solid #333;
+      border-bottom: 1px solid #222;
     }
 
     th {
-      background: #2d2d2d;
+      background: #1a1a1a;
       font-weight: bold;
-      color: #da8405;
+      color: #FF6D00;
     }
 
     td {
@@ -270,7 +275,7 @@
     }
 
     tr:hover {
-      background: #2d2d2d;
+      background: #1a1a1a;
     }
 
     .action-buttons button {
@@ -281,16 +286,16 @@
 
     /* Resumen financiero */
     .resumen-caja {
-      background: #2d2d2d;
+      background: #1a1a1a;
       color: white;
       padding: 20px;
       border-radius: 10px;
       margin-bottom: 20px;
-      border: 1px solid #da8405;
+      border: 1px solid #FF6D00;
     }
 
     .resumen-caja h3 {
-      color: #da8405;
+      color: #FF6D00;
       margin-bottom: 15px;
     }
 
@@ -302,26 +307,65 @@
     }
 
     .stat-card {
-      background: #1a1a1a;
+      background: #0a0a0a;
       padding: 15px;
       border-radius: 10px;
-      border: 1px solid #444;
+      border: 1px solid #333;
+    }
+
+    .caja-control {
+      background: #FF6D00;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .caja-control button {
+      background: #0a0a0a;
+      color: #FF6D00;
+      font-size: 18px;
+      padding: 15px 30px;
+    }
+
+    .caja-control button:hover {
+      background: #1a1a1a;
+    }
+
+    .caja-estado {
+      font-size: 18px;
+      margin-top: 10px;
+      color: #0a0a0a;
+      font-weight: bold;
     }
 
     /* Stock bajo */
     .stock-bajo {
-      background-color: #3d1a1a;
+      background-color: #2a1a0a;
     }
     
     .stock-bajo td {
-      color: #ff6b35;
+      color: #FF6D00;
     }
 
     footer {
       text-align: center;
-      color: #666;
+      color: #444;
       margin-top: 20px;
     }
+
+    .medio-pago {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .medio-efectivo { background: #28a745; color: white; }
+    .medio-transferencia { background: #17a2b8; color: white; }
+    .medio-debito { background: #6f42c1; color: white; }
+    .medio-credito { background: #fd7e14; color: white; }
 
     @media (max-width: 768px) {
       .stats {
@@ -391,7 +435,7 @@
         </div>
         <div class="form-group">
           <label>Total ($):</label>
-          <input type="number" id="totalPresupuesto" readonly style="background:#333" value="0">
+          <input type="number" id="totalPresupuesto" readonly style="background:#1a1a1a" value="0">
         </div>
         <button type="submit">➕ CREAR PRESUPUESTO</button>
         <button type="button" onclick="limpiarFormPresupuesto()">🗑️ LIMPIAR</button>
@@ -455,24 +499,53 @@
     <div id="panelCaja" class="panel">
       <h2>💰 Gestión de Caja y Finanzas</h2>
       
+      <div class="caja-control">
+        <button id="btnAbrirCaja" onclick="abrirCaja()">🔓 ABRIR CAJA</button>
+        <button id="btnCerrarCaja" onclick="cerrarCaja()" style="display:none;">🔒 CERRAR CAJA</button>
+        <div id="cajaEstado" class="caja-estado"></div>
+      </div>
+      
       <div class="resumen-caja">
-        <h3>📊 Resumen Financiero</h3>
+        <h3>📊 Resumen del Día</h3>
         <div class="stats">
           <div class="stat-card">
             <strong>💰 CAJA ACTUAL:</strong><br>
-            <span id="cajaActual" style="font-size: 24px; color:#ff6b35;">$0</span>
+            <span id="cajaActual" style="font-size: 24px; color:#FF6D00;">$0</span>
           </div>
           <div class="stat-card">
-            <strong>📈 TOTAL INGRESOS:</strong><br>
+            <strong>📈 INGRESOS HOY:</strong><br>
             <span id="totalIngresos" style="font-size: 24px; color:#28a745;">$0</span>
           </div>
           <div class="stat-card">
-            <strong>📉 TOTAL EGRESOS:</strong><br>
+            <strong>📉 EGRESOS HOY:</strong><br>
             <span id="totalEgresos" style="font-size: 24px; color:#dc3545;">$0</span>
           </div>
           <div class="stat-card">
             <strong>💼 VALOR INVENTARIO:</strong><br>
             <span id="valorInventario" style="font-size: 24px; color:#ffc107;">$0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desglose por medio de pago -->
+      <div class="resumen-caja" style="margin-top: 20px;">
+        <h3>📊 DESGLOSE POR MEDIO DE PAGO - HOY</h3>
+        <div class="stats">
+          <div class="stat-card">
+            <strong>💵 EFECTIVO:</strong><br>
+            <span id="totalEfectivo" style="font-size: 20px; color:#28a745;">$0</span>
+          </div>
+          <div class="stat-card">
+            <strong>🏦 TRANSFERENCIA:</strong><br>
+            <span id="totalTransferencia" style="font-size: 20px; color:#17a2b8;">$0</span>
+          </div>
+          <div class="stat-card">
+            <strong>💳 DÉBITO:</strong><br>
+            <span id="totalDebito" style="font-size: 20px; color:#6f42c1;">$0</span>
+          </div>
+          <div class="stat-card">
+            <strong>💎 CRÉDITO:</strong><br>
+            <span id="totalCredito" style="font-size: 20px; color:#fd7e14;">$0</span>
           </div>
         </div>
       </div>
@@ -484,6 +557,15 @@
           <select id="tipoMovimiento">
             <option value="ingreso">💰 Ingreso</option>
             <option value="egreso">💸 Egreso</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Medio de Pago:</label>
+          <select id="medioPago">
+            <option value="efectivo">💵 Efectivo</option>
+            <option value="transferencia">🏦 Transferencia</option>
+            <option value="debito">💳 Débito</option>
+            <option value="credito">💎 Crédito</option>
           </select>
         </div>
         <div class="form-group">
@@ -502,12 +584,22 @@
       </form>
 
       <div class="table-container">
-        <h3>📋 Historial de Movimientos</h3>
+        <h3>📋 Historial de Movimientos del Día</h3>
         <table>
           <thead>
-            <tr><th>Fecha</th><th>Tipo</th><th>Concepto</th><th>Monto</th><th>Referencia</th><th>Acciones</th></tr>
+            <tr><th>Hora</th><th>Tipo</th><th>Medio Pago</th><th>Concepto</th><th>Monto</th><th>Referencia</th><th>Acciones</th></tr>
           </thead>
           <tbody id="listaMovimientos"></tbody>
+        </table>
+      </div>
+      
+      <div class="table-container">
+        <h3>📋 Historial de Cierres de Caja</h3>
+        <table>
+          <thead>
+            <tr><th>Fecha Cierre</th><th>Total Ventas</th><th>Efectivo</th><th>Transferencia</th><th>Débito</th><th>Crédito</th><th>Total Egresos</th><th>Saldo Final</th></tr>
+          </thead>
+          <tbody id="listaCierres"></tbody>
         </table>
       </div>
     </div>
@@ -525,24 +617,28 @@
     let presupuestos = [];
     let stock = [];
     let movimientos = [];
+    let cierres = [];
+    let cajaAbierta = false;
+    let fechaCajaActual = null;
     let nextIdPresupuesto = 1;
     let nextIdStock = 1;
     let nextIdMovimiento = 1;
+    let nextIdCierre = 1;
 
     // Inicializar datos
     function inicializarDatos() {
       const savedPresupuestos = localStorage.getItem('presupuestos_taller');
       const savedStock = localStorage.getItem('stock_taller');
-      const savedMovimientos = localStorage.getItem('movimientos_taller');
+      const savedMovimientos = localStorage.getItem('movimientos_taller_v2');
+      const savedCierres = localStorage.getItem('cierres_taller');
+      const savedCajaEstado = localStorage.getItem('caja_estado_taller');
       
       if (savedPresupuestos) {
         presupuestos = JSON.parse(savedPresupuestos);
         nextIdPresupuesto = parseInt(localStorage.getItem('nextIdPresupuesto_taller')) || 1;
       } else {
-        presupuestos = [
-          { id: 1, cliente: 'Juan Pérez', vehiculo: 'Toyota Corolla', descripcion: 'Cambio de aceite y filtros', manoObra: 5000, repuestos: 3500, total: 8500, estado: 'Pendiente', fecha: new Date().toLocaleString() }
-        ];
-        nextIdPresupuesto = 2;
+        presupuestos = [];
+        nextIdPresupuesto = 1;
       }
       
       if (savedStock) {
@@ -562,10 +658,29 @@
         movimientos = JSON.parse(savedMovimientos);
         nextIdMovimiento = parseInt(localStorage.getItem('nextIdMovimiento_taller')) || 1;
       } else {
-        movimientos = [
-          { id: 1, tipo: 'ingreso', concepto: 'Saldo inicial', monto: 5000, referencia: 'Apertura', fecha: new Date().toLocaleString() }
-        ];
-        nextIdMovimiento = 2;
+        movimientos = [];
+        nextIdMovimiento = 1;
+      }
+      
+      if (savedCierres) {
+        cierres = JSON.parse(savedCierres);
+        nextIdCierre = parseInt(localStorage.getItem('nextIdCierre_taller')) || 1;
+      } else {
+        cierres = [];
+        nextIdCierre = 1;
+      }
+      
+      if (savedCajaEstado) {
+        const estado = JSON.parse(savedCajaEstado);
+        cajaAbierta = estado.abierta;
+        fechaCajaActual = estado.fecha;
+        if (cajaAbierta && fechaCajaActual !== new Date().toLocaleDateString()) {
+          // Si la caja estaba abierta pero es otro día, forzar cierre automático
+          cerrarCajaAutomático();
+        }
+      } else {
+        cajaAbierta = false;
+        fechaCajaActual = null;
       }
       
       guardarDatos();
@@ -574,10 +689,125 @@
     function guardarDatos() {
       localStorage.setItem('presupuestos_taller', JSON.stringify(presupuestos));
       localStorage.setItem('stock_taller', JSON.stringify(stock));
-      localStorage.setItem('movimientos_taller', JSON.stringify(movimientos));
+      localStorage.setItem('movimientos_taller_v2', JSON.stringify(movimientos));
+      localStorage.setItem('cierres_taller', JSON.stringify(cierres));
       localStorage.setItem('nextIdPresupuesto_taller', nextIdPresupuesto);
       localStorage.setItem('nextIdStock_taller', nextIdStock);
       localStorage.setItem('nextIdMovimiento_taller', nextIdMovimiento);
+      localStorage.setItem('nextIdCierre_taller', nextIdCierre);
+      localStorage.setItem('caja_estado_taller', JSON.stringify({ abierta: cajaAbierta, fecha: fechaCajaActual }));
+    }
+
+    // Control de caja
+    function abrirCaja() {
+      if (cajaAbierta) {
+        alert('⚠️ La caja ya está abierta');
+        return;
+      }
+      cajaAbierta = true;
+      fechaCajaActual = new Date().toLocaleDateString();
+      movimientos = []; // Reiniciar movimientos del día
+      guardarDatos();
+      actualizarInterfazCaja();
+      alert('✅ Caja abierta exitosamente');
+    }
+
+    function cerrarCaja() {
+      if (!cajaAbierta) {
+        alert('⚠️ La caja no está abierta');
+        return;
+      }
+      
+      const totalIngresos = calcularTotalIngresos();
+      const totalEgresos = calcularTotalEgresos();
+      const saldoFinal = calcularCajaActual();
+      const desglose = calcularDesgloseMedios();
+      
+      const cierre = {
+        id: nextIdCierre++,
+        fecha: new Date().toLocaleString(),
+        fechaDia: fechaCajaActual,
+        totalIngresos: totalIngresos,
+        totalEgresos: totalEgresos,
+        saldoFinal: saldoFinal,
+        efectivo: desglose.efectivo,
+        transferencia: desglose.transferencia,
+        debito: desglose.debito,
+        credito: desglose.credito,
+        movimientos: [...movimientos]
+      };
+      
+      cierres.push(cierre);
+      cajaAbierta = false;
+      movimientos = [];
+      guardarDatos();
+      actualizarInterfazCaja();
+      alert(`✅ Caja cerrada exitosamente\n💰 Saldo final: $${saldoFinal.toFixed(2)}`);
+    }
+
+    function cerrarCajaAutomático() {
+      if (movimientos.length > 0) {
+        const totalIngresos = calcularTotalIngresos();
+        const totalEgresos = calcularTotalEgresos();
+        const saldoFinal = calcularCajaActual();
+        const desglose = calcularDesgloseMedios();
+        
+        const cierre = {
+          id: nextIdCierre++,
+          fecha: new Date().toLocaleString(),
+          fechaDia: fechaCajaActual,
+          totalIngresos: totalIngresos,
+          totalEgresos: totalEgresos,
+          saldoFinal: saldoFinal,
+          efectivo: desglose.efectivo,
+          transferencia: desglose.transferencia,
+          debito: desglose.debito,
+          credito: desglose.credito,
+          movimientos: [...movimientos]
+        };
+        cierres.push(cierre);
+      }
+      cajaAbierta = false;
+      movimientos = [];
+      fechaCajaActual = null;
+      guardarDatos();
+    }
+
+    function actualizarInterfazCaja() {
+      const btnAbrir = document.getElementById('btnAbrirCaja');
+      const btnCerrar = document.getElementById('btnCerrarCaja');
+      const cajaEstado = document.getElementById('cajaEstado');
+      
+      if (cajaAbierta) {
+        btnAbrir.style.display = 'none';
+        btnCerrar.style.display = 'inline-block';
+        cajaEstado.innerHTML = `🟢 CAJA ABIERTA - ${fechaCajaActual}`;
+      } else {
+        btnAbrir.style.display = 'inline-block';
+        btnCerrar.style.display = 'none';
+        cajaEstado.innerHTML = '🔴 CAJA CERRADA';
+      }
+      
+      cargarCaja();
+      cargarCierres();
+    }
+
+    function calcularDesgloseMedios() {
+      const desglose = { efectivo: 0, transferencia: 0, debito: 0, credito: 0 };
+      movimientos.forEach(m => {
+        if (m.tipo === 'ingreso' && m.medioPago) {
+          desglose[m.medioPago] += m.monto;
+        }
+      });
+      return desglose;
+    }
+
+    function actualizarDesgloseInterfaz() {
+      const desglose = calcularDesgloseMedios();
+      document.getElementById('totalEfectivo').textContent = `$${desglose.efectivo.toFixed(2)}`;
+      document.getElementById('totalTransferencia').textContent = `$${desglose.transferencia.toFixed(2)}`;
+      document.getElementById('totalDebito').textContent = `$${desglose.debito.toFixed(2)}`;
+      document.getElementById('totalCredito').textContent = `$${desglose.credito.toFixed(2)}`;
     }
 
     // Login
@@ -591,6 +821,7 @@
         errorMsg.textContent = '';
         inicializarDatos();
         cargarTodosLosDatos();
+        actualizarInterfazCaja();
       } else {
         errorMsg.textContent = '❌ Contraseña incorrecta';
         document.getElementById('passwordInput').value = '';
@@ -622,6 +853,7 @@
         document.getElementById('panelCaja').classList.add('active');
         document.querySelectorAll('.tab-btn')[2].classList.add('active');
         cargarCaja();
+        cargarCierres();
       }
     }
 
@@ -635,6 +867,10 @@
     // Presupuestos
     document.getElementById('formPresupuesto').addEventListener('submit', (e) => {
       e.preventDefault();
+      if (!cajaAbierta) {
+        alert('⚠️ Debe abrir la caja antes de crear presupuestos');
+        return;
+      }
       const nuevoPresupuesto = {
         id: nextIdPresupuesto++,
         cliente: document.getElementById('clientePresupuesto').value,
@@ -673,7 +909,7 @@
           <td>${p.descripcion.substring(0, 30)}${p.descripcion.length > 30 ? '...' : ''}</td>
           <td>$${p.manoObra.toFixed(2)}</td><td>$${p.repuestos.toFixed(2)}</td>
           <td>$${p.total.toFixed(2)}</td>
-          <td><select onchange="cambiarEstadoPresupuesto(${p.id}, this.value)" style="background:#333; color:white;">
+          <td><select onchange="cambiarEstadoPresupuesto(${p.id}, this.value)" style="background:#1a1a1a; color:white;">
             <option value="Pendiente" ${p.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
             <option value="Aprobado" ${p.estado === 'Aprobado' ? 'selected' : ''}>Aprobado</option>
             <option value="Pagado" ${p.estado === 'Pagado' ? 'selected' : ''}>Pagado</option>
@@ -697,8 +933,23 @@
     }
 
     function marcarPagado(id) {
+      if (!cajaAbierta) {
+        alert('⚠️ Debe abrir la caja para registrar pagos');
+        return;
+      }
+      
       const presupuesto = presupuestos.find(p => p.id === id);
       if (presupuesto && presupuesto.estado !== 'Pagado') {
+        const medioPago = prompt('Seleccione medio de pago:\n1 - Efectivo\n2 - Transferencia\n3 - Débito\n4 - Crédito');
+        let medio = '';
+        switch(medioPago) {
+          case '1': medio = 'efectivo'; break;
+          case '2': medio = 'transferencia'; break;
+          case '3': medio = 'debito'; break;
+          case '4': medio = 'credito'; break;
+          default: alert('Opción inválida'); return;
+        }
+        
         presupuesto.estado = 'Pagado';
         guardarDatos();
         cargarPresupuestos();
@@ -706,16 +957,23 @@
         const nuevoMovimiento = {
           id: nextIdMovimiento++,
           tipo: 'ingreso',
+          medioPago: medio,
           concepto: `Pago presupuesto #${presupuesto.id} - ${presupuesto.cliente}`,
           monto: presupuesto.total,
           referencia: `Presupuesto #${presupuesto.id}`,
-          fecha: new Date().toLocaleString()
+          fecha: new Date().toLocaleString(),
+          hora: new Date().toLocaleTimeString()
         };
         movimientos.push(nuevoMovimiento);
         guardarDatos();
         cargarCaja();
-        alert(`✅ Ingreso de $${presupuesto.total.toFixed(2)} registrado`);
+        alert(`✅ Ingreso de $${presupuesto.total.toFixed(2)} registrado por ${getNombreMedio(medio)}`);
       }
+    }
+
+    function getNombreMedio(medio) {
+      const nombres = { efectivo: 'Efectivo', transferencia: 'Transferencia', debito: 'Débito', credito: 'Crédito' };
+      return nombres[medio] || medio;
     }
 
     function eliminarPresupuesto(id) {
@@ -775,7 +1033,7 @@
       
       const alertaDiv = document.getElementById('stockAlerta');
       if (alertaDiv) {
-        alertaDiv.innerHTML = stockBajoMsg ? `<div style="background:#3d1a1a; padding:10px; border-radius:8px; color:#ff6b35;">${stockBajoMsg}</div>` : '';
+        alertaDiv.innerHTML = stockBajoMsg ? `<div style="background:#2a1a0a; padding:10px; border-radius:8px; color:#FF6D00;">${stockBajoMsg}</div>` : '';
       }
       actualizarValorInventario();
     }
@@ -811,7 +1069,13 @@
     // Caja
     document.getElementById('formMovimiento').addEventListener('submit', (e) => {
       e.preventDefault();
+      if (!cajaAbierta) {
+        alert('⚠️ Debe abrir la caja primero');
+        return;
+      }
+      
       const tipo = document.getElementById('tipoMovimiento').value;
+      const medioPago = document.getElementById('medioPago').value;
       const monto = parseFloat(document.getElementById('montoMovimiento').value);
       
       if (tipo === 'egreso') {
@@ -825,10 +1089,12 @@
       const nuevoMovimiento = {
         id: nextIdMovimiento++,
         tipo: tipo,
+        medioPago: tipo === 'ingreso' ? medioPago : null,
         concepto: document.getElementById('conceptoMovimiento').value,
         monto: monto,
         referencia: document.getElementById('referenciaMovimiento').value || '-',
-        fecha: new Date().toLocaleString()
+        fecha: new Date().toLocaleString(),
+        hora: new Date().toLocaleTimeString()
       };
       movimientos.push(nuevoMovimiento);
       guardarDatos();
@@ -856,6 +1122,17 @@
       return movimientos.filter(m => m.tipo === 'egreso').reduce((sum, m) => sum + m.monto, 0);
     }
 
+    function getMedioPagoIcono(medio) {
+      if (!medio) return '-';
+      const iconos = {
+        efectivo: '<span class="medio-pago medio-efectivo">💵 Efectivo</span>',
+        transferencia: '<span class="medio-pago medio-transferencia">🏦 Transferencia</span>',
+        debito: '<span class="medio-pago medio-debito">💳 Débito</span>',
+        credito: '<span class="medio-pago medio-credito">💎 Crédito</span>'
+      };
+      return iconos[medio] || medio;
+    }
+
     function cargarCaja() {
       const cajaActual = calcularCajaActual();
       const totalIngresos = calcularTotalIngresos();
@@ -875,16 +1152,39 @@
       movimientos.slice().reverse().forEach(m => {
         const row = tbody.insertRow();
         row.innerHTML = `
-          <td>${m.fecha}</td><td>${m.tipo === 'ingreso' ? '💰 Ingreso' : '💸 Egreso'}</td>
+          <td>${m.hora || m.fecha.split(',')[1]}</td>
+          <td>${m.tipo === 'ingreso' ? '💰 Ingreso' : '💸 Egreso'}</td>
+          <td>${getMedioPagoIcono(m.medioPago)}</td>
           <td>${m.concepto}</td>
           <td style="color: ${m.tipo === 'ingreso' ? '#28a745' : '#dc3545'}; font-weight: bold;">
             ${m.tipo === 'ingreso' ? '+' : '-'}$${m.monto.toFixed(2)}
-          </td><td>${m.referencia}</td>
+          </td>
+          <td>${m.referencia}</td>
           <td><button class="btn-danger" onclick="eliminarMovimiento(${m.id})">🗑️</button></td>
         `;
       });
       
       actualizarValorInventario();
+      actualizarDesgloseInterfaz();
+    }
+
+    function cargarCierres() {
+      const tbody = document.getElementById('listaCierres');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      cierres.slice().reverse().forEach(c => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+          <td>${c.fecha}</td>
+          <td>$${c.totalIngresos.toFixed(2)}</td>
+          <td>$${c.efectivo.toFixed(2)}</td>
+          <td>$${c.transferencia.toFixed(2)}</td>
+          <td>$${c.debito.toFixed(2)}</td>
+          <td>$${c.credito.toFixed(2)}</td>
+          <td>$${c.totalEgresos.toFixed(2)}</td>
+          <td>$${c.saldoFinal.toFixed(2)}</td>
+        `;
+      });
     }
 
     function eliminarMovimiento(id) {
@@ -899,6 +1199,7 @@
       cargarPresupuestos();
       cargarStock();
       cargarCaja();
+      cargarCierres();
     }
 
     // Event listeners
