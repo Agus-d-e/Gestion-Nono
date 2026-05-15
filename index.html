@@ -1,1793 +1,909 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>C.A.I.A - Taller</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema Integral de Taller Mecánico</title>
   <style>
-    /* Reset y base */
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background-color: #0f0f0f;
-      color: #f5f5f5;
-      line-height: 1.6;
-    }
-
-    /* Estilos para la página de inicio */
-    body.landing {
-      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #1a1a1a;
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       padding: 20px;
     }
 
-    .center-box {
-      text-align: center;
-      background: #1a1a1a;
-      padding: 30px 20px;
-      border-radius: 15px;
-      border: 2px solid #ff9800;
-      box-shadow: 0 0 25px rgba(255, 153, 0, 0.3);
+    /* Pantalla de login */
+    .login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      max-width: 400px;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
     }
 
-    .center-box h1 {
-      color: #ff9800;
-      font-size: 2.5em;
-      margin-bottom: 15px;
+    .login-box {
+      background: #2d2d2d;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      text-align: center;
+      width: 350px;
+      border: 1px solid #ff6b35;
     }
 
-    .center-box p {
-      font-size: 1.1em;
-      margin-bottom: 25px;
-      color: #ffb84d;
+    .login-box h2 {
+      margin-bottom: 20px;
+      color: #ff6b35;
     }
 
-    .btn {
-      display: inline-block;
-      background-color: #ff9800;
-      color: #000;
-      padding: 12px 30px;
-      text-decoration: none;
+    .login-box h3 {
+      color: #cccccc;
+      margin-bottom: 20px;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 2px solid #444;
       border-radius: 8px;
-      font-weight: bold;
-      transition: all 0.3s ease;
+      font-size: 16px;
+      background: #1a1a1a;
+      color: white;
+    }
+
+    .login-box input:focus {
+      outline: none;
+      border-color: #ff6b35;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 12px;
+      background: #ff6b35;
+      color: white;
       border: none;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
-      font-size: 1em;
+      margin-top: 10px;
+      font-weight: bold;
     }
 
-    .btn:hover {
-      background-color: #ffa733;
-      transform: scale(1.05);
+    .login-box button:hover {
+      background: #e85d2c;
+      transform: translateY(-2px);
     }
 
-    /* Ocultar la gestión inicialmente */
-    #gestion-container {
+    .error-msg {
+      color: #ff6b35;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    /* Main content */
+    .main-content {
       display: none;
     }
 
-    /* Estilos para el sistema de gestión */
-    body:not(.landing) {
-      background-color: #0f0f0f;
-      padding: 0;
-    }
-
-    /* 🏷️ Header */
     header {
-      background-color: #151515;
-      border-bottom: 2px solid #ff9800;
-      padding: 15px 20px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .header-content {
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      gap: 15px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .header-main {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       flex-wrap: wrap;
-      gap: 15px;
-      width: 100%;
+      gap: 10px;
+      border: 1px solid #333;
     }
 
     header h1 {
-      color: #ff9800;
-      font-size: 1.5em;
-      text-align: center;
-      margin: 0;
+      color: #ff6b35;
+      font-size: 24px;
     }
 
-    .header-buttons {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .header-btn {
-      background: #666;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 0.9em;
-      white-space: nowrap;
-    }
-
-    .header-btn.alert {
-      background: #ff4444;
-    }
-
-    /* 📦 Panel selector y filtros */
-    #panel {
-      margin: 20px;
-      background: #1a1a1a;
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(255, 153, 0, 0.3);
-      border: 1px solid #ff9800;
-      max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .panel-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      align-items: end;
-    }
-
-    .filtro-group {
-      flex: 1;
-      min-width: 200px;
-    }
-
-    #panel label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-      color: #ffb84d;
-      font-size: 1.1em;
-    }
-
-    #selector, .filtro-input, .filtro-select {
-      background-color: #222;
-      color: #fff;
-      border: 1px solid #ff9800;
-      border-radius: 6px;
-      padding: 10px;
-      width: 100%;
-      font-size: 1em;
-    }
-
-    .btn-filtro {
-      background: #ff9800;
-      color: #000;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      white-space: nowrap;
-      font-size: 0.9em;
-    }
-
-    .btn-filtro:hover {
-      background: #ffa733;
-    }
-
-    /* 📝 Formulario */
-    #form-section {
-      background: #1a1a1a;
-      margin: 20px;
-      padding: 20px;
-      border-radius: 15px;
-      border: 1px solid #ff9800;
-      box-shadow: 0 0 25px rgba(255, 153, 0, 0.15);
-      max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    #form-section h2 {
-      color: #ff9800;
-      margin-bottom: 20px;
-      text-align: center;
-      font-size: 1.3em;
-    }
-
-    #formulario {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    #formulario label {
-      color: #ffb84d;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    #formulario input, 
-    #formulario select, 
-    #formulario textarea {
-      background-color: #222;
-      border: 1px solid #ff9800;
-      border-radius: 6px;
-      color: #fff;
-      padding: 12px;
-      font-size: 1em;
-      width: 100%;
-    }
-
-    #formulario textarea {
-      min-height: 80px;
-      resize: vertical;
-    }
-
-    #formulario button {
-      margin-top: 10px;
-      background-color: #ff9800;
-      border: none;
-      padding: 12px;
-      color: #000;
-      font-weight: bold;
+    .logout-btn {
+      background: #333;
+      color: #ff6b35;
+      border: 1px solid #ff6b35;
+      padding: 10px 20px;
       border-radius: 8px;
       cursor: pointer;
-      transition: all 0.2s ease-in-out;
-      font-size: 1em;
+      font-size: 14px;
+      font-weight: bold;
     }
 
-    #formulario button:hover {
-      background-color: #ffa733;
+    .logout-btn:hover {
+      background: #ff6b35;
+      color: #1a1a1a;
     }
 
-    /* 📊 Tabla - Responsive */
-    #crud-container {
-      margin: 20px;
-      overflow-x: auto;
+    /* Navegación */
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: #2d2d2d;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s;
+      color: #cccccc;
+    }
+
+    .tab-btn:hover {
+      transform: translateY(-2px);
+      background: #3d3d3d;
+    }
+
+    .tab-btn.active {
+      background: #ff6b35;
+      color: #1a1a1a;
+    }
+
+    /* Paneles */
+    .panel {
       background: #1a1a1a;
       border-radius: 15px;
-      border: 1px solid #ff9800;
-      box-shadow: 0 0 25px rgba(255, 153, 0, 0.15);
-      padding: 15px;
-      max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      display: none;
+      border: 1px solid #333;
     }
 
+    .panel.active {
+      display: block;
+    }
+
+    .panel h2, .panel h3 {
+      color: #ff6b35;
+      margin-bottom: 20px;
+    }
+
+    /* Formularios */
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #cccccc;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #333;
+      border-radius: 8px;
+      font-size: 14px;
+      background: #2d2d2d;
+      color: white;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #ff6b35;
+    }
+
+    button {
+      background: #ff6b35;
+      color: #1a1a1a;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 10px;
+      margin-top: 5px;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #e85d2c;
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-success {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-warning {
+      background: #ffc107;
+      color: #1a1a1a;
+    }
+
+    /* Tablas */
     .table-container {
       overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
+      margin-top: 20px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 600px;
     }
 
     th, td {
-      padding: 10px 12px;
+      padding: 12px;
       text-align: left;
       border-bottom: 1px solid #333;
-      white-space: nowrap;
     }
 
     th {
-      background-color: #222;
-      color: #ffb84d;
+      background: #2d2d2d;
       font-weight: bold;
-      position: sticky;
-      top: 0;
+      color: #ff6b35;
     }
 
     td {
-      color: #f5f5f5;
+      color: #cccccc;
     }
 
     tr:hover {
-      background-color: #2a2a2a;
+      background: #2d2d2d;
     }
 
-    .alerta-service {
-      background-color: #ff4444 !important;
-      color: white !important;
-      font-weight: bold;
-    }
-
-    .alerta-service:hover {
-      background-color: #cc3333 !important;
-    }
-
-    /* Botones de acción en tabla */
-    .acciones-cell {
-      white-space: nowrap;
-    }
-
-    .btn-accion {
-      background: #ff9800;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 4px;
-      cursor: pointer;
+    .action-buttons button {
       margin: 2px;
-      font-size: 0.8em;
-      min-width: 60px;
+      padding: 5px 10px;
+      font-size: 12px;
     }
 
-    .btn-accion.eliminar {
-      background: #ff4444;
-    }
-
-    .btn-accion:hover {
-      transform: scale(1.05);
-      opacity: 0.9;
-    }
-
-    /* 🦶 Footer */
-    footer {
-      margin-top: 30px;
+    /* Resumen financiero */
+    .resumen-caja {
+      background: #2d2d2d;
+      color: white;
       padding: 20px;
-      text-align: center;
-      font-size: 0.9em;
-      color: #888;
-      border-top: 1px solid #222;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ff6b35;
     }
 
-    /* Modal de alertas */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.8);
-      padding: 20px;
-      overflow-y: auto;
-    }
-
-    .modal-content {
-      background-color: #1a1a1a;
-      margin: 5% auto;
-      padding: 20px;
-      border: 2px solid #ff9800;
-      border-radius: 15px;
-      width: 100%;
-      max-width: 500px;
-      color: #f5f5f5;
-      box-shadow: 0 0 25px rgba(255, 153, 0, 0.3);
-      position: relative;
-    }
-
-    .modal-header {
-      color: #ff9800;
-      border-bottom: 1px solid #333;
-      padding-bottom: 15px;
+    .resumen-caja h3 {
+      color: #ff6b35;
       margin-bottom: 15px;
     }
 
-    .modal-header h2 {
-      font-size: 1.3em;
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
     }
 
-    .modal-alerta {
-      background-color: #ff4444;
-      color: white;
-      padding: 12px;
-      margin: 8px 0;
-      border-radius: 8px;
-      border-left: 5px solid #ff9800;
-      font-size: 0.9em;
+    .stat-card {
+      background: #1a1a1a;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #444;
     }
 
-    .close {
-      color: #aaa;
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-      line-height: 1;
+    /* Stock bajo */
+    .stock-bajo {
+      background-color: #3d1a1a;
+    }
+    
+    .stock-bajo td {
+      color: #ff6b35;
     }
 
-    .close:hover {
-      color: #ff9800;
-    }
-
-    /* Información responsive */
-    .info-responsive {
-      display: none;
-      background: #333;
-      color: #ffb84d;
-      padding: 10px;
-      margin: 10px 20px;
-      border-radius: 8px;
+    footer {
       text-align: center;
-      font-size: 0.9em;
-      max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;
+      color: #666;
+      margin-top: 20px;
     }
 
-    /* Media Queries para Responsive */
     @media (max-width: 768px) {
-      .center-box {
-        padding: 25px 15px;
+      .stats {
+        grid-template-columns: 1fr;
       }
       
-      .center-box h1 {
-        font-size: 2em;
-      }
-      
-      .header-content {
-        padding: 0 10px;
-      }
-      
-      .header-main {
-        flex-direction: column;
+      .tab-btn {
+        flex: 1;
         text-align: center;
       }
       
       header h1 {
-        font-size: 1.3em;
+        font-size: 18px;
       }
-      
-      .header-buttons {
-        width: 100%;
-        justify-content: center;
-      }
-      
-      .header-btn {
-        flex: 1;
-        min-width: 120px;
-        text-align: center;
-      }
-
-      .panel-row {
-        flex-direction: column;
-      }
-
-      .filtro-group {
-        min-width: 100%;
-      }
-      
-      #panel, #form-section, #crud-container {
-        margin: 10px;
-        padding: 15px;
-      }
-      
-      th, td {
-        padding: 8px 10px;
-        font-size: 0.9em;
-      }
-      
-      .btn-accion {
-        padding: 5px 8px;
-        font-size: 0.75em;
-        min-width: 50px;
-        margin: 1px;
-      }
-      
-      .modal-content {
-        margin: 10% auto;
-        padding: 15px;
-      }
-      
-      .info-responsive {
-        display: block;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .center-box h1 {
-        font-size: 1.8em;
-      }
-      
-      .center-box p {
-        font-size: 1em;
-      }
-      
-      .btn {
-        padding: 10px 20px;
-        font-size: 0.9em;
-      }
-      
-      header {
-        padding: 10px 15px;
-      }
-      
-      .header-btn {
-        font-size: 0.8em;
-        padding: 6px 10px;
-      }
-      
-      #formulario input, 
-      #formulario select, 
-      #formulario textarea {
-        padding: 10px;
-      }
-      
-      th, td {
-        padding: 6px 8px;
-        font-size: 0.85em;
-      }
-      
-      table {
-        min-width: 500px;
-      }
-    }
-
-    /* Scrollbar personalizado */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: #1a1a1a;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #ff9800;
-      border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #ffa733;
     }
   </style>
 </head>
-<body class="landing">
-  <!-- Página de Inicio -->
-  <div class="center-box" id="inicio-container">
-    <h1>C.A.I.A</h1>
-    <p>Bienvenido al Centro de Asistencia Integrativa Automotriz</p>
-    <button class="btn" onclick="mostrarGestion()">Entrar al sistema</button>
-  </div>
-
-  <!-- Sistema de Gestión (oculto inicialmente) -->
-  <div id="gestion-container">
-    <header>
-      <div class="header-content">
-        <div class="header-main">
-          <h1>⚙️ Gestión del Taller</h1>
-          <div class="header-buttons">
-            <button class="header-btn" onclick="mostrarInicio()">← Volver</button>
-            <button class="header-btn alert" onclick="verificarAlertasServices()">🚨 Ver Alertas</button>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <main>
-      <!-- Información para móviles -->
-      <div class="info-responsive">
-        💡 Desliza horizontalmente para ver toda la tabla en dispositivos móviles
-      </div>
-
-      <section id="panel">
-        <div class="panel-row">
-          <div class="filtro-group">
-            <label for="selector">Seleccionar tabla:</label>
-            <select id="selector">
-              <option value="clientes">Clientes</option>
-              <option value="mecanico">Mecánicos</option>
-              <option value="especialidad">Especialidades</option>
-              <option value="service">Service</option>
-            </select>
-          </div>
-          
-          <!-- Filtros para Clientes -->
-          <div class="filtro-group" id="filtro-clientes" style="display: none;">
-            <label for="filtro-nombre">Filtrar por nombre:</label>
-            <input type="text" id="filtro-nombre" class="filtro-input" placeholder="Buscar por nombre...">
-          </div>
-          <div class="filtro-group" id="filtro-vehiculo" style="display: none;">
-            <label for="filtro-vehiculo-input">Filtrar por vehículo:</label>
-            <input type="text" id="filtro-vehiculo-input" class="filtro-input" placeholder="Buscar por vehículo...">
-          </div>
-          
-          <!-- Filtros para Mecánicos -->
-          <div class="filtro-group" id="filtro-especialidad" style="display: none;">
-            <label for="filtro-especialidad-select">Filtrar por especialidad:</label>
-            <select id="filtro-especialidad-select" class="filtro-select">
-              <option value="">Todas las especialidades</option>
-            </select>
-          </div>
-          
-          <div class="filtro-group">
-            <label>&nbsp;</label>
-            <button class="btn-filtro" onclick="aplicarFiltros()">🔍 Aplicar Filtros</button>
-          </div>
-          <div class="filtro-group">
-            <label>&nbsp;</label>
-            <button class="btn-filtro" onclick="limpiarFiltros()">🗑️ Limpiar Filtros</button>
-          </div>
-        </div>
-      </section>
-
-      <section id="form-section">
-        <h2 id="titulo-form">Agregar registro</h2>
-        <form id="formulario"></form>
-      </section>
-
-      <section id="crud-container">
-        <div class="table-container">
-          <!-- La tabla se generará aquí dinámicamente -->
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      <p>Desarrollado con ❤️ y Supabase</p>
-    </footer>
-  </div>
-
-  <!-- Modal para alertas -->
-  <div id="modal-alertas" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="cerrarModal()">&times;</span>
-      <div class="modal-header">
-        <h2>🚨 Alertas de Services</h2>
-      </div>
-      <div id="contenido-alertas"></div>
+<body>
+  <!-- Pantalla de Login -->
+  <div id="loginOverlay" class="login-overlay">
+    <div class="login-box">
+      <h2>🔧 ACCESO AL SISTEMA</h2>
+      <h3>Taller Mecánico</h3>
+      <input type="password" id="passwordInput" placeholder="Contraseña" autofocus>
+      <button onclick="verificarPassword()">INGRESAR</button>
+      <div id="errorMsg" class="error-msg"></div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Contenido principal -->
+  <div id="mainContent" class="main-content">
+    <header>
+      <h1>⚙️ SISTEMA INTEGRAL DE GESTIÓN - TALLER MECÁNICO</h1>
+      <button class="logout-btn" onclick="cerrarSesion()">CERRAR SESIÓN</button>
+    </header>
+
+    <!-- Navegación -->
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="cambiarPanel('presupuestos')">📋 PRESUPUESTOS</button>
+      <button class="tab-btn" onclick="cambiarPanel('stock')">📦 CONTROL DE STOCK</button>
+      <button class="tab-btn" onclick="cambiarPanel('caja')">💰 CAJA Y FINANZAS</button>
+    </div>
+
+    <!-- Panel Presupuestos -->
+    <div id="panelPresupuestos" class="panel active">
+      <h2>📋 Gestión de Presupuestos</h2>
+      <form id="formPresupuesto">
+        <div class="form-group">
+          <label>Cliente:</label>
+          <input type="text" id="clientePresupuesto" required placeholder="Nombre del cliente">
+        </div>
+        <div class="form-group">
+          <label>Vehículo:</label>
+          <input type="text" id="vehiculoPresupuesto" required placeholder="Marca y modelo">
+        </div>
+        <div class="form-group">
+          <label>Descripción del trabajo:</label>
+          <textarea id="descripcionPresupuesto" rows="3" required placeholder="Detalle de las reparaciones/servicios"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Mano de obra ($):</label>
+          <input type="number" id="manoObra" required step="0.01" value="0">
+        </div>
+        <div class="form-group">
+          <label>Repuestos ($):</label>
+          <input type="number" id="repuestos" required step="0.01" value="0">
+        </div>
+        <div class="form-group">
+          <label>Total ($):</label>
+          <input type="number" id="totalPresupuesto" readonly style="background:#333" value="0">
+        </div>
+        <button type="submit">➕ CREAR PRESUPUESTO</button>
+        <button type="button" onclick="limpiarFormPresupuesto()">🗑️ LIMPIAR</button>
+      </form>
+
+      <div class="table-container">
+        <h3>📋 Lista de Presupuestos</h3>
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Fecha</th><th>Cliente</th><th>Vehículo</th><th>Descripción</th><th>Mano Obra</th><th>Repuestos</th><th>Total</th><th>Estado</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="listaPresupuestos"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Panel Stock -->
+    <div id="panelStock" class="panel">
+      <h2>📦 Control de Inventario</h2>
+      <form id="formStock">
+        <div class="form-group">
+          <label>Producto:</label>
+          <input type="text" id="productoStock" required placeholder="Nombre del producto/repuesto">
+        </div>
+        <div class="form-group">
+          <label>Cantidad:</label>
+          <input type="number" id="cantidadStock" required min="0" value="0">
+        </div>
+        <div class="form-group">
+          <label>Precio unitario ($):</label>
+          <input type="number" id="precioStock" required step="0.01" value="0">
+        </div>
+        <div class="form-group">
+          <label>Categoría:</label>
+          <select id="categoriaStock">
+            <option value="Motor">Motor</option>
+            <option value="Frenos">Frenos</option>
+            <option value="Suspensión">Suspensión</option>
+            <option value="Eléctrico">Eléctrico</option>
+            <option value="Lubricantes">Lubricantes</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </div>
+        <button type="submit">➕ AGREGAR PRODUCTO</button>
+        <button type="button" onclick="limpiarFormStock()">🗑️ LIMPIAR</button>
+      </form>
+
+      <div class="table-container">
+        <h3>📋 Inventario Actual</h3>
+        <div id="stockAlerta" style="margin-bottom: 10px;"></div>
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Producto</th><th>Cantidad</th><th>Precio Unit.</th><th>Categoría</th><th>Valor Total</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="listaStock"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Panel Caja -->
+    <div id="panelCaja" class="panel">
+      <h2>💰 Gestión de Caja y Finanzas</h2>
+      
+      <div class="resumen-caja">
+        <h3>📊 Resumen Financiero</h3>
+        <div class="stats">
+          <div class="stat-card">
+            <strong>💰 CAJA ACTUAL:</strong><br>
+            <span id="cajaActual" style="font-size: 24px; color:#ff6b35;">$0</span>
+          </div>
+          <div class="stat-card">
+            <strong>📈 TOTAL INGRESOS:</strong><br>
+            <span id="totalIngresos" style="font-size: 24px; color:#28a745;">$0</span>
+          </div>
+          <div class="stat-card">
+            <strong>📉 TOTAL EGRESOS:</strong><br>
+            <span id="totalEgresos" style="font-size: 24px; color:#dc3545;">$0</span>
+          </div>
+          <div class="stat-card">
+            <strong>💼 VALOR INVENTARIO:</strong><br>
+            <span id="valorInventario" style="font-size: 24px; color:#ffc107;">$0</span>
+          </div>
+        </div>
+      </div>
+
+      <form id="formMovimiento">
+        <h3>Registrar Movimiento</h3>
+        <div class="form-group">
+          <label>Tipo:</label>
+          <select id="tipoMovimiento">
+            <option value="ingreso">💰 Ingreso</option>
+            <option value="egreso">💸 Egreso</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Concepto:</label>
+          <input type="text" id="conceptoMovimiento" required placeholder="Ej: Pago de presupuesto, compra de repuestos">
+        </div>
+        <div class="form-group">
+          <label>Monto ($):</label>
+          <input type="number" id="montoMovimiento" required step="0.01" value="0">
+        </div>
+        <div class="form-group">
+          <label>Referencia:</label>
+          <input type="text" id="referenciaMovimiento" placeholder="N° presupuesto, factura, etc.">
+        </div>
+        <button type="submit">✅ REGISTRAR MOVIMIENTO</button>
+      </form>
+
+      <div class="table-container">
+        <h3>📋 Historial de Movimientos</h3>
+        <table>
+          <thead>
+            <tr><th>Fecha</th><th>Tipo</th><th>Concepto</th><th>Monto</th><th>Referencia</th><th>Acciones</th></tr>
+          </thead>
+          <tbody id="listaMovimientos"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <footer>
+      <p>Desarrollado con ❤️ - Sistema Integral de Gestión para Taller Mecánico</p>
+    </footer>
+  </div>
+
   <script>
-    // ====================== VARIABLES GLOBALES ======================
-    let sistemaGestion = {
-      supabase: null,
-      intervaloAlertas: null,
-      datosOriginales: {},
-      filtrosActivos: {
-        clientes: { nombre: '', vehiculo: '' },
-        mecanico: { especialidad: '' }
-      },
-      tablaMap: {
-        clientes: { name: "clientes", pk: "id_cliente" },
-        mecanico: { name: "mecanicos", pk: "id_mec" },
-        especialidad: { name: "especialidades", pk: "especialidad" },
-        service: { name: "service", pk: "id" }
-      },
-      campos: {
-        clientes: ["nombre", "vehiculo", "numero", "mecanico"],
-        mecanico: ["nombre", "telefono", "especialidad"],
-        especialidad: ["especialidad"],
-        service: ["nombre", "vehiculo", "numero", "precio", "materiales", "fecha", "kilometros_actuales", "kilometros_ultima_distribucion"]
-      }
-    };
+    // CONSTANTES
+    const CONTRASENA_CORRECTA = "153624";
+    
+    // Variables globales
+    let presupuestos = [];
+    let stock = [];
+    let movimientos = [];
+    let nextIdPresupuesto = 1;
+    let nextIdStock = 1;
+    let nextIdMovimiento = 1;
 
-    // ====================== FUNCIONES GLOBALES ======================
-    function mostrarGestion() {
-      document.getElementById('inicio-container').style.display = 'none';
-      document.getElementById('gestion-container').style.display = 'block';
-      document.body.classList.remove('landing');
+    // Inicializar datos
+    function inicializarDatos() {
+      const savedPresupuestos = localStorage.getItem('presupuestos_taller');
+      const savedStock = localStorage.getItem('stock_taller');
+      const savedMovimientos = localStorage.getItem('movimientos_taller');
       
-      inicializarSistemaGestion();
-    }
-
-    function mostrarInicio() {
-      document.getElementById('inicio-container').style.display = 'block';
-      document.getElementById('gestion-container').style.display = 'none';
-      document.body.classList.add('landing');
-      
-      if (sistemaGestion.intervaloAlertas) {
-        clearInterval(sistemaGestion.intervaloAlertas);
-      }
-    }
-
-    function cerrarModal() {
-      document.getElementById('modal-alertas').style.display = 'none';
-    }
-
-    // ====================== ALERTAS ======================
-    async function verificarAlertasServices() {
-      if (!sistemaGestion.supabase) {
-        alert("El sistema no está inicializado. Entra primero al sistema de gestión.");
-        return;
-      }
-
-      try {
-        const { data: services, error } = await sistemaGestion.supabase
-          .from("service")
-          .select("*")
-          .not("fecha", "is", null)
-          .order("fecha", { ascending: true });
-
-        if (error) throw error;
-
-        const alertasTiempo = [];
-        const alertasDistribucion = [];
-
-        services.forEach(service => {
-          // Alerta por tiempo (1 año)
-          const fechaService = new Date(service.fecha);
-          const hoy = new Date();
-          const diferenciaMs = hoy - fechaService;
-          const diferenciaDias = diferenciaMs / (1000 * 60 * 60 * 24);
-          
-          if (diferenciaDias >= 360 && diferenciaDias <= 370) {
-            const anosTranscurridos = (diferenciaDias / 365).toFixed(1);
-            alertasTiempo.push({
-              id: service.id,
-              nombre: service.nombre,
-              vehiculo: service.vehiculo,
-              numero: service.numero,
-              fecha: service.fecha,
-              diasTranscurridos: Math.floor(diferenciaDias),
-              anosTranscurridos: anosTranscurridos,
-              tipo: "tiempo"
-            });
-          }
-
-          // Alerta por kilómetros de distribución (40,000 km)
-          if (service.kilometros_actuales && service.kilometros_ultima_distribucion) {
-            const kmRecorridos = service.kilometros_actuales - service.kilometros_ultima_distribucion;
-            
-            if (kmRecorridos >= 38000 && kmRecorridos <= 42000) {
-              alertasDistribucion.push({
-                id: service.id,
-                nombre: service.nombre,
-                vehiculo: service.vehiculo,
-                numero: service.numero,
-                kilometros_actuales: service.kilometros_actuales,
-                kilometros_ultima_distribucion: service.kilometros_ultima_distribucion,
-                kilometros_recorridos: kmRecorridos,
-                tipo: "distribucion"
-              });
-            }
-          }
-        });
-
-        mostrarAlertasServicesCombinadas(alertasTiempo, alertasDistribucion);
-        
-      } catch (error) {
-        console.error("Error verificando alertas:", error);
-        alert("Error al verificar alertas: " + error.message);
-      }
-    }
-
-    function mostrarAlertasServicesCombinadas(alertasTiempo, alertasDistribucion) {
-      const modal = document.getElementById('modal-alertas');
-      const contenido = document.getElementById('contenido-alertas');
-      
-      let html = '';
-      const totalAlertas = alertasTiempo.length + alertasDistribucion.length;
-      
-      if (totalAlertas === 0) {
-        html = '<p>✅ No hay alertas en este momento.</p>';
+      if (savedPresupuestos) {
+        presupuestos = JSON.parse(savedPresupuestos);
+        nextIdPresupuesto = parseInt(localStorage.getItem('nextIdPresupuesto_taller')) || 1;
       } else {
-        html = `<p>🚨 <strong>${totalAlertas} alerta(s) activa(s):</strong></p>`;
-        
-        // Alertas por tiempo
-        if (alertasTiempo.length > 0) {
-          html += `<div style="margin: 15px 0; padding: 10px; background: #333; border-radius: 8px;">
-                    <strong>📅 ALERTAS POR TIEMPO (${alertasTiempo.length})</strong>
-                  </div>`;
-          
-          alertasTiempo.forEach((alerta, index) => {
-            const fechaFormateada = new Date(alerta.fecha).toLocaleDateString('es-ES');
-            html += `
-              <div class="modal-alerta">
-                <strong>⏰ ${index + 1}. ${alerta.nombre}</strong><br>
-                📞 Teléfono: ${alerta.numero}<br>
-                🚗 Vehículo: ${alerta.vehiculo}<br>
-                📅 Fecha del service: ${fechaFormateada}<br>
-                ⏰ Tiempo transcurrido: ${alerta.diasTranscurridos} días (${alerta.anosTranscurridos} años)<br>
-                <br>
-                <strong>📞 CONTACTAR AL CLIENTE PARA NUEVO SERVICE</strong>
-              </div>
-            `;
-          });
-        }
-        
-        // Alertas por distribución
-        if (alertasDistribucion.length > 0) {
-          html += `<div style="margin: 15px 0; padding: 10px; background: #333; border-radius: 8px;">
-                    <strong>🔧 ALERTAS POR DISTRIBUCIÓN (${alertasDistribucion.length})</strong>
-                  </div>`;
-          
-          alertasDistribucion.forEach((alerta, index) => {
-            html += `
-              <div class="modal-alerta">
-                <strong>🔧 ${index + 1}. ${alerta.nombre}</strong><br>
-                📞 Teléfono: ${alerta.numero}<br>
-                🚗 Vehículo: ${alerta.vehiculo}<br>
-                🛣️ Kilómetros actuales: ${alerta.kilometros_actuales} km<br>
-                🔄 Último cambio distribución: ${alerta.kilometros_ultima_distribucion} km<br>
-                📊 Kilómetros recorridos: ${alerta.kilometros_recorridos} km<br>
-                <br>
-                <strong>🔧 CONTACTAR AL CLIENTE PARA CAMBIO DE DISTRIBUCIÓN</strong>
-              </div>
-            `;
-          });
-        }
-        
-        html += `<p><strong>Acción requerida:</strong> Contactar a estos clientes según el tipo de alerta.</p>`;
+        presupuestos = [
+          { id: 1, cliente: 'Juan Pérez', vehiculo: 'Toyota Corolla', descripcion: 'Cambio de aceite y filtros', manoObra: 5000, repuestos: 3500, total: 8500, estado: 'Pendiente', fecha: new Date().toLocaleString() }
+        ];
+        nextIdPresupuesto = 2;
       }
       
-      contenido.innerHTML = html;
-      modal.style.display = 'block';
+      if (savedStock) {
+        stock = JSON.parse(savedStock);
+        nextIdStock = parseInt(localStorage.getItem('nextIdStock_taller')) || 1;
+      } else {
+        stock = [
+          { id: 1, producto: 'Aceite de motor 5W30', cantidad: 12, precioUnitario: 25.50, categoria: 'Lubricantes' },
+          { id: 2, producto: 'Filtro de aceite', cantidad: 8, precioUnitario: 12.00, categoria: 'Motor' },
+          { id: 3, producto: 'Pastillas de freno', cantidad: 3, precioUnitario: 45.00, categoria: 'Frenos' },
+          { id: 4, producto: 'Bujías', cantidad: 15, precioUnitario: 8.50, categoria: 'Motor' }
+        ];
+        nextIdStock = 5;
+      }
+      
+      if (savedMovimientos) {
+        movimientos = JSON.parse(savedMovimientos);
+        nextIdMovimiento = parseInt(localStorage.getItem('nextIdMovimiento_taller')) || 1;
+      } else {
+        movimientos = [
+          { id: 1, tipo: 'ingreso', concepto: 'Saldo inicial', monto: 5000, referencia: 'Apertura', fecha: new Date().toLocaleString() }
+        ];
+        nextIdMovimiento = 2;
+      }
+      
+      guardarDatos();
     }
 
-    // ====================== FILTROS ======================
-    function mostrarFiltros(tabla) {
-      document.getElementById('filtro-clientes').style.display = 'none';
-      document.getElementById('filtro-vehiculo').style.display = 'none';
-      document.getElementById('filtro-especialidad').style.display = 'none';
+    function guardarDatos() {
+      localStorage.setItem('presupuestos_taller', JSON.stringify(presupuestos));
+      localStorage.setItem('stock_taller', JSON.stringify(stock));
+      localStorage.setItem('movimientos_taller', JSON.stringify(movimientos));
+      localStorage.setItem('nextIdPresupuesto_taller', nextIdPresupuesto);
+      localStorage.setItem('nextIdStock_taller', nextIdStock);
+      localStorage.setItem('nextIdMovimiento_taller', nextIdMovimiento);
+    }
 
-      if (tabla === 'clientes') {
-        document.getElementById('filtro-clientes').style.display = 'block';
-        document.getElementById('filtro-vehiculo').style.display = 'block';
-      } else if (tabla === 'mecanico') {
-        document.getElementById('filtro-especialidad').style.display = 'block';
-        cargarEspecialidadesFiltro();
+    // Login
+    function verificarPassword() {
+      const password = document.getElementById('passwordInput').value;
+      const errorMsg = document.getElementById('errorMsg');
+      
+      if (password === CONTRASENA_CORRECTA) {
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        errorMsg.textContent = '';
+        inicializarDatos();
+        cargarTodosLosDatos();
+      } else {
+        errorMsg.textContent = '❌ Contraseña incorrecta';
+        document.getElementById('passwordInput').value = '';
+        document.getElementById('passwordInput').focus();
       }
     }
 
-    async function cargarEspecialidadesFiltro() {
-      try {
-        const { data: especialidades, error } = await sistemaGestion.supabase
-          .from("especialidades")
-          .select("especialidad")
-          .order("especialidad");
+    function cerrarSesion() {
+      document.getElementById('loginOverlay').style.display = 'flex';
+      document.getElementById('mainContent').style.display = 'none';
+      document.getElementById('passwordInput').value = '';
+      document.getElementById('errorMsg').textContent = '';
+    }
 
-        if (error) throw error;
-
-        const select = document.getElementById('filtro-especialidad-select');
-        select.innerHTML = '<option value="">Todas las especialidades</option>';
-        
-        especialidades.forEach(esp => {
-          const option = document.createElement("option");
-          option.value = esp.especialidad;
-          option.textContent = esp.especialidad;
-          select.appendChild(option);
-        });
-      } catch (error) {
-        console.error("Error cargando especialidades para filtro:", error);
+    // Cambiar panel
+    function cambiarPanel(panel) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      
+      if (panel === 'presupuestos') {
+        document.getElementById('panelPresupuestos').classList.add('active');
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        cargarPresupuestos();
+      } else if (panel === 'stock') {
+        document.getElementById('panelStock').classList.add('active');
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        cargarStock();
+      } else if (panel === 'caja') {
+        document.getElementById('panelCaja').classList.add('active');
+        document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        cargarCaja();
       }
     }
 
-    function aplicarFiltros() {
-      const tablaActual = document.getElementById('selector').value;
-      
-      if (tablaActual === 'clientes') {
-        sistemaGestion.filtrosActivos.clientes.nombre = document.getElementById('filtro-nombre').value.toLowerCase();
-        sistemaGestion.filtrosActivos.clientes.vehiculo = document.getElementById('filtro-vehiculo-input').value.toLowerCase();
-      } else if (tablaActual === 'mecanico') {
-        sistemaGestion.filtrosActivos.mecanico.especialidad = document.getElementById('filtro-especialidad-select').value;
-      }
-      
-      if (window.renderTablaConFiltros) {
-        window.renderTablaConFiltros(tablaActual);
-      }
+    // Calcular total
+    function calcularTotalPresupuesto() {
+      const manoObra = parseFloat(document.getElementById('manoObra').value) || 0;
+      const repuestos = parseFloat(document.getElementById('repuestos').value) || 0;
+      document.getElementById('totalPresupuesto').value = (manoObra + repuestos).toFixed(2);
     }
 
-    function limpiarFiltros() {
-      const tablaActual = document.getElementById('selector').value;
-      
-      if (tablaActual === 'clientes') {
-        document.getElementById('filtro-nombre').value = '';
-        document.getElementById('filtro-vehiculo-input').value = '';
-        sistemaGestion.filtrosActivos.clientes.nombre = '';
-        sistemaGestion.filtrosActivos.clientes.vehiculo = '';
-      } else if (tablaActual === 'mecanico') {
-        document.getElementById('filtro-especialidad-select').value = '';
-        sistemaGestion.filtrosActivos.mecanico.especialidad = '';
-      }
-      
-      if (window.renderTablaConFiltros) {
-        window.renderTablaConFiltros(tablaActual);
-      }
+    // Presupuestos
+    document.getElementById('formPresupuesto').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nuevoPresupuesto = {
+        id: nextIdPresupuesto++,
+        cliente: document.getElementById('clientePresupuesto').value,
+        vehiculo: document.getElementById('vehiculoPresupuesto').value,
+        descripcion: document.getElementById('descripcionPresupuesto').value,
+        manoObra: parseFloat(document.getElementById('manoObra').value),
+        repuestos: parseFloat(document.getElementById('repuestos').value),
+        total: parseFloat(document.getElementById('totalPresupuesto').value),
+        estado: 'Pendiente',
+        fecha: new Date().toLocaleString()
+      };
+      presupuestos.push(nuevoPresupuesto);
+      guardarDatos();
+      cargarPresupuestos();
+      limpiarFormPresupuesto();
+      alert('✅ Presupuesto creado');
+    });
+
+    function limpiarFormPresupuesto() {
+      document.getElementById('clientePresupuesto').value = '';
+      document.getElementById('vehiculoPresupuesto').value = '';
+      document.getElementById('descripcionPresupuesto').value = '';
+      document.getElementById('manoObra').value = '0';
+      document.getElementById('repuestos').value = '0';
+      document.getElementById('totalPresupuesto').value = '0';
     }
 
-    function filtrarDatos(tabla, datos) {
-      if (tabla === 'clientes') {
-        return datos.filter(item => {
-          const cumpleNombre = !sistemaGestion.filtrosActivos.clientes.nombre || 
-            (item.nombre && item.nombre.toLowerCase().includes(sistemaGestion.filtrosActivos.clientes.nombre));
-          const cumpleVehiculo = !sistemaGestion.filtrosActivos.clientes.vehiculo || 
-            (item.vehiculo && item.vehiculo.toLowerCase().includes(sistemaGestion.filtrosActivos.clientes.vehiculo));
-          return cumpleNombre && cumpleVehiculo;
-        });
-      } else if (tabla === 'mecanico') {
-        return datos.filter(item => {
-          return !sistemaGestion.filtrosActivos.mecanico.especialidad || 
-            item.especialidad === sistemaGestion.filtrosActivos.mecanico.especialidad;
-        });
-      }
-      return datos;
-    }
-
-    // ====================== SISTEMA DE GESTIÓN ======================
-    function inicializarSistemaGestion() {
-      // Inicializar Supabase
-      const SUPABASE_URL = "https://yhisjimuytbvahocmzum.supabase.co";
-      const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloaXNqaW11eXRidmFob2NtenVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5MjkzOTgsImV4cCI6MjA3ODUwNTM5OH0.STN1ug49Sy74W-y7Wo-tXfy__beqS9mKH-MG46ZGJvA";
-      
-      sistemaGestion.supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-      const selector = document.getElementById("selector");
-      const container = document.getElementById("crud-container");
-      const form = document.getElementById("formulario");
-
-      // Variables para controlar edición
-      let editando = false;
-      let registroEditando = null;
-      let tablaActual = "";
-
-      // 🧱 Renderizar formulario dinámico
-      async function renderFormulario(tabla) {
-        form.innerHTML = "";
-        editando = false;
-        registroEditando = null;
-        tablaActual = tabla;
-
-        const tituloForm = document.getElementById("titulo-form");
-        tituloForm.textContent = "Agregar registro";
-
-        mostrarFiltros(tabla);
-
-        if (tabla === "clientes") {
-          await renderFormularioClientes();
-          return;
-        }
-
-        if (tabla === "mecanico") {
-          await renderFormularioMecanico();
-          return;
-        }
-
-        if (tabla === "service") {
-          await renderFormularioService();
-          return;
-        }
-
-        sistemaGestion.campos[tabla].forEach(campo => {
-          const label = document.createElement("label");
-          label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1);
-
-          const input = document.createElement("input");
-          input.name = campo;
-          input.required = true;
-          
-          if (campo === "numero" || campo === "precio") {
-            input.type = "number";
-            if (campo === "precio") {
-              input.step = "0.01";
-              input.min = "0";
-            }
-          } else if (campo === "fecha") {
-            input.type = "date";
-          } else if (campo === "materiales") {
-            input.type = "text";
-            input.placeholder = "Lista de materiales separados por coma";
-          } else {
-            input.type = "text";
-          }
-
-          form.appendChild(label);
-          form.appendChild(input);
-        });
-
-        const boton = document.createElement("button");
-        boton.textContent = "Guardar";
-        boton.type = "submit";
-        form.appendChild(boton);
-
-        form.onsubmit = crearSubmitHandler(tabla);
-      }
-
-      // 📋 Formulario especial para clientes
-      async function renderFormularioClientes() {
-        const { data: mecanicos, error } = await sistemaGestion.supabase
-          .from("mecanicos")
-          .select("id_mec, nombre, especialidad")
-          .order("nombre");
-
-        if (error) {
-          alert("Error al cargar mecánicos: " + error.message);
-          return;
-        }
-
-        const camposClientes = ["nombre", "vehiculo", "numero"];
-        
-        camposClientes.forEach(campo => {
-          const label = document.createElement("label");
-          label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1);
-
-          const input = document.createElement("input");
-          input.name = campo;
-          input.required = true;
-          input.type = "text";
-
-          form.appendChild(label);
-          form.appendChild(input);
-        });
-
-        const labelMecanico = document.createElement("label");
-        labelMecanico.textContent = "Mecánico";
-        const selectMecanico = document.createElement("select");
-        selectMecanico.name = "mecanico";
-        selectMecanico.required = true;
-
-        const optionDefault = document.createElement("option");
-        optionDefault.value = "";
-        optionDefault.textContent = "Selecciona un mecánico";
-        selectMecanico.appendChild(optionDefault);
-
-        mecanicos.forEach(mec => {
-          const option = document.createElement("option");
-          option.value = mec.id_mec;
-          option.textContent = `${mec.nombre} - ${mec.especialidad}`;
-          selectMecanico.appendChild(option);
-        });
-
-        form.appendChild(labelMecanico);
-        form.appendChild(selectMecanico);
-
-        const boton = document.createElement("button");
-        boton.textContent = "Guardar";
-        boton.type = "submit";
-        form.appendChild(boton);
-
-        form.onsubmit = crearSubmitHandler("clientes");
-      }
-
-      // 📋 Formulario especial para mecánicos
-      async function renderFormularioMecanico() {
-        const { data: especialidades, error } = await sistemaGestion.supabase
-          .from("especialidades")
-          .select("especialidad")
-          .order("especialidad");
-
-        if (error) {
-          alert("Error al cargar especialidades: " + error.message);
-          return;
-        }
-
-        const camposMecanico = ["nombre", "telefono"];
-        
-        camposMecanico.forEach(campo => {
-          const label = document.createElement("label");
-          label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1);
-
-          const input = document.createElement("input");
-          input.name = campo;
-          input.required = true;
-          input.type = "text";
-
-          form.appendChild(label);
-          form.appendChild(input);
-        });
-
-        const labelEspecialidad = document.createElement("label");
-        labelEspecialidad.textContent = "Especialidad";
-        const selectEspecialidad = document.createElement("select");
-        selectEspecialidad.name = "especialidad";
-        selectEspecialidad.required = true;
-
-        const optionDefault = document.createElement("option");
-        optionDefault.value = "";
-        optionDefault.textContent = "Selecciona una especialidad";
-        selectEspecialidad.appendChild(optionDefault);
-
-        especialidades.forEach(esp => {
-          const option = document.createElement("option");
-          option.value = esp.especialidad;
-          option.textContent = esp.especialidad;
-          selectEspecialidad.appendChild(option);
-        });
-
-        form.appendChild(labelEspecialidad);
-        form.appendChild(selectEspecialidad);
-
-        const boton = document.createElement("button");
-        boton.textContent = "Guardar";
-        boton.type = "submit";
-        form.appendChild(boton);
-
-        form.onsubmit = crearSubmitHandler("mecanico");
-      }
-
-      // 📋 Formulario especial para service
-      async function renderFormularioService() {
-        const camposService = sistemaGestion.campos.service;
-        
-        camposService.forEach(campo => {
-          const label = document.createElement("label");
-          label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1).replace(/_/g, " ");
-
-          let input;
-          
-          if (campo === "materiales") {
-            input = document.createElement("textarea");
-            input.rows = 3;
-            input.placeholder = "Lista de materiales utilizados separados por coma...";
-          } else if (campo === "kilometros_actuales" || campo === "kilometros_ultima_distribucion") {
-            input = document.createElement("input");
-            input.type = "number";
-            input.min = "0";
-            input.step = "1";
-            input.placeholder = "0";
-          } else {
-            input = document.createElement("input");
-            
-            if (campo === "numero" || campo === "precio") {
-              input.type = "number";
-              if (campo === "precio") {
-                input.step = "0.01";
-                input.min = "0";
-                input.placeholder = "0.00";
-              }
-            } else if (campo === "fecha") {
-              input.type = "date";
-              const hoy = new Date().toISOString().split('T')[0];
-              input.max = hoy;
-            } else {
-              input.type = "text";
-            }
-          }
-
-          input.name = campo;
-          input.required = true;
-          form.appendChild(label);
-          form.appendChild(input);
-        });
-
-        const infoAlertas = document.createElement("div");
-        infoAlertas.style.color = "#ffb84d";
-        infoAlertas.style.fontSize = "0.9em";
-        infoAlertas.style.marginTop = "10px";
-        infoAlertas.innerHTML = "💡 El sistema alertará automáticamente cuando:<br>" +
-                                "• Un service cumpla 1 año para contactar al cliente<br>" +
-                                "• Se alcancen 40,000 km desde el último cambio de distribución";
-        form.appendChild(infoAlertas);
-
-        const boton = document.createElement("button");
-        boton.textContent = "Guardar Service";
-        boton.type = "submit";
-        form.appendChild(boton);
-
-        form.onsubmit = crearSubmitHandler("service");
-      }
-
-      // 🔧 Handler genérico para submit
-      function crearSubmitHandler(tabla) {
-        return async (e) => {
-          e.preventDefault();
-          const datos = Object.fromEntries(new FormData(form).entries());
-          
-          for (const campo in datos) {
-            if (datos[campo].trim() === "") {
-              alert("Todos los campos son obligatorios");
-              return;
-            }
-          }
-
-          const erroresValidacion = validarDatos(tabla, datos);
-          if (erroresValidacion.length > 0) {
-            alert("Errores de validación:\n\n" + erroresValidacion.join("\n"));
-            return;
-          }
-
-          // Convertir campos numéricos
-          if (datos.numero) datos.numero = parseInt(datos.numero);
-          if (datos.precio) datos.precio = parseFloat(datos.precio);
-          if (datos.mecanico) datos.mecanico = parseInt(datos.mecanico);
-          if (datos.kilometros_actuales) datos.kilometros_actuales = parseInt(datos.kilometros_actuales);
-          if (datos.kilometros_ultima_distribucion) datos.kilometros_ultima_distribucion = parseInt(datos.kilometros_ultima_distribucion);
-
-          const tablaReal = sistemaGestion.tablaMap[tabla].name;
-          
-          if (editando && registroEditando) {
-            const pk = sistemaGestion.tablaMap[tabla].pk;
-            const id = registroEditando[pk];
-            
-            const { error } = await sistemaGestion.supabase
-              .from(tablaReal)
-              .update(datos)
-              .eq(pk, id);
-            
-            if (error) {
-              alert("Error al actualizar: " + error.message);
-            } else {
-              alert("Registro actualizado correctamente");
-              form.reset();
-              editando = false;
-              registroEditando = null;
-              document.getElementById("titulo-form").textContent = "Agregar registro";
-              await renderTablaConFiltros(tabla);
-            }
-          } else {
-            const { error } = await sistemaGestion.supabase.from(tablaReal).insert([datos]);
-            
-            if (error) {
-              alert("Error al guardar: " + error.message);
-            } else {
-              alert("Registro guardado correctamente");
-              form.reset();
-              await renderTablaConFiltros(tabla);
-              
-              if (tabla === "service") {
-                setTimeout(verificarAlertasServices, 1000);
-              }
-            }
-          }
-        };
-      }
-
-      // ✅ Validaciones de datos
-      function validarDatos(tabla, datos) {
-        const errores = [];
-        
-        if (tabla === "service") {
-          const fechaService = new Date(datos.fecha);
-          const hoy = new Date();
-          hoy.setHours(0, 0, 0, 0);
-          
-          if (fechaService > hoy) {
-            errores.push("❌ La fecha del service no puede ser futura");
-          }
-          
-          const dosAniosAtras = new Date();
-          dosAniosAtras.setFullYear(dosAniosAtras.getFullYear() - 2);
-          
-          if (fechaService < dosAniosAtras) {
-            errores.push("❌ La fecha del service no puede ser de hace más de 2 años");
-          }
-          
-          if (datos.precio && parseFloat(datos.precio) <= 0) {
-            errores.push("❌ El precio debe ser mayor a 0");
-          }
-          
-          if (datos.numero && datos.numero.length < 8) {
-            errores.push("❌ El número de contacto debe tener al menos 8 dígitos");
-          }
-          
-          if (datos.kilometros_actuales && parseInt(datos.kilometros_actuales) < 0) {
-            errores.push("❌ Los kilómetros actuales no pueden ser negativos");
-          }
-          
-          if (datos.kilometros_ultima_distribucion && parseInt(datos.kilometros_ultima_distribucion) < 0) {
-            errores.push("❌ Los kilómetros de distribución no pueden ser negativos");
-          }
-          
-          if (datos.kilometros_actuales && datos.kilometros_ultima_distribucion) {
-            const kmActuales = parseInt(datos.kilometros_actuales);
-            const kmDistribucion = parseInt(datos.kilometros_ultima_distribucion);
-            
-            if (kmActuales < kmDistribucion) {
-              errores.push("❌ Los kilómetros actuales no pueden ser menores a los del último cambio de distribución");
-            }
-          }
-        }
-        
-        return errores;
-      }
-
-      // ✏️ Función para editar registro
-      window.editarRegistro = async function(tabla, id) {
-        try {
-          const tablaReal = sistemaGestion.tablaMap[tabla].name;
-          const pk = sistemaGestion.tablaMap[tabla].pk;
-          
-          const { data, error } = await sistemaGestion.supabase
-            .from(tablaReal)
-            .select("*")
-            .eq(pk, id)
-            .single();
-          
-          if (error) {
-            alert("Error al cargar registro: " + error.message);
-            return;
-          }
-          
-          if (!data) {
-            alert("Registro no encontrado");
-            return;
-          }
-          
-          editando = true;
-          registroEditando = data;
-          tablaActual = tabla;
-          
-          document.getElementById("titulo-form").textContent = "Editando registro";
-          
-          // Renderizar formulario específico para edición
-          if (tabla === "clientes") {
-            await renderFormularioClientesEdicion(data);
-          } else if (tabla === "mecanico") {
-            await renderFormularioMecanicoEdicion(data);
-          } else if (tabla === "service") {
-            await renderFormularioServiceEdicion(data);
-          } else {
-            await renderFormularioNormalEdicion(tabla, data);
-          }
-          
-          form.scrollIntoView({ behavior: 'smooth' });
-          
-        } catch (error) {
-          alert("Error al editar registro: " + error.message);
-        }
-      }
-
-      // 📝 Formulario de clientes para edición
-      async function renderFormularioClientesEdicion(data) {
-        const { data: mecanicos, error } = await sistemaGestion.supabase
-          .from("mecanicos")
-          .select("id_mec, nombre, especialidad")
-          .order("nombre");
-
-        if (error) {
-          alert("Error al cargar mecánicos: " + error.message);
-          return;
-        }
-
-        form.innerHTML = "";
-
-        const camposClientes = ["nombre", "vehiculo", "numero"];
-        
-        camposClientes.forEach(campo => {
-          const label = document.createElement("label");
-          label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1);
-
-          const input = document.createElement("input");
-          input.name = campo;
-          input.required = true;
-          input.type = "text";
-          input.value = data[campo] || "";
-
-          form.appendChild(label);
-          form.appendChild(input);
-        });
-
-        const labelMecanico = document.createElement("label");
-        labelMecanico.textContent = "Mecánico";
-        const selectMecanico = document.createElement("select");
-        selectMecanico.name = "mecanico";
-        selectMecanico.required = true;
-
-        mecanicos.forEach(mec => {
-          const option = document.createElement("option");
-          option.value = mec.id_mec;
-          option.textContent = `${mec.nombre} - ${mec.especialidad}`;
-          if (mec.id_mec === data.mecanico) {
-            option.selected = true;
-          }
-          selectMecanico.appendChild(option);
-        });
-
-        form.appendChild(labelMecanico);
-        form.appendChild(selectMecanico);
-
-        const boton = document.createElement("button");
-        boton.textContent = "Actualizar";
-        boton.type = "submit";
-        form.appendChild(boton);
-
-        form.onsubmit = crearSubmitHandler("clientes");
-      }
-
-      // 📝 Formulario de mecánicos para edición
-      async function renderFormularioMecanicoEdicion(data) {
-        const { data: especialidades, error } = await sistemaGestion.supabase
-          .from("especialidades")
-          .select("especialidad")
-          .order("especialidad");
-
-        if (error) {
-          alert("Error al cargar especialidades: " + error.message);
-          return;
-        }
-
-        form.innerHTML = "";
-
-        const camposMecanico = ["nombre", "telefono"];
-        
-        camposMecanico.forEach(campo => {
-          const label = document.createElement("label");
-          label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1);
-
-          const input = document.createElement("input");
-          input.name = campo;
-          input.required = true;
-          input.type = "text";
-          input.value = data[campo] || "";
-
-          form.appendChild(label);
-          form.appendChild(input);
-        });
-
-        const labelEspecialidad = document.createElement("label");
-        labelEspecialidad.textContent = "Especialidad";
-        const selectEspecialidad = document.createElement("select");
-        selectEspecialidad.name = "especialidad";
-        selectEspecialidad.required = true;
-
-        especialidades.forEach(esp => {
-          const option = document.createElement("option");
-          option.value = esp.especialidad;
-          option.textContent = esp.especialidad;
-          if (esp.especialidad === data.especialidad) {
-            option.selected = true;
-          }
-          selectEspecialidad.appendChild(option);
-        });
-
-        form.appendChild(labelEspecialidad);
-        form.appendChild(selectEspecialidad);
-
-        const boton = document.createElement("button");
-        boton.textContent = "Actualizar";
-        boton.type = "submit";
-        form.appendChild(boton);
-
-        form.onsubmit = crearSubmitHandler("mecanico");
-      }
-
-      // 📝 Formulario de service para edición
-      async function renderFormularioServiceEdicion(data) {
-        form.innerHTML = "";
-
-        const camposService = sistemaGestion.campos.service;
-        
-        camposService.forEach(campo => {
-          const label = document.createElement("label");
-          label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1).replace(/_/g, " ");
-
-          let input;
-          
-          if (campo === "materiales") {
-            input = document.createElement("textarea");
-            input.rows = 3;
-            input.placeholder = "Lista de materiales utilizados separados por coma...";
-          } else if (campo === "kilometros_actuales" || campo === "kilometros_ultima_distribucion") {
-            input = document.createElement("input");
-            input.type = "number";
-            input.min = "0";
-            input.step = "1";
-            input.placeholder = "0";
-          } else {
-            input = document.createElement("input");
-            
-            if (campo === "numero" || campo === "precio") {
-              input.type = "number";
-              if (campo === "precio") {
-                input.step = "0.01";
-                input.min = "0";
-              }
-            } else if (campo === "fecha") {
-              input.type = "date";
-              const hoy = new Date().toISOString().split('T')[0];
-              input.max = hoy;
-            } else {
-              input.type = "text";
-            }
-          }
-
-          input.name = campo;
-          input.required = true;
-
-          if (data[campo] !== null && data[campo] !== undefined) {
-            if (input.type === 'date' && data[campo]) {
-              const fecha = new Date(data[campo]);
-              input.value = fecha.toISOString().split('T')[0];
-            } else {
-              input.value = data[campo];
-            }
-          }
-
-          form.appendChild(label);
-          form.appendChild(input);
-        });
-
-        const boton = document.createElement("button");
-        boton.textContent = "Actualizar";
-        boton.type = "submit";
-        form.appendChild(boton);
-
-        form.onsubmit = crearSubmitHandler("service");
-      }
-
-      // 📝 Formulario normal para edición
-      async function renderFormularioNormalEdicion(tabla, data) {
-        form.innerHTML = "";
-
-        sistemaGestion.campos[tabla].forEach(campo => {
-          const label = document.createElement("label");
-          label.textContent = campo.charAt(0).toUpperCase() + campo.slice(1);
-
-          const input = document.createElement("input");
-          input.name = campo;
-          input.required = true;
-          
-          if (campo === "numero" || campo === "precio") {
-            input.type = "number";
-            if (campo === "precio") {
-              input.step = "0.01";
-              input.min = "0";
-            }
-          } else if (campo === "fecha") {
-            input.type = "date";
-          } else if (campo === "materiales") {
-            input.type = "text";
-            input.placeholder = "Lista de materiales separados por coma";
-          } else {
-            input.type = "text";
-          }
-
-          if (data[campo] !== null && data[campo] !== undefined) {
-            if (input.type === 'date' && data[campo]) {
-              const fecha = new Date(data[campo]);
-              input.value = fecha.toISOString().split('T')[0];
-            } else {
-              input.value = data[campo];
-            }
-          }
-
-          form.appendChild(label);
-          form.appendChild(input);
-        });
-
-        const boton = document.createElement("button");
-        boton.textContent = "Actualizar";
-        boton.type = "submit";
-        form.appendChild(boton);
-
-        form.onsubmit = crearSubmitHandler(tabla);
-      }
-
-      // 🧾 Renderizar tabla con filtros
-      window.renderTablaConFiltros = async function(tabla) {
-        try {
-          const tablaReal = sistemaGestion.tablaMap[tabla].name;
-          
-          let data;
-          let error;
-
-          if (tabla === "clientes") {
-            const { data: clientesData, error: clientesError } = await sistemaGestion.supabase
-              .from(tablaReal)
-              .select(`
-                *,
-                mecanicos (
-                  nombre,
-                  especialidad
-                )
-              `);
-            
-            data = clientesData;
-            error = clientesError;
-          } else {
-            const { data: tablaData, error: tablaError } = await sistemaGestion.supabase.from(tablaReal).select("*");
-            data = tablaData;
-            error = tablaError;
-          }
-          
-          if (error) {
-            console.error("Error al cargar datos:", error);
-            container.querySelector('.table-container').innerHTML = `<p>Error al cargar datos: ${error.message}</p>`;
-            return;
-          }
-
-          // Guardar datos originales
-          sistemaGestion.datosOriginales[tabla] = data;
-
-          // Aplicar filtros
-          const datosFiltrados = filtrarDatos(tabla, data);
-
-          if (!datosFiltrados || datosFiltrados.length === 0) {
-            container.querySelector('.table-container').innerHTML = "<p>No hay registros que coincidan con los filtros.</p>";
-            return;
-          }
-
-          let html = `<h2>${tabla.toUpperCase()}`;
-          
-          if (datosFiltrados.length !== data.length) {
-            html += ` <span style="font-size: 0.7em; color: #ffb84d;">(${datosFiltrados.length} de ${data.length} registros)</span>`;
-          }
-          html += `</h2>`;
-          
-          html += `<table><thead><tr>`;
-          
-          // Crear encabezados
-          if (datosFiltrados.length > 0) {
-            const firstRow = datosFiltrados[0];
-            for (const col in firstRow) {
-              let nombreColumna = col;
-              
-              if (tabla === "clientes" && col === "mecanico") {
-                continue;
-              }
-              
-              if (col === "id_mec" || col === "id_cliente" || col === "id") {
-                nombreColumna = "ID";
-              } else if (col === "mecanicos") {
-                nombreColumna = "Mecánico";
-              } else if (col === "kilometros_actuales") {
-                nombreColumna = "Km Actuales";
-              } else if (col === "kilometros_ultima_distribucion") {
-                nombreColumna = "Km Última Distribución";
-              } else if (col === "telefono") {
-                nombreColumna = "Teléfono";
-              } else if (col === "numero") {
-                nombreColumna = "Número";
-              } else if (col === "vehiculo") {
-                nombreColumna = "Vehículo";
-              } else if (col === "precio") {
-                nombreColumna = "Precio";
-              } else if (col === "fecha") {
-                nombreColumna = "Fecha";
-              } else if (col === "materiales") {
-                nombreColumna = "Materiales";
-              }
-              
-              html += `<th>${nombreColumna}</th>`;
-            }
-          }
-          
-          html += `<th>Acciones</th></tr></thead><tbody>`;
-
-          // Crear filas
-          for (const row of datosFiltrados) {
-            const necesitaAlerta = tabla === "service" && esServiceConAlerta(row);
-            
-            html += `<tr${necesitaAlerta ? ' class="alerta-service"' : ''}>`;
-            
-            for (const col in row) {
-              let valor = row[col];
-              
-              if (tabla === "clientes" && col === "mecanico") {
-                continue;
-              }
-              
-              if (col === "mecanicos" && tabla === "clientes" && row.mecanicos) {
-                valor = `${row.mecanicos.nombre} - ${row.mecanicos.especialidad}`;
-              } else if (col === "fecha" && valor) {
-                valor = new Date(valor).toLocaleDateString('es-ES');
-              } else if (col === "precio" && valor) {
-                valor = `$${parseFloat(valor).toFixed(2)}`;
-              } else if ((col === "kilometros_actuales" || col === "kilometros_ultima_distribucion") && valor) {
-                valor = `${parseInt(valor).toLocaleString()} km`;
-              } else if (valor === null || valor === undefined) {
-                valor = "";
-              } else if (col === "mecanicos") {
-                continue;
-              }
-              
-              html += `<td>${valor}</td>`;
-            }
-            
-            const pk = sistemaGestion.tablaMap[tabla].pk;
-            const pkValue = row[pk];
-            
-            html += `<td class="acciones-cell">`;
-            
-            if (tabla === "mecanico" || tabla === "clientes" || tabla === "service") {
-              html += `<button class="btn-accion" onclick="window.editarRegistro('${tabla}', ${pkValue})">✏️ Editar</button>`;
-            }
-            
-            if (tabla === "especialidad") {
-              html += `<button class="btn-accion eliminar" onclick="window.borrar('${tabla}', '${pkValue}')">🗑️ Eliminar</button>`;
-            } else {
-              html += `<button class="btn-accion eliminar" onclick="window.borrar('${tabla}', ${pkValue})">🗑️ Eliminar</button>`;
-            }
-            
-            html += `</td></tr>`;
-          }
-
-          html += `</tbody></table>`;
-          
-          if (tabla === "service") {
-            const servicesConAlerta = datosFiltrados.filter(row => esServiceConAlerta(row));
-            if (servicesConAlerta.length > 0) {
-              html += `<div style="margin-top: 20px; padding: 15px; background: #ff4444; color: white; border-radius: 8px; border-left: 5px solid #ff9800;">
-                <strong>🚨 ALERTA:</strong> ${servicesConAlerta.length} service(s) en rojo necesitan atención:<br>
-                • Services que cumplen 1 año<br>
-                • Vehículos que alcanzaron ~40,000 km desde último cambio de distribución
-              </div>`;
-            }
-          }
-          
-          container.querySelector('.table-container').innerHTML = html;
-          
-        } catch (error) {
-          console.error("Error en renderTabla:", error);
-          container.querySelector('.table-container').innerHTML = `<p>Error al renderizar la tabla: ${error.message}</p>`;
-        }
-      }
-
-      // Función auxiliar para determinar si un service necesita alerta
-      function esServiceConAlerta(service) {
-        if (!service.fecha) return false;
-        
-        const hoy = new Date();
-        const fecha = new Date(service.fecha);
-        const diferenciaMs = hoy - fecha;
-        const diferenciaDias = diferenciaMs / (1000 * 60 * 60 * 24);
-        
-        const alertaTiempo = diferenciaDias >= 360 && diferenciaDias <= 370;
-        
-        let alertaDistribucion = false;
-        if (service.kilometros_actuales && service.kilometros_ultima_distribucion) {
-          const kmRecorridos = service.kilometros_actuales - service.kilometros_ultima_distribucion;
-          alertaDistribucion = kmRecorridos >= 38000 && kmRecorridos <= 42000;
-        }
-        
-        return alertaTiempo || alertaDistribucion;
-      }
-
-      // 🗑️ Eliminar registro
-      window.borrar = async function(tabla, valor) {
-        if (!confirm("¿Eliminar registro?")) return;
-        
-        try {
-          const tablaReal = sistemaGestion.tablaMap[tabla].name;
-          const pk = sistemaGestion.tablaMap[tabla].pk;
-          
-          const { error } = await sistemaGestion.supabase.from(tablaReal).delete().eq(pk, valor);
-          
-          if (error) {
-            alert("Error al eliminar: " + error.message);
-          } else {
-            alert("Registro eliminado correctamente");
-            await window.renderTablaConFiltros(tabla);
-          }
-        } catch (error) {
-          alert("Error al eliminar: " + error.message);
-        }
-      }
-
-      // Iniciar sistema de alertas automáticas
-      function iniciarSistemaAlertas() {
-        sistemaGestion.intervaloAlertas = setInterval(verificarAlertasServices, 12 * 60 * 60 * 1000);
-      }
-
-      // 📂 Eventos
-      selector.addEventListener("change", (e) => {
-        tablaActual = e.target.value;
-        renderFormulario(tablaActual);
-        window.renderTablaConFiltros(tablaActual);
+    function cargarPresupuestos() {
+      const tbody = document.getElementById('listaPresupuestos');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      presupuestos.forEach(p => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+          <td>${p.id}</td><td>${p.fecha}</td><td>${p.cliente}</td><td>${p.vehiculo}</td>
+          <td>${p.descripcion.substring(0, 30)}${p.descripcion.length > 30 ? '...' : ''}</td>
+          <td>$${p.manoObra.toFixed(2)}</td><td>$${p.repuestos.toFixed(2)}</td>
+          <td>$${p.total.toFixed(2)}</td>
+          <td><select onchange="cambiarEstadoPresupuesto(${p.id}, this.value)" style="background:#333; color:white;">
+            <option value="Pendiente" ${p.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+            <option value="Aprobado" ${p.estado === 'Aprobado' ? 'selected' : ''}>Aprobado</option>
+            <option value="Pagado" ${p.estado === 'Pagado' ? 'selected' : ''}>Pagado</option>
+            <option value="Rechazado" ${p.estado === 'Rechazado' ? 'selected' : ''}>Rechazado</option>
+          </select></td>
+          <td class="action-buttons">
+            <button class="btn-success" onclick="marcarPagado(${p.id})" ${p.estado === 'Pagado' ? 'disabled' : ''}>💰 Pagar</button>
+            <button class="btn-danger" onclick="eliminarPresupuesto(${p.id})">🗑️ Eliminar</button>
+          </td>
+        `;
       });
-
-      // Inicializar el sistema de gestión
-      tablaActual = selector.value;
-      renderFormulario(tablaActual);
-      window.renderTablaConFiltros(tablaActual);
-      
-      // Iniciar sistema de alertas automáticas
-      iniciarSistemaAlertas();
     }
+
+    function cambiarEstadoPresupuesto(id, nuevoEstado) {
+      const presupuesto = presupuestos.find(p => p.id === id);
+      if (presupuesto) {
+        presupuesto.estado = nuevoEstado;
+        guardarDatos();
+        cargarPresupuestos();
+      }
+    }
+
+    function marcarPagado(id) {
+      const presupuesto = presupuestos.find(p => p.id === id);
+      if (presupuesto && presupuesto.estado !== 'Pagado') {
+        presupuesto.estado = 'Pagado';
+        guardarDatos();
+        cargarPresupuestos();
+        
+        const nuevoMovimiento = {
+          id: nextIdMovimiento++,
+          tipo: 'ingreso',
+          concepto: `Pago presupuesto #${presupuesto.id} - ${presupuesto.cliente}`,
+          monto: presupuesto.total,
+          referencia: `Presupuesto #${presupuesto.id}`,
+          fecha: new Date().toLocaleString()
+        };
+        movimientos.push(nuevoMovimiento);
+        guardarDatos();
+        cargarCaja();
+        alert(`✅ Ingreso de $${presupuesto.total.toFixed(2)} registrado`);
+      }
+    }
+
+    function eliminarPresupuesto(id) {
+      if (confirm('¿Eliminar este presupuesto?')) {
+        presupuestos = presupuestos.filter(p => p.id !== id);
+        guardarDatos();
+        cargarPresupuestos();
+      }
+    }
+
+    // Stock
+    document.getElementById('formStock').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nuevoProducto = {
+        id: nextIdStock++,
+        producto: document.getElementById('productoStock').value,
+        cantidad: parseInt(document.getElementById('cantidadStock').value),
+        precioUnitario: parseFloat(document.getElementById('precioStock').value),
+        categoria: document.getElementById('categoriaStock').value
+      };
+      stock.push(nuevoProducto);
+      guardarDatos();
+      cargarStock();
+      limpiarFormStock();
+      alert('✅ Producto agregado');
+    });
+
+    function limpiarFormStock() {
+      document.getElementById('productoStock').value = '';
+      document.getElementById('cantidadStock').value = '0';
+      document.getElementById('precioStock').value = '0';
+    }
+
+    function cargarStock() {
+      const tbody = document.getElementById('listaStock');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      let stockBajoMsg = '';
+      
+      stock.forEach(s => {
+        const valorTotal = s.cantidad * s.precioUnitario;
+        const row = tbody.insertRow();
+        if (s.cantidad < 5) {
+          row.classList.add('stock-bajo');
+          stockBajoMsg += `⚠️ Stock bajo: ${s.producto} (${s.cantidad} unidades)<br>`;
+        }
+        row.innerHTML = `
+          <td>${s.id}</td><td>${s.producto}</td><td>${s.cantidad}</td>
+          <td>$${s.precioUnitario.toFixed(2)}</td><td>${s.categoria}</td>
+          <td>$${valorTotal.toFixed(2)}</td>
+          <td class="action-buttons">
+            <button class="btn-warning" onclick="editarStock(${s.id})">✏️ Editar</button>
+            <button class="btn-danger" onclick="eliminarStock(${s.id})">🗑️ Eliminar</button>
+          </td>
+        `;
+      });
+      
+      const alertaDiv = document.getElementById('stockAlerta');
+      if (alertaDiv) {
+        alertaDiv.innerHTML = stockBajoMsg ? `<div style="background:#3d1a1a; padding:10px; border-radius:8px; color:#ff6b35;">${stockBajoMsg}</div>` : '';
+      }
+      actualizarValorInventario();
+    }
+
+    function editarStock(id) {
+      const producto = stock.find(s => s.id === id);
+      if (producto) {
+        const nuevaCantidad = prompt('Ingrese nueva cantidad:', producto.cantidad);
+        if (nuevaCantidad !== null && !isNaN(nuevaCantidad) && nuevaCantidad !== '') {
+          producto.cantidad = parseInt(nuevaCantidad);
+          guardarDatos();
+          cargarStock();
+        }
+      }
+    }
+
+    function eliminarStock(id) {
+      if (confirm('¿Eliminar este producto?')) {
+        stock = stock.filter(s => s.id !== id);
+        guardarDatos();
+        cargarStock();
+      }
+    }
+
+    function actualizarValorInventario() {
+      const valorTotal = stock.reduce((sum, s) => sum + (s.cantidad * s.precioUnitario), 0);
+      const valorInventarioElem = document.getElementById('valorInventario');
+      if (valorInventarioElem) {
+        valorInventarioElem.textContent = `$${valorTotal.toFixed(2)}`;
+      }
+    }
+
+    // Caja
+    document.getElementById('formMovimiento').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const tipo = document.getElementById('tipoMovimiento').value;
+      const monto = parseFloat(document.getElementById('montoMovimiento').value);
+      
+      if (tipo === 'egreso') {
+        const cajaActual = calcularCajaActual();
+        if (monto > cajaActual) {
+          alert('❌ Saldo insuficiente');
+          return;
+        }
+      }
+      
+      const nuevoMovimiento = {
+        id: nextIdMovimiento++,
+        tipo: tipo,
+        concepto: document.getElementById('conceptoMovimiento').value,
+        monto: monto,
+        referencia: document.getElementById('referenciaMovimiento').value || '-',
+        fecha: new Date().toLocaleString()
+      };
+      movimientos.push(nuevoMovimiento);
+      guardarDatos();
+      cargarCaja();
+      document.getElementById('conceptoMovimiento').value = '';
+      document.getElementById('montoMovimiento').value = '0';
+      document.getElementById('referenciaMovimiento').value = '';
+      alert('✅ Movimiento registrado');
+    });
+
+    function calcularCajaActual() {
+      let total = 0;
+      movimientos.forEach(m => {
+        if (m.tipo === 'ingreso') total += m.monto;
+        else if (m.tipo === 'egreso') total -= m.monto;
+      });
+      return total;
+    }
+
+    function calcularTotalIngresos() {
+      return movimientos.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
+    }
+
+    function calcularTotalEgresos() {
+      return movimientos.filter(m => m.tipo === 'egreso').reduce((sum, m) => sum + m.monto, 0);
+    }
+
+    function cargarCaja() {
+      const cajaActual = calcularCajaActual();
+      const totalIngresos = calcularTotalIngresos();
+      const totalEgresos = calcularTotalEgresos();
+      
+      const cajaActualElem = document.getElementById('cajaActual');
+      const totalIngresosElem = document.getElementById('totalIngresos');
+      const totalEgresosElem = document.getElementById('totalEgresos');
+      
+      if (cajaActualElem) cajaActualElem.textContent = `$${cajaActual.toFixed(2)}`;
+      if (totalIngresosElem) totalIngresosElem.textContent = `$${totalIngresos.toFixed(2)}`;
+      if (totalEgresosElem) totalEgresosElem.textContent = `$${totalEgresos.toFixed(2)}`;
+      
+      const tbody = document.getElementById('listaMovimientos');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      movimientos.slice().reverse().forEach(m => {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+          <td>${m.fecha}</td><td>${m.tipo === 'ingreso' ? '💰 Ingreso' : '💸 Egreso'}</td>
+          <td>${m.concepto}</td>
+          <td style="color: ${m.tipo === 'ingreso' ? '#28a745' : '#dc3545'}; font-weight: bold;">
+            ${m.tipo === 'ingreso' ? '+' : '-'}$${m.monto.toFixed(2)}
+          </td><td>${m.referencia}</td>
+          <td><button class="btn-danger" onclick="eliminarMovimiento(${m.id})">🗑️</button></td>
+        `;
+      });
+      
+      actualizarValorInventario();
+    }
+
+    function eliminarMovimiento(id) {
+      if (confirm('¿Eliminar este movimiento?')) {
+        movimientos = movimientos.filter(m => m.id !== id);
+        guardarDatos();
+        cargarCaja();
+      }
+    }
+
+    function cargarTodosLosDatos() {
+      cargarPresupuestos();
+      cargarStock();
+      cargarCaja();
+    }
+
+    // Event listeners
+    document.getElementById('manoObra').addEventListener('input', calcularTotalPresupuesto);
+    document.getElementById('repuestos').addEventListener('input', calcularTotalPresupuesto);
   </script>
 </body>
 </html>
