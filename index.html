@@ -127,16 +127,18 @@
     .tab-btn {
       background: #1a1a1a;
       border: none;
-      padding: 12px 24px;
+      padding: 12px 20px;
       border-radius: 10px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: bold;
       color: #cccccc;
+      transition: all 0.3s;
     }
 
     .tab-btn:hover {
       background: #252525;
+      transform: translateY(-2px);
     }
 
     .tab-btn.active {
@@ -201,6 +203,7 @@
 
     button:hover {
       background: #e66200;
+      transform: translateY(-2px);
     }
 
     .btn-danger {
@@ -220,6 +223,11 @@
 
     .btn-info {
       background: #17a2b8;
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
       color: white;
     }
 
@@ -267,6 +275,16 @@
 
     tr:hover {
       background: #1a1a1a;
+    }
+
+    .alerta-vencimiento {
+      background-color: #2a1a0a;
+      border-left: 4px solid #FF6D00;
+    }
+
+    .vencimiento-cercano {
+      color: #FF6D00;
+      font-weight: bold;
     }
 
     .resumen-caja {
@@ -338,7 +356,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.9);
       z-index: 2000;
       justify-content: center;
       align-items: center;
@@ -350,12 +368,24 @@
       border-radius: 15px;
       max-width: 500px;
       width: 90%;
-      border: 1px solid #FF6D00;
+      border: 2px solid #FF6D00;
+      max-height: 80vh;
+      overflow-y: auto;
     }
 
     .modal-content h3 {
       color: #FF6D00;
       margin-bottom: 20px;
+    }
+
+    .modal-content p {
+      color: #ffffff;
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+
+    .modal-content strong {
+      color: #FF6D00;
     }
 
     footer {
@@ -366,8 +396,8 @@
 
     @media (max-width: 768px) {
       .stats { grid-template-columns: 1fr; }
-      .tab-btn { flex: 1; text-align: center; }
-      header h1 { font-size: 18px; }
+      .tab-btn { flex: 1; text-align: center; font-size: 12px; padding: 10px; }
+      header h1 { font-size: 16px; }
     }
   </style>
 </head>
@@ -389,13 +419,89 @@
     </header>
 
     <div class="nav-tabs">
-      <button class="tab-btn active" onclick="cambiarPanel('presupuestos')">📋 PRESUPUESTOS</button>
-      <button class="tab-btn" onclick="cambiarPanel('stock')">📦 CONTROL DE STOCK</button>
-      <button class="tab-btn" onclick="cambiarPanel('caja')">💰 CAJA Y FINANZAS</button>
+      <button class="tab-btn" onclick="cambiarPanel('service')">🔧 SERVICE</button>
+      <button class="tab-btn" onclick="cambiarPanel('presupuestos')">📋 PRESUPUESTOS</button>
+      <button class="tab-btn" onclick="cambiarPanel('stock')">📦 STOCK</button>
+      <button class="tab-btn active" onclick="cambiarPanel('caja')">💰 CAJA</button>
+    </div>
+
+    <!-- Panel Service (Nuevo) -->
+    <div id="panelService" class="panel">
+      <h2>🔧 Gestión de Service / Órdenes de Trabajo</h2>
+      
+      <form id="formService">
+        <div class="form-group">
+          <label>Nombre del Cliente:</label>
+          <input type="text" id="clienteService" required placeholder="Nombre completo">
+        </div>
+        <div class="form-group">
+          <label>Teléfono:</label>
+          <input type="tel" id="telefonoService" required placeholder="Ej: 1234567890">
+        </div>
+        <div class="form-group">
+          <label>Vehículo:</label>
+          <input type="text" id="vehiculoService" required placeholder="Marca, modelo y año">
+        </div>
+        <div class="form-group">
+          <label>Kilometraje:</label>
+          <input type="number" id="kilometrajeService" required min="0" value="0">
+        </div>
+        <div class="form-group">
+          <label>Productos Utilizados:</label>
+          <textarea id="productosService" rows="3" placeholder="Ej: Aceite 5W30 (4L), Filtro de aceite, Bujías"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Precio Total ($):</label>
+          <input type="number" id="precioService" required step="0.01" value="0">
+        </div>
+        <div class="form-group">
+          <label>Fecha del Service:</label>
+          <input type="date" id="fechaService" required>
+        </div>
+        <div class="form-group">
+          <label>Próximo Service Sugerido:</label>
+          <input type="date" id="proximoService" required>
+        </div>
+        <button type="submit">✅ REGISTRAR SERVICE</button>
+        <button type="button" onclick="limpiarFormService()">🗑️ LIMPIAR</button>
+      </form>
+
+      <div class="buscador-container">
+        <input type="text" id="buscadorService" placeholder="🔍 Buscar por cliente, vehículo o teléfono..." onkeyup="filtrarServices()">
+        <select id="filtroVencimiento" onchange="filtrarServices()">
+          <option value="">Todos</option>
+          <option value="proximo">Próximo a vencer (30 días)</option>
+          <option value="vencido">Vencido</option>
+        </select>
+        <button type="button" class="btn-info" onclick="limpiarFiltrosService()">🗑️ Limpiar filtros</button>
+      </div>
+
+      <div class="table-container">
+        <h3>📋 Historial de Services</h3>
+        <div id="serviceAlerta"></div>
+        <table id="tablaService">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Teléfono</th>
+              <th>Vehículo</th>
+              <th>KM</th>
+              <th>Productos</th>
+              <th>Precio</th>
+              <th>Fecha</th>
+              <th>Próximo</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="listaService"></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Panel Presupuestos -->
-    <div id="panelPresupuestos" class="panel active">
+    <div id="panelPresupuestos" class="panel">
       <h2>📋 Gestión de Presupuestos</h2>
       <form id="formPresupuesto">
         <div class="form-group">
@@ -437,6 +543,32 @@
     <!-- Panel Stock -->
     <div id="panelStock" class="panel">
       <h2>📦 Control de Inventario</h2>
+      
+      <div class="acciones-precios" style="background:#1a1a1a; padding:20px; border-radius:10px; margin-bottom:20px; border:1px solid #FF6D00;">
+        <h4>💰 AJUSTE MASIVO DE PRECIOS</h4>
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end;">
+          <div class="form-group" style="flex:1; min-width:150px;">
+            <label>Porcentaje (%):</label>
+            <input type="number" id="porcentajeAjuste" step="0.01" placeholder="Ej: 10 (aumento) o -5 (descuento)">
+          </div>
+          <div class="form-group" style="flex:1; min-width:150px;">
+            <label>Categoría:</label>
+            <select id="categoriaAjuste">
+              <option value="todas">Todas las categorías</option>
+              <option value="Motor">Motor</option>
+              <option value="Frenos">Frenos</option>
+              <option value="Suspensión">Suspensión</option>
+              <option value="Eléctrico">Eléctrico</option>
+              <option value="Lubricantes">Lubricantes</option>
+              <option value="Otros">Otros</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <button type="button" onclick="aplicarAumentoPorcentaje()" style="margin-top: 24px;">📈 APLICAR AUMENTO</button>
+          </div>
+        </div>
+      </div>
+
       <form id="formStock">
         <div class="form-group">
           <label>Código Interno:</label>
@@ -504,7 +636,7 @@
     </div>
 
     <!-- Panel Caja -->
-    <div id="panelCaja" class="panel">
+    <div id="panelCaja" class="panel active">
       <h2>💰 Gestión de Caja y Finanzas</h2>
       
       <div class="caja-control">
@@ -592,7 +724,12 @@
     <div class="modal-content">
       <h3>📦 Detalle del Producto</h3>
       <div id="detalleProducto"></div>
-      <button onclick="cerrarModal()">Cerrar</button>
+      <div class="form-group" style="margin-top: 20px;">
+        <label>Nuevo Precio ($):</label>
+        <input type="number" id="nuevoPrecioIndividual" step="0.01" placeholder="Ingrese nuevo precio">
+        <button onclick="actualizarPrecioIndividual()" style="margin-top: 10px;">💰 ACTUALIZAR PRECIO</button>
+      </div>
+      <button onclick="cerrarModal()" class="btn-secondary">Cerrar</button>
     </div>
   </div>
 
@@ -603,18 +740,23 @@
     let stock = [];
     let movimientos = [];
     let cierres = [];
+    let services = [];
     let cajaAbierta = false;
     let fechaCajaActual = null;
     let nextIdPresupuesto = 1;
     let nextIdStock = 1;
     let nextIdMovimiento = 1;
     let nextIdCierre = 1;
+    let nextIdService = 1;
+    let productoSeleccionadoId = null;
+    let serviceFiltrados = [];
 
     function inicializarDatos() {
       const savedPresupuestos = localStorage.getItem('presupuestos_taller');
-      const savedStock = localStorage.getItem('stock_taller_v3');
+      const savedStock = localStorage.getItem('stock_taller_v4');
       const savedMovimientos = localStorage.getItem('movimientos_taller_v3');
       const savedCierres = localStorage.getItem('cierres_taller');
+      const savedServices = localStorage.getItem('services_taller');
       const savedCajaEstado = localStorage.getItem('caja_estado_taller');
       
       if (savedPresupuestos) {
@@ -654,6 +796,17 @@
         nextIdCierre = 1;
       }
       
+      if (savedServices) {
+        services = JSON.parse(savedServices);
+        nextIdService = parseInt(localStorage.getItem('nextIdService_taller')) || 1;
+      } else {
+        services = [
+          { id: 1, cliente: "Juan Pérez", telefono: "1234567890", vehiculo: "Toyota Corolla 2020", kilometraje: 25000, productos: "Aceite 5W30, Filtro de aceite", precio: 8500, fecha: "2024-01-15", proximoService: "2024-07-15" },
+          { id: 2, cliente: "María González", telefono: "0987654321", vehiculo: "Honda Civic 2019", kilometraje: 35000, productos: "Cambio de pastillas de freno", precio: 12000, fecha: "2024-02-20", proximoService: "2024-08-20" }
+        ];
+        nextIdService = 3;
+      }
+      
       if (savedCajaEstado) {
         const estado = JSON.parse(savedCajaEstado);
         cajaAbierta = estado.abierta;
@@ -671,14 +824,245 @@
 
     function guardarDatos() {
       localStorage.setItem('presupuestos_taller', JSON.stringify(presupuestos));
-      localStorage.setItem('stock_taller_v3', JSON.stringify(stock));
+      localStorage.setItem('stock_taller_v4', JSON.stringify(stock));
       localStorage.setItem('movimientos_taller_v3', JSON.stringify(movimientos));
       localStorage.setItem('cierres_taller', JSON.stringify(cierres));
+      localStorage.setItem('services_taller', JSON.stringify(services));
       localStorage.setItem('nextIdPresupuesto_taller', nextIdPresupuesto);
       localStorage.setItem('nextIdStock_taller', nextIdStock);
       localStorage.setItem('nextIdMovimiento_taller', nextIdMovimiento);
       localStorage.setItem('nextIdCierre_taller', nextIdCierre);
+      localStorage.setItem('nextIdService_taller', nextIdService);
       localStorage.setItem('caja_estado_taller', JSON.stringify({ abierta: cajaAbierta, fecha: fechaCajaActual }));
+    }
+
+    // Verificar vencimientos de service
+    function verificarVencimientosService() {
+      const hoy = new Date();
+      const alertas = [];
+      
+      services.forEach(service => {
+        const proximo = new Date(service.proximoService);
+        const diferenciaDias = Math.ceil((proximo - hoy) / (1000 * 60 * 60 * 24));
+        
+        if (diferenciaDias < 0) {
+          alertas.push(`⚠️ VENCIDO - Cliente: ${service.cliente}, Vehículo: ${service.vehiculo}, Vencía el ${service.proximoService}`);
+        } else if (diferenciaDias <= 30) {
+          alertas.push(`🔔 PRÓXIMO A VENCER - Cliente: ${service.cliente}, Vehículo: ${service.vehiculo}, Vence en ${diferenciaDias} días (${service.proximoService})`);
+        }
+      });
+      
+      if (alertas.length > 0) {
+        setTimeout(() => {
+          alert("📢 RECORDATORIOS DE SERVICE:\n\n" + alertas.join("\n\n"));
+        }, 1000);
+      }
+    }
+
+    function calcularEstadoService(proximoService) {
+      const hoy = new Date();
+      const proximo = new Date(proximoService);
+      const diferenciaDias = Math.ceil((proximo - hoy) / (1000 * 60 * 60 * 24));
+      
+      if (diferenciaDias < 0) return { texto: "⚠️ VENCIDO", clase: "vencimiento-cercano" };
+      if (diferenciaDias <= 30) return { texto: `🔔 VENCE EN ${diferenciaDias} DÍAS`, clase: "vencimiento-cercano" };
+      return { texto: "✅ AL DÍA", clase: "" };
+    }
+
+    // Service Functions
+    document.getElementById('formService').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nuevoService = {
+        id: nextIdService++,
+        cliente: document.getElementById('clienteService').value,
+        telefono: document.getElementById('telefonoService').value,
+        vehiculo: document.getElementById('vehiculoService').value,
+        kilometraje: parseInt(document.getElementById('kilometrajeService').value),
+        productos: document.getElementById('productosService').value,
+        precio: parseFloat(document.getElementById('precioService').value),
+        fecha: document.getElementById('fechaService').value,
+        proximoService: document.getElementById('proximoService').value
+      };
+      services.push(nuevoService);
+      guardarDatos();
+      cargarServices();
+      limpiarFormService();
+      alert('✅ Service registrado exitosamente');
+      verificarVencimientosService();
+    });
+
+    function limpiarFormService() {
+      document.getElementById('clienteService').value = '';
+      document.getElementById('telefonoService').value = '';
+      document.getElementById('vehiculoService').value = '';
+      document.getElementById('kilometrajeService').value = '0';
+      document.getElementById('productosService').value = '';
+      document.getElementById('precioService').value = '0';
+      document.getElementById('fechaService').value = '';
+      document.getElementById('proximoService').value = '';
+    }
+
+    function cargarServices() {
+      const tbody = document.getElementById('listaService');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      let alertasHtml = '';
+      
+      services.forEach(s => {
+        const estado = calcularEstadoService(s.proximoService);
+        const row = tbody.insertRow();
+        if (estado.texto !== "✅ AL DÍA") {
+          row.classList.add('alerta-vencimiento');
+          alertasHtml += `<div style="background:#2a1a0a; padding:10px; margin:5px; border-radius:8px; border-left:4px solid #FF6D00;">
+            📞 ${s.cliente} | ${s.vehiculo} | ${estado.texto} (${s.proximoService}) | Tel: ${s.telefono}
+          </div>`;
+        }
+        row.innerHTML = `
+          <td>${s.id}</td>
+          <td>${s.cliente}</td>
+          <td>${s.telefono}</td>
+          <td>${s.vehiculo}</td>
+          <td>${s.kilometraje.toLocaleString()} km</td>
+          <td>${s.productos.substring(0, 40)}${s.productos.length > 40 ? '...' : ''}</td>
+          <td>$${s.precio.toFixed(2)}</td>
+          <td>${s.fecha}</td>
+          <td class="${estado.clase}">${s.proximoService}<br><small>${estado.texto}</small></td>
+          <td>${estado.texto}</td>
+          <td class="action-buttons">
+            <button class="btn-info" onclick="verDetalleService(${s.id})">🔍 Ver</button>
+            <button class="btn-warning" onclick="editarService(${s.id})">✏️</button>
+            <button class="btn-danger" onclick="eliminarService(${s.id})">🗑️</button>
+          </td>
+        `;
+      });
+      
+      const alertaDiv = document.getElementById('serviceAlerta');
+      if (alertaDiv) {
+        alertaDiv.innerHTML = alertasHtml ? `<div style="margin-bottom:15px;"><strong>📢 CLIENTES PARA CONTACTAR:</strong><br>${alertasHtml}</div>` : '';
+      }
+    }
+
+    function filtrarServices() {
+      const busqueda = document.getElementById('buscadorService').value.toLowerCase();
+      const filtroVencimiento = document.getElementById('filtroVencimiento').value;
+      const hoy = new Date();
+      
+      const tbody = document.getElementById('listaService');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      
+      const filtrados = services.filter(item => {
+        let ok = true;
+        if (busqueda) {
+          ok = item.cliente.toLowerCase().includes(busqueda) ||
+               item.vehiculo.toLowerCase().includes(busqueda) ||
+               item.telefono.includes(busqueda);
+        }
+        if (ok && filtroVencimiento) {
+          const proximo = new Date(item.proximoService);
+          const diferenciaDias = Math.ceil((proximo - hoy) / (1000 * 60 * 60 * 24));
+          if (filtroVencimiento === 'proximo') ok = diferenciaDias <= 30 && diferenciaDias >= 0;
+          if (filtroVencimiento === 'vencido') ok = diferenciaDias < 0;
+        }
+        return ok;
+      });
+      
+      filtrados.forEach(s => {
+        const estado = calcularEstadoService(s.proximoService);
+        const row = tbody.insertRow();
+        if (estado.texto !== "✅ AL DÍA") row.classList.add('alerta-vencimiento');
+        row.innerHTML = `
+          <td>${s.id}</td>
+          <td>${s.cliente}</td>
+          <td>${s.telefono}</td>
+          <td>${s.vehiculo}</td>
+          <td>${s.kilometraje.toLocaleString()} km</td>
+          <td>${s.productos.substring(0, 40)}${s.productos.length > 40 ? '...' : ''}</td>
+          <td>$${s.precio.toFixed(2)}</td>
+          <td>${s.fecha}</td>
+          <td class="${estado.clase}">${s.proximoService}<br><small>${estado.texto}</small></td>
+          <td>${estado.texto}</td>
+          <td class="action-buttons">
+            <button class="btn-info" onclick="verDetalleService(${s.id})">🔍 Ver</button>
+            <button class="btn-warning" onclick="editarService(${s.id})">✏️</button>
+            <button class="btn-danger" onclick="eliminarService(${s.id})">🗑️</button>
+          </td>
+        `;
+      });
+    }
+
+    function limpiarFiltrosService() {
+      document.getElementById('buscadorService').value = '';
+      document.getElementById('filtroVencimiento').value = '';
+      cargarServices();
+    }
+
+    function verDetalleService(id) {
+      const s = services.find(s => s.id === id);
+      if (s) {
+        alert(`📋 DETALLE DE SERVICE\n\nCliente: ${s.cliente}\nTeléfono: ${s.telefono}\nVehículo: ${s.vehiculo}\nKilometraje: ${s.kilometraje.toLocaleString()} km\nProductos: ${s.productos}\nPrecio: $${s.precio.toFixed(2)}\nFecha: ${s.fecha}\nPróximo Service: ${s.proximoService}`);
+      }
+    }
+
+    function editarService(id) {
+      const s = services.find(s => s.id === id);
+      if (s) {
+        const nuevoKm = prompt('Ingrese nuevo kilometraje:', s.kilometraje);
+        if (nuevoKm !== null && !isNaN(nuevoKm)) {
+          s.kilometraje = parseInt(nuevoKm);
+          guardarDatos();
+          cargarServices();
+          alert('✅ Kilometraje actualizado');
+        }
+      }
+    }
+
+    function eliminarService(id) {
+      if (confirm('¿Eliminar este registro de service?')) {
+        services = services.filter(s => s.id !== id);
+        guardarDatos();
+        cargarServices();
+      }
+    }
+
+    // Aplicar aumento porcentaje
+    function aplicarAumentoPorcentaje() {
+      const porcentaje = parseFloat(document.getElementById('porcentajeAjuste').value);
+      const categoria = document.getElementById('categoriaAjuste').value;
+      
+      if (isNaN(porcentaje)) {
+        alert('❌ Ingrese un porcentaje válido');
+        return;
+      }
+      
+      let productosAfectados = 0;
+      stock.forEach(producto => {
+        if (categoria === 'todas' || producto.categoria === categoria) {
+          const nuevoPrecio = producto.precioUnitario * (1 + porcentaje / 100);
+          producto.precioUnitario = Math.round(nuevoPrecio * 100) / 100;
+          productosAfectados++;
+        }
+      });
+      
+      guardarDatos();
+      cargarStock();
+      alert(`✅ Se actualizaron ${productosAfectados} productos con un ${porcentaje > 0 ? 'aumento' : 'descuento'} del ${Math.abs(porcentaje)}%`);
+    }
+
+    function actualizarPrecioIndividual() {
+      const nuevoPrecio = parseFloat(document.getElementById('nuevoPrecioIndividual').value);
+      if (isNaN(nuevoPrecio) || nuevoPrecio < 0) {
+        alert('❌ Ingrese un precio válido');
+        return;
+      }
+      const producto = stock.find(p => p.id === productoSeleccionadoId);
+      if (producto) {
+        producto.precioUnitario = nuevoPrecio;
+        guardarDatos();
+        cargarStock();
+        verDetalle(productoSeleccionadoId);
+        alert(`✅ Precio actualizado a $${nuevoPrecio.toFixed(2)}`);
+      }
     }
 
     function verificarPassword() {
@@ -692,6 +1076,13 @@
         inicializarDatos();
         cargarTodosLosDatos();
         actualizarInterfazCaja();
+        verificarVencimientosService();
+        
+        setInterval(() => {
+          if (cajaAbierta) {
+            verificarVencimientosService();
+          }
+        }, 3600000);
       } else {
         errorMsg.textContent = '❌ Contraseña incorrecta';
         document.getElementById('passwordInput').value = '';
@@ -708,17 +1099,21 @@
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       
-      if (panel === 'presupuestos') {
-        document.getElementById('panelPresupuestos').classList.add('active');
+      if (panel === 'service') {
+        document.getElementById('panelService').classList.add('active');
         document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        cargarServices();
+      } else if (panel === 'presupuestos') {
+        document.getElementById('panelPresupuestos').classList.add('active');
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
         cargarPresupuestos();
       } else if (panel === 'stock') {
         document.getElementById('panelStock').classList.add('active');
-        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.querySelectorAll('.tab-btn')[2].classList.add('active');
         cargarStock();
       } else if (panel === 'caja') {
         document.getElementById('panelCaja').classList.add('active');
-        document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        document.querySelectorAll('.tab-btn')[3].classList.add('active');
         cargarCaja();
         cargarCierres();
       }
@@ -771,9 +1166,13 @@
       presupuestos.forEach(p => {
         const row = tbody.insertRow();
         row.innerHTML = `
-          <td>${p.id}</td><td>${p.fecha}</td><td>${p.cliente}</td><td>${p.vehiculo}</td>
+          <td>${p.id}</td>
+          <td>${p.fecha}</td>
+          <td>${p.cliente}</td>
+          <td>${p.vehiculo}</td>
           <td>${p.descripcion.substring(0, 30)}${p.descripcion.length > 30 ? '...' : ''}</td>
-          <td>$${p.manoObra.toFixed(2)}</td><td>$${p.repuestos.toFixed(2)}</td>
+          <td>$${p.manoObra.toFixed(2)}</td>
+          <td>$${p.repuestos.toFixed(2)}</td>
           <td>$${p.total.toFixed(2)}</td>
           <td><select onchange="cambiarEstadoPresupuesto(${p.id}, this.value)" style="background:#1a1a1a;color:white;">
             <option value="Pendiente" ${p.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
@@ -883,9 +1282,11 @@
           <td>$${s.precioUnitario.toFixed(2)}</td>
           <td>${s.categoria}</td>
           <td>$${valorTotal.toFixed(2)}</td>
-          <td><button class="btn-info" onclick="verDetalle(${s.id})">🔍 Ver</button>
-          <button class="btn-warning" onclick="editarStock(${s.id})">✏️</button>
-          <button class="btn-danger" onclick="eliminarStock(${s.id})">🗑️</button></td>
+          <td class="action-buttons">
+            <button class="btn-info" onclick="verDetalle(${s.id})">🔍 Ver</button>
+            <button class="btn-warning" onclick="editarStock(${s.id})">✏️</button>
+            <button class="btn-danger" onclick="eliminarStock(${s.id})">🗑️</button>
+          </td>
         `;
       });
       document.getElementById('stockAlerta').innerHTML = alertas ? `<div style="background:#2a1a0a;padding:10px;border-radius:8px;color:#FF6D00;">${alertas}</div>` : '';
@@ -921,13 +1322,18 @@
         const row = tbody.insertRow();
         if (s.cantidad < 5 && s.cantidad > 0) row.classList.add('stock-bajo');
         row.innerHTML = `
-          <td>${s.codigoInterno || '-'}</td><td>${s.producto}</td>
+          <td>${s.codigoInterno || '-'}</td>
+          <td>${s.producto}</td>
           <td>${s.descripcion ? s.descripcion.substring(0, 40) + (s.descripcion.length > 40 ? '...' : '') : '-'}</td>
-          <td>${s.cantidad}</td><td>$${s.precioUnitario.toFixed(2)}</td>
-          <td>${s.categoria}</td><td>$${valorTotal.toFixed(2)}</td>
-          <td><button class="btn-info" onclick="verDetalle(${s.id})">🔍 Ver</button>
-          <button class="btn-warning" onclick="editarStock(${s.id})">✏️</button>
-          <button class="btn-danger" onclick="eliminarStock(${s.id})">🗑️</button></td>
+          <td>${s.cantidad}</td>
+          <td>$${s.precioUnitario.toFixed(2)}</td>
+          <td>${s.categoria}</td>
+          <td>$${valorTotal.toFixed(2)}</td>
+          <td class="action-buttons">
+            <button class="btn-info" onclick="verDetalle(${s.id})">🔍 Ver</button>
+            <button class="btn-warning" onclick="editarStock(${s.id})">✏️</button>
+            <button class="btn-danger" onclick="eliminarStock(${s.id})">🗑️</button>
+          </td>
         `;
       });
     }
@@ -940,23 +1346,26 @@
     }
 
     function verDetalle(id) {
+      productoSeleccionadoId = id;
       const p = stock.find(s => s.id === id);
       if (p) {
         document.getElementById('detalleProducto').innerHTML = `
-          <p><strong>Código:</strong> ${p.codigoInterno || '-'}</p>
-          <p><strong>Producto:</strong> ${p.producto}</p>
-          <p><strong>Descripción:</strong><br>${p.descripcion || '-'}</p>
-          <p><strong>Cantidad:</strong> ${p.cantidad}</p>
-          <p><strong>Precio:</strong> $${p.precioUnitario.toFixed(2)}</p>
-          <p><strong>Categoría:</strong> ${p.categoria}</p>
-          <p><strong>Valor Total:</strong> $${(p.cantidad * p.precioUnitario).toFixed(2)}</p>
+          <p><strong style="color:#FF6D00;">📌 Código Interno:</strong> <span style="color:#ffffff;">${p.codigoInterno || '-'}</span></p>
+          <p><strong style="color:#FF6D00;">🏷️ Producto:</strong> <span style="color:#ffffff;">${p.producto}</span></p>
+          <p><strong style="color:#FF6D00;">📝 Descripción:</strong><br><span style="color:#ffffff;">${p.descripcion || '-'}</span></p>
+          <p><strong style="color:#FF6D00;">📦 Cantidad:</strong> <span style="color:#ffffff;">${p.cantidad}</span></p>
+          <p><strong style="color:#FF6D00;">💰 Precio Actual:</strong> <span style="color:#28a745; font-size:18px;">$${p.precioUnitario.toFixed(2)}</span></p>
+          <p><strong style="color:#FF6D00;">📂 Categoría:</strong> <span style="color:#ffffff;">${p.categoria}</span></p>
+          <p><strong style="color:#FF6D00;">💵 Valor Total:</strong> <span style="color:#ffc107;">$${(p.cantidad * p.precioUnitario).toFixed(2)}</span></p>
         `;
+        document.getElementById('nuevoPrecioIndividual').value = p.precioUnitario;
         document.getElementById('modalDetalle').style.display = 'flex';
       }
     }
 
     function cerrarModal() {
       document.getElementById('modalDetalle').style.display = 'none';
+      productoSeleccionadoId = null;
     }
 
     function editarStock(id) {
@@ -981,7 +1390,8 @@
 
     function actualizarValorInventario() {
       const total = stock.reduce((s, i) => s + (i.cantidad * i.precioUnitario), 0);
-      document.getElementById('valorInventario').textContent = `$${total.toFixed(2)}`;
+      const valorElem = document.getElementById('valorInventario');
+      if (valorElem) valorElem.textContent = `$${total.toFixed(2)}`;
     }
 
     // Caja
@@ -1039,41 +1449,44 @@
       const btnCerrar = document.getElementById('btnCerrarCaja');
       const estado = document.getElementById('cajaEstado');
       if (cajaAbierta) {
-        btnAbrir.style.display = 'none';
-        btnCerrar.style.display = 'inline-block';
-        estado.innerHTML = `🟢 CAJA ABIERTA - ${fechaCajaActual}`;
+        if (btnAbrir) btnAbrir.style.display = 'none';
+        if (btnCerrar) btnCerrar.style.display = 'inline-block';
+        if (estado) estado.innerHTML = `🟢 CAJA ABIERTA - ${fechaCajaActual}`;
       } else {
-        btnAbrir.style.display = 'inline-block';
-        btnCerrar.style.display = 'none';
-        estado.innerHTML = '🔴 CAJA CERRADA';
+        if (btnAbrir) btnAbrir.style.display = 'inline-block';
+        if (btnCerrar) btnCerrar.style.display = 'none';
+        if (estado) estado.innerHTML = '🔴 CAJA CERRADA';
       }
       cargarCaja();
       cargarCierres();
     }
 
-    document.getElementById('formMovimiento').addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!cajaAbierta) { alert('Abra la caja primero'); return; }
-      const tipo = document.getElementById('tipoMovimiento').value;
-      const monto = parseFloat(document.getElementById('montoMovimiento').value);
-      if (tipo === 'egreso') {
-        const actual = movimientos.reduce((s, m) => s + (m.tipo === 'ingreso' ? m.monto : -m.monto), 0);
-        if (monto > actual) { alert('Saldo insuficiente'); return; }
-      }
-      movimientos.push({
-        id: nextIdMovimiento++, tipo: tipo,
-        medioPago: tipo === 'ingreso' ? document.getElementById('medioPago').value : null,
-        concepto: document.getElementById('conceptoMovimiento').value,
-        monto: monto, referencia: document.getElementById('referenciaMovimiento').value || '-',
-        fecha: new Date().toLocaleString(), hora: new Date().toLocaleTimeString()
+    const formMovimiento = document.getElementById('formMovimiento');
+    if (formMovimiento) {
+      formMovimiento.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!cajaAbierta) { alert('Abra la caja primero'); return; }
+        const tipo = document.getElementById('tipoMovimiento').value;
+        const monto = parseFloat(document.getElementById('montoMovimiento').value);
+        if (tipo === 'egreso') {
+          const actual = movimientos.reduce((s, m) => s + (m.tipo === 'ingreso' ? m.monto : -m.monto), 0);
+          if (monto > actual) { alert('Saldo insuficiente'); return; }
+        }
+        movimientos.push({
+          id: nextIdMovimiento++, tipo: tipo,
+          medioPago: tipo === 'ingreso' ? document.getElementById('medioPago').value : null,
+          concepto: document.getElementById('conceptoMovimiento').value,
+          monto: monto, referencia: document.getElementById('referenciaMovimiento').value || '-',
+          fecha: new Date().toLocaleString(), hora: new Date().toLocaleTimeString()
+        });
+        guardarDatos();
+        cargarCaja();
+        document.getElementById('conceptoMovimiento').value = '';
+        document.getElementById('montoMovimiento').value = '0';
+        document.getElementById('referenciaMovimiento').value = '';
+        alert('✅ Movimiento registrado');
       });
-      guardarDatos();
-      cargarCaja();
-      document.getElementById('conceptoMovimiento').value = '';
-      document.getElementById('montoMovimiento').value = '0';
-      document.getElementById('referenciaMovimiento').value = '';
-      alert('✅ Movimiento registrado');
-    });
+    }
 
     function getMedioPagoIcono(medio) {
       if (!medio) return '-';
@@ -1093,13 +1506,21 @@
       const desglose = { efectivo: 0, transferencia: 0, debito: 0, credito: 0 };
       movimientos.forEach(m => { if (m.tipo === 'ingreso' && m.medioPago) desglose[m.medioPago] += m.monto; });
       
-      document.getElementById('cajaActual').textContent = `$${actual.toFixed(2)}`;
-      document.getElementById('totalIngresos').textContent = `$${ingresos.toFixed(2)}`;
-      document.getElementById('totalEgresos').textContent = `$${egresos.toFixed(2)}`;
-      document.getElementById('totalEfectivo').textContent = `$${desglose.efectivo.toFixed(2)}`;
-      document.getElementById('totalTransferencia').textContent = `$${desglose.transferencia.toFixed(2)}`;
-      document.getElementById('totalDebito').textContent = `$${desglose.debito.toFixed(2)}`;
-      document.getElementById('totalCredito').textContent = `$${desglose.credito.toFixed(2)}`;
+      const cajaActualElem = document.getElementById('cajaActual');
+      const totalIngresosElem = document.getElementById('totalIngresos');
+      const totalEgresosElem = document.getElementById('totalEgresos');
+      const totalEfectivoElem = document.getElementById('totalEfectivo');
+      const totalTransferenciaElem = document.getElementById('totalTransferencia');
+      const totalDebitoElem = document.getElementById('totalDebito');
+      const totalCreditoElem = document.getElementById('totalCredito');
+      
+      if (cajaActualElem) cajaActualElem.textContent = `$${actual.toFixed(2)}`;
+      if (totalIngresosElem) totalIngresosElem.textContent = `$${ingresos.toFixed(2)}`;
+      if (totalEgresosElem) totalEgresosElem.textContent = `$${egresos.toFixed(2)}`;
+      if (totalEfectivoElem) totalEfectivoElem.textContent = `$${desglose.efectivo.toFixed(2)}`;
+      if (totalTransferenciaElem) totalTransferenciaElem.textContent = `$${desglose.transferencia.toFixed(2)}`;
+      if (totalDebitoElem) totalDebitoElem.textContent = `$${desglose.debito.toFixed(2)}`;
+      if (totalCreditoElem) totalCreditoElem.textContent = `$${desglose.credito.toFixed(2)}`;
       
       const tbody = document.getElementById('listaMovimientos');
       if (tbody) {
@@ -1107,8 +1528,10 @@
         movimientos.slice().reverse().forEach(m => {
           const row = tbody.insertRow();
           row.innerHTML = `
-            <td>${m.hora}</td><td>${m.tipo === 'ingreso' ? '💰 Ingreso' : '💸 Egreso'}</td>
-            <td>${getMedioPagoIcono(m.medioPago)}</td><td>${m.concepto}</td>
+            <td>${m.hora}</td>
+            <td>${m.tipo === 'ingreso' ? '💰 Ingreso' : '💸 Egreso'}</td>
+            <td>${getMedioPagoIcono(m.medioPago)}</td>
+            <td>${m.concepto}</td>
             <td style="color:${m.tipo === 'ingreso' ? '#28a745' : '#dc3545'}">${m.tipo === 'ingreso' ? '+' : '-'}$${m.monto.toFixed(2)}</td>
             <td>${m.referencia}</td>
             <td><button class="btn-danger" onclick="eliminarMovimiento(${m.id})">🗑️</button></td>
@@ -1125,10 +1548,14 @@
         cierres.slice().reverse().forEach(c => {
           const row = tbody.insertRow();
           row.innerHTML = `
-            <td>${c.fecha}</td><td>$${c.totalIngresos.toFixed(2)}</td>
-            <td>$${c.efectivo.toFixed(2)}</td><td>$${c.transferencia.toFixed(2)}</td>
-            <td>$${c.debito.toFixed(2)}</td><td>$${c.credito.toFixed(2)}</td>
-            <td>$${c.totalEgresos.toFixed(2)}</td><td>$${c.saldoFinal.toFixed(2)}</td>
+            <td>${c.fecha}</td>
+            <td>$${c.totalIngresos.toFixed(2)}</td>
+            <td>$${c.efectivo.toFixed(2)}</td>
+            <td>$${c.transferencia.toFixed(2)}</td>
+            <td>$${c.debito.toFixed(2)}</td>
+            <td>$${c.credito.toFixed(2)}</td>
+            <td>$${c.totalEgresos.toFixed(2)}</td>
+            <td>$${c.saldoFinal.toFixed(2)}</td>
           `;
         });
       }
@@ -1143,14 +1570,31 @@
     }
 
     function cargarTodosLosDatos() {
+      cargarServices();
       cargarPresupuestos();
       cargarStock();
       cargarCaja();
       cargarCierres();
     }
 
-    document.getElementById('manoObra').addEventListener('input', calcularTotalPresupuesto);
-    document.getElementById('repuestos').addEventListener('input', calcularTotalPresupuesto);
+    const manoObraInput = document.getElementById('manoObra');
+    const repuestosInput = document.getElementById('repuestos');
+    if (manoObraInput) manoObraInput.addEventListener('input', calcularTotalPresupuesto);
+    if (repuestosInput) repuestosInput.addEventListener('input', calcularTotalPresupuesto);
+    
+    // Establecer fecha actual por defecto en el formulario de service
+    const fechaServiceInput = document.getElementById('fechaService');
+    if (fechaServiceInput) {
+      const hoy = new Date().toISOString().split('T')[0];
+      fechaServiceInput.value = hoy;
+      
+      const proximoServiceInput = document.getElementById('proximoService');
+      if (proximoServiceInput) {
+        const proximo = new Date();
+        proximo.setMonth(proximo.getMonth() + 6);
+        proximoServiceInput.value = proximo.toISOString().split('T')[0];
+      }
+    }
   </script>
 </body>
 </html>
