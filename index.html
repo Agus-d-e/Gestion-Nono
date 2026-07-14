@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sistema Integral de Taller Mecánico</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     * {
       margin: 0;
@@ -231,6 +233,11 @@
       color: white;
     }
 
+    .btn-pdf {
+      background: #dc3545;
+      color: white;
+    }
+
     .buscador-container {
       margin-bottom: 20px;
       display: flex;
@@ -366,10 +373,10 @@
       background: #1a1a1a;
       padding: 30px;
       border-radius: 15px;
-      max-width: 500px;
-      width: 90%;
+      max-width: 600px;
+      width: 95%;
       border: 2px solid #FF6D00;
-      max-height: 80vh;
+      max-height: 85vh;
       overflow-y: auto;
     }
 
@@ -394,10 +401,220 @@
       margin-top: 20px;
     }
 
+    /* Estilos para items del presupuesto */
+    .items-container {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .item-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .item-row input {
+      flex: 1;
+      min-width: 100px;
+    }
+
+    .item-row .item-cantidad {
+      width: 80px;
+      min-width: 80px;
+    }
+
+    .item-row .item-precio {
+      width: 120px;
+      min-width: 120px;
+    }
+
+    .item-row .item-total {
+      width: 120px;
+      min-width: 120px;
+      background: #2a2a2a;
+      color: #FF6D00;
+      font-weight: bold;
+      text-align: center;
+      padding: 8px;
+      border-radius: 5px;
+    }
+
+    .item-row .btn-remove-item {
+      background: #dc3545;
+      color: white;
+      padding: 6px 12px;
+      font-size: 12px;
+      margin: 0;
+    }
+
+    /* Estilos para el PDF - SIN LOGO */
+    #pdf-content {
+      display: none;
+      background: white;
+      padding: 50px;
+      max-width: 900px;
+      margin: 0 auto;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    #pdf-content .header-pdf {
+      border-bottom: 4px solid #FF6D00;
+      padding-bottom: 20px;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    #pdf-content .header-pdf h1 {
+      font-size: 28px;
+      color: #FF6D00;
+      margin: 0;
+      letter-spacing: 2px;
+    }
+
+    #pdf-content .header-pdf .no-factura {
+      font-size: 16px;
+      color: #dc3545;
+      font-weight: bold;
+      margin-top: 8px;
+      letter-spacing: 1px;
+    }
+
+    #pdf-content .numero-presupuesto {
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      margin-top: 10px;
+    }
+
+    #pdf-content .numero-presupuesto strong {
+      color: #FF6D00;
+      font-size: 18px;
+    }
+
+    #pdf-content .info-cliente-pdf {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      border-left: 5px solid #FF6D00;
+    }
+
+    #pdf-content .info-cliente-pdf p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    #pdf-content .info-cliente-pdf strong {
+      color: #333;
+      font-weight: 600;
+    }
+
+    #pdf-content .detalle-trabajo-pdf {
+      margin: 25px 0;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 10px;
+    }
+
+    #pdf-content .detalle-trabajo-pdf p {
+      margin: 5px 0;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    #pdf-content .detalle-trabajo-pdf strong {
+      color: #333;
+    }
+
+    #pdf-content .tabla-items-pdf {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 25px 0;
+      font-size: 14px;
+    }
+
+    #pdf-content .tabla-items-pdf th {
+      background: #FF6D00;
+      color: white;
+      padding: 12px 15px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    #pdf-content .tabla-items-pdf td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    #pdf-content .tabla-items-pdf tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    #pdf-content .tabla-items-pdf .total-row td {
+      font-weight: bold;
+      font-size: 16px;
+      border-top: 3px solid #FF6D00;
+      padding-top: 15px;
+    }
+
+    #pdf-content .tabla-items-pdf .total-row .label {
+      color: #333;
+    }
+
+    #pdf-content .tabla-items-pdf .total-row .valor {
+      color: #FF6D00;
+      font-size: 20px;
+    }
+
+    #pdf-content .footer-pdf {
+      margin-top: 30px;
+      padding-top: 25px;
+      border-top: 2px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    #pdf-content .footer-pdf .empleado-info {
+      font-size: 14px;
+      color: #555;
+    }
+
+    #pdf-content .footer-pdf .empleado-info strong {
+      color: #333;
+    }
+
+    #pdf-content .footer-pdf .validez {
+      text-align: right;
+      font-size: 12px;
+      color: #999;
+    }
+
+    #pdf-content .footer-pdf .no-factura-footer {
+      text-align: center;
+      font-size: 11px;
+      color: #dc3545;
+      margin-top: 15px;
+      width: 100%;
+      padding-top: 10px;
+      border-top: 1px solid #eee;
+    }
+
     @media (max-width: 768px) {
       .stats { grid-template-columns: 1fr; }
-      .tab-btn { flex: 1; text-align: center; font-size: 12px; padding: 10px; }
+      .tab-btn { flex: 1; text-align: center; font-size: 11px; padding: 8px 4px; }
       header h1 { font-size: 16px; }
+      .item-row { flex-direction: column; align-items: stretch; }
+      .item-row .item-cantidad, 
+      .item-row .item-precio, 
+      .item-row .item-total { width: 100%; min-width: auto; }
     }
   </style>
 </head>
@@ -420,15 +637,88 @@
 
     <div class="nav-tabs">
       <button class="tab-btn" onclick="cambiarPanel('service')">🔧 SERVICE</button>
-      <button class="tab-btn" onclick="cambiarPanel('presupuestos')">📋 PRESUPUESTOS</button>
+      <button class="tab-btn active" onclick="cambiarPanel('presupuestos')">📋 PRESUPUESTOS</button>
       <button class="tab-btn" onclick="cambiarPanel('stock')">📦 STOCK</button>
-      <button class="tab-btn active" onclick="cambiarPanel('caja')">💰 CAJA</button>
+      <button class="tab-btn" onclick="cambiarPanel('caja')">💰 CAJA</button>
     </div>
 
-    <!-- Panel Service (Nuevo) -->
+    <!-- Panel Presupuestos -->
+    <div id="panelPresupuestos" class="panel active">
+      <h2>📋 Gestión de Presupuestos</h2>
+      <form id="formPresupuesto">
+        <div class="form-group">
+          <label>Cliente:</label>
+          <input type="text" id="clientePresupuesto" required placeholder="Nombre del cliente">
+        </div>
+        <div class="form-group">
+          <label>Teléfono del Cliente:</label>
+          <input type="tel" id="telefonoPresupuesto" placeholder="Ej: 1234567890">
+        </div>
+        <div class="form-group">
+          <label>Vehículo:</label>
+          <input type="text" id="vehiculoPresupuesto" required placeholder="Marca, modelo y año">
+        </div>
+        <div class="form-group">
+          <label>Descripción del trabajo:</label>
+          <textarea id="descripcionPresupuesto" rows="2" placeholder="Descripción general del trabajo a realizar"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>📦 Items del Presupuesto:</label>
+          <div id="itemsContainer" class="items-container">
+            <div class="item-row" id="itemTemplate">
+              <input type="text" class="item-descripcion" placeholder="Descripción del item" style="flex:2;">
+              <input type="number" class="item-cantidad" placeholder="Cant" value="1" min="1" style="width:70px;">
+              <input type="number" class="item-precio" placeholder="Precio unit." step="0.01" value="0" style="width:120px;">
+              <span class="item-total">$0.00</span>
+              <button type="button" class="btn-remove-item" onclick="eliminarItem(this)">✕</button>
+            </div>
+          </div>
+          <button type="button" class="btn-info" onclick="agregarItem()" style="margin-top:5px;">➕ AGREGAR ITEM</button>
+        </div>
+
+        <div class="form-group">
+          <label>Total Presupuesto ($):</label>
+          <input type="number" id="totalPresupuesto" readonly style="background:#1a1a1a; font-size:20px; color:#FF6D00; font-weight:bold;" value="0.00">
+        </div>
+
+        <div class="form-group">
+          <label>Nombre del Empleado que Atiende:</label>
+          <input type="text" id="empleadoPresupuesto" required placeholder="Nombre del empleado">
+        </div>
+        <div class="form-group">
+          <label>Teléfono del Empleado:</label>
+          <input type="tel" id="telefonoEmpleadoPresupuesto" required placeholder="Teléfono del empleado">
+        </div>
+        <button type="submit">✅ CREAR PRESUPUESTO</button>
+        <button type="button" onclick="limpiarFormPresupuesto()">🗑️ LIMPIAR</button>
+      </form>
+
+      <div class="table-container">
+        <h3>📋 Lista de Presupuestos</h3>
+        <table id="tablaPresupuestos">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Fecha</th>
+              <th>Cliente</th>
+              <th>Teléfono</th>
+              <th>Vehículo</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Empleado</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="listaPresupuestos"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Panel Service -->
     <div id="panelService" class="panel">
       <h2>🔧 Gestión de Service / Órdenes de Trabajo</h2>
-      
       <form id="formService">
         <div class="form-group">
           <label>Nombre del Cliente:</label>
@@ -500,56 +790,16 @@
       </div>
     </div>
 
-    <!-- Panel Presupuestos -->
-    <div id="panelPresupuestos" class="panel">
-      <h2>📋 Gestión de Presupuestos</h2>
-      <form id="formPresupuesto">
-        <div class="form-group">
-          <label>Cliente:</label>
-          <input type="text" id="clientePresupuesto" required placeholder="Nombre del cliente">
-        </div>
-        <div class="form-group">
-          <label>Vehículo:</label>
-          <input type="text" id="vehiculoPresupuesto" required placeholder="Marca y modelo">
-        </div>
-        <div class="form-group">
-          <label>Descripción del trabajo:</label>
-          <textarea id="descripcionPresupuesto" rows="3" required placeholder="Detalle de las reparaciones/servicios"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Mano de obra ($):</label>
-          <input type="number" id="manoObra" required step="0.01" value="0">
-        </div>
-        <div class="form-group">
-          <label>Repuestos ($):</label>
-          <input type="number" id="repuestos" required step="0.01" value="0">
-        </div>
-        <div class="form-group">
-          <label>Total ($):</label>
-          <input type="number" id="totalPresupuesto" readonly style="background:#1a1a1a" value="0">
-        </div>
-        <button type="submit">➕ CREAR PRESUPUESTO</button>
-        <button type="button" onclick="limpiarFormPresupuesto()">🗑️ LIMPIAR</button>
-      </form>
-      <div class="table-container">
-        <h3>📋 Lista de Presupuestos</h3>
-        <table id="tablaPresupuestos">
-          <thead><tr><th>ID</th><th>Fecha</th><th>Cliente</th><th>Vehículo</th><th>Descripción</th><th>Mano Obra</th><th>Repuestos</th><th>Total</th><th>Estado</th><th>Acciones</th></tr></thead>
-          <tbody id="listaPresupuestos"></tbody>
-        </table>
-      </div>
-    </div>
-
     <!-- Panel Stock -->
     <div id="panelStock" class="panel">
       <h2>📦 Control de Inventario</h2>
       
       <div class="acciones-precios" style="background:#1a1a1a; padding:20px; border-radius:10px; margin-bottom:20px; border:1px solid #FF6D00;">
-        <h4>💰 AJUSTE MASIVO DE PRECIOS</h4>
-        <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end;">
+        <h4 style="color:#FF6D00; margin-bottom:15px;">💰 AJUSTE MASIVO DE PRECIOS</h4>
+        <div style="display:flex; gap:15px; flex-wrap:wrap; align-items:flex-end;">
           <div class="form-group" style="flex:1; min-width:150px;">
             <label>Porcentaje (%):</label>
-            <input type="number" id="porcentajeAjuste" step="0.01" placeholder="Ej: 10 (aumento) o -5 (descuento)">
+            <input type="number" id="porcentajeAjuste" step="0.01" placeholder="Ej: 10">
           </div>
           <div class="form-group" style="flex:1; min-width:150px;">
             <label>Categoría:</label>
@@ -564,7 +814,7 @@
             </select>
           </div>
           <div class="form-group">
-            <button type="button" onclick="aplicarAumentoPorcentaje()" style="margin-top: 24px;">📈 APLICAR AUMENTO</button>
+            <button type="button" onclick="aplicarAumentoPorcentaje()" style="margin-top:24px;">📈 APLICAR</button>
           </div>
         </div>
       </div>
@@ -572,7 +822,7 @@
       <form id="formStock">
         <div class="form-group">
           <label>Código Interno:</label>
-          <input type="text" id="codigoInterno" placeholder="Ej: MOT-001, FIL-002">
+          <input type="text" id="codigoInterno" placeholder="Ej: MOT-001">
         </div>
         <div class="form-group">
           <label>Producto:</label>
@@ -580,7 +830,7 @@
         </div>
         <div class="form-group">
           <label>Descripción / Equivalencias:</label>
-          <textarea id="descripcionStock" rows="3" placeholder="Ej: Equivalente a: Bosch 0986AF, Mann HU 719/7x"></textarea>
+          <textarea id="descripcionStock" rows="3" placeholder="Ej: Equivalente a: Bosch 0986AF"></textarea>
         </div>
         <div class="form-group">
           <label>Cantidad:</label>
@@ -606,9 +856,9 @@
       </form>
 
       <div class="buscador-container">
-        <input type="text" id="buscadorStock" placeholder="🔍 Buscar por código, producto, descripción o categoría..." onkeyup="filtrarStock()">
+        <input type="text" id="buscadorStock" placeholder="🔍 Buscar..." onkeyup="filtrarStock()">
         <select id="filtroCategoria" onchange="filtrarStock()">
-          <option value="">Todas las categorías</option>
+          <option value="">Todas</option>
           <option value="Motor">Motor</option>
           <option value="Frenos">Frenos</option>
           <option value="Suspensión">Suspensión</option>
@@ -617,12 +867,12 @@
           <option value="Otros">Otros</option>
         </select>
         <select id="filtroStock" onchange="filtrarStock()">
-          <option value="">Todos los stocks</option>
+          <option value="">Todos</option>
           <option value="bajo">Stock bajo (&lt;5)</option>
           <option value="normal">Stock normal (≥5)</option>
           <option value="agotado">Agotado (0)</option>
         </select>
-        <button type="button" class="btn-info" onclick="limpiarFiltros()">🗑️ Limpiar filtros</button>
+        <button type="button" class="btn-info" onclick="limpiarFiltros()">🗑️ Limpiar</button>
       </div>
 
       <div class="table-container">
@@ -636,7 +886,7 @@
     </div>
 
     <!-- Panel Caja -->
-    <div id="panelCaja" class="panel active">
+    <div id="panelCaja" class="panel">
       <h2>💰 Gestión de Caja y Finanzas</h2>
       
       <div class="caja-control">
@@ -720,16 +970,83 @@
     </footer>
   </div>
 
+  <!-- Contenido para PDF - SIN LOGO Y SIN SUBTÍTULO -->
+  <div id="pdf-content">
+    <div class="header-pdf">
+      <h1>REPUESTOS Y LUBRICANTES EL NONO</h1>
+      <div class="no-factura">📄 DOCUMENTO NO VÁLIDO COMO FACTURA</div>
+      <div class="numero-presupuesto">
+        PRESUPUESTO N° <strong id="pdf-id">000</strong> &nbsp;|&nbsp; Fecha: <span id="pdf-fecha"></span>
+      </div>
+    </div>
+
+    <div class="info-cliente-pdf">
+      <p><strong>👤 Cliente:</strong> <span id="pdf-cliente"></span></p>
+      <p><strong>📞 Teléfono:</strong> <span id="pdf-telefono"></span></p>
+      <p><strong>🚗 Vehículo:</strong> <span id="pdf-vehiculo"></span></p>
+    </div>
+
+    <div class="detalle-trabajo-pdf">
+      <p><strong>📝 Descripción del Trabajo:</strong></p>
+      <p id="pdf-descripcion" style="margin-top:5px;"></p>
+    </div>
+
+    <h3 style="color:#FF6D00; margin-bottom:10px;">📦 Detalle de Repuestos y Servicios</h3>
+    <table class="tabla-items-pdf">
+      <thead>
+        <tr>
+          <th style="width:50%;">Descripción</th>
+          <th style="width:15%;text-align:center;">Cantidad</th>
+          <th style="width:20%;text-align:right;">Precio Unit.</th>
+          <th style="width:15%;text-align:right;">Subtotal</th>
+        </tr>
+      </thead>
+      <tbody id="pdf-items-body">
+        <tr>
+          <td colspan="4" style="text-align:center;color:#999;">No hay items registrados</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td colspan="3" class="label" style="text-align:right;font-size:18px;">TOTAL PRESUPUESTADO</td>
+          <td class="valor" style="text-align:right;font-size:22px;" id="pdf-total">$0.00</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="footer-pdf">
+      <div class="empleado-info">
+        <p><strong>👨‍🔧 Atendido por:</strong> <span id="pdf-empleado"></span></p>
+        <p><strong>📞 Teléfono:</strong> <span id="pdf-telefonoEmpleado"></span></p>
+      </div>
+      <div class="validez">
+        <p>Validez: 15 días</p>
+        <p style="margin-top:5px;">© 2024 - El Nono</p>
+      </div>
+      <div class="no-factura-footer">
+        Este documento es un presupuesto informativo y no constituye una factura legal
+      </div>
+    </div>
+  </div>
+
   <div id="modalDetalle" class="modal">
     <div class="modal-content">
       <h3>📦 Detalle del Producto</h3>
       <div id="detalleProducto"></div>
-      <div class="form-group" style="margin-top: 20px;">
+      <div class="form-group" style="margin-top:20px;">
         <label>Nuevo Precio ($):</label>
         <input type="number" id="nuevoPrecioIndividual" step="0.01" placeholder="Ingrese nuevo precio">
-        <button onclick="actualizarPrecioIndividual()" style="margin-top: 10px;">💰 ACTUALIZAR PRECIO</button>
+        <button onclick="actualizarPrecioIndividual()" style="margin-top:10px;">💰 ACTUALIZAR</button>
       </div>
       <button onclick="cerrarModal()" class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+
+  <div id="modalItems" class="modal">
+    <div class="modal-content">
+      <h3>📦 Items del Presupuesto</h3>
+      <div id="detalleItems" style="color:#ffffff;"></div>
+      <button onclick="cerrarModalItems()" class="btn-secondary" style="margin-top:15px;">Cerrar</button>
     </div>
   </div>
 
@@ -749,10 +1066,9 @@
     let nextIdCierre = 1;
     let nextIdService = 1;
     let productoSeleccionadoId = null;
-    let serviceFiltrados = [];
 
     function inicializarDatos() {
-      const savedPresupuestos = localStorage.getItem('presupuestos_taller');
+      const savedPresupuestos = localStorage.getItem('presupuestos_taller_v3');
       const savedStock = localStorage.getItem('stock_taller_v4');
       const savedMovimientos = localStorage.getItem('movimientos_taller_v3');
       const savedCierres = localStorage.getItem('cierres_taller');
@@ -823,7 +1139,7 @@
     }
 
     function guardarDatos() {
-      localStorage.setItem('presupuestos_taller', JSON.stringify(presupuestos));
+      localStorage.setItem('presupuestos_taller_v3', JSON.stringify(presupuestos));
       localStorage.setItem('stock_taller_v4', JSON.stringify(stock));
       localStorage.setItem('movimientos_taller_v3', JSON.stringify(movimientos));
       localStorage.setItem('cierres_taller', JSON.stringify(cierres));
@@ -836,7 +1152,315 @@
       localStorage.setItem('caja_estado_taller', JSON.stringify({ abierta: cajaAbierta, fecha: fechaCajaActual }));
     }
 
-    // Verificar vencimientos de service
+    // ==================== ITEMS DEL PRESUPUESTO ====================
+    function agregarItem(descripcion, cantidad, precio) {
+      const container = document.getElementById('itemsContainer');
+      const template = document.getElementById('itemTemplate');
+      const newItem = template.cloneNode(true);
+      newItem.id = '';
+      newItem.style.display = 'flex';
+      
+      const descInput = newItem.querySelector('.item-descripcion');
+      const cantInput = newItem.querySelector('.item-cantidad');
+      const precInput = newItem.querySelector('.item-precio');
+      const totalSpan = newItem.querySelector('.item-total');
+      const removeBtn = newItem.querySelector('.btn-remove-item');
+      
+      if (descripcion !== undefined) {
+        descInput.value = descripcion || '';
+        cantInput.value = cantidad || 1;
+        precInput.value = precio || 0;
+        actualizarItemTotal(newItem);
+      }
+      
+      cantInput.addEventListener('input', () => actualizarItemTotal(newItem));
+      precInput.addEventListener('input', () => actualizarItemTotal(newItem));
+      descInput.addEventListener('input', () => actualizarItemTotal(newItem));
+      
+      removeBtn.onclick = function() { eliminarItem(this); };
+      
+      container.appendChild(newItem);
+      calcularTotalGeneral();
+    }
+
+    function actualizarItemTotal(itemRow) {
+      const cant = parseFloat(itemRow.querySelector('.item-cantidad').value) || 0;
+      const precio = parseFloat(itemRow.querySelector('.item-precio').value) || 0;
+      const total = cant * precio;
+      itemRow.querySelector('.item-total').textContent = '$' + total.toFixed(2);
+      calcularTotalGeneral();
+    }
+
+    function eliminarItem(btn) {
+      const container = document.getElementById('itemsContainer');
+      if (container.children.length > 1) {
+        btn.closest('.item-row').remove();
+        calcularTotalGeneral();
+      } else {
+        alert('Debe haber al menos un item');
+      }
+    }
+
+    function calcularTotalGeneral() {
+      const items = document.querySelectorAll('#itemsContainer .item-row');
+      let total = 0;
+      items.forEach(item => {
+        const cant = parseFloat(item.querySelector('.item-cantidad').value) || 0;
+        const precio = parseFloat(item.querySelector('.item-precio').value) || 0;
+        total += cant * precio;
+      });
+      document.getElementById('totalPresupuesto').value = total.toFixed(2);
+      return total;
+    }
+
+    function obtenerItems() {
+      const items = [];
+      document.querySelectorAll('#itemsContainer .item-row').forEach(item => {
+        const descripcion = item.querySelector('.item-descripcion').value || 'Item sin descripción';
+        const cantidad = parseFloat(item.querySelector('.item-cantidad').value) || 0;
+        const precio = parseFloat(item.querySelector('.item-precio').value) || 0;
+        if (cantidad > 0 || precio > 0) {
+          items.push({ descripcion, cantidad, precio, subtotal: cantidad * precio });
+        }
+      });
+      return items;
+    }
+
+    // ==================== FUNCIONES DE PRESUPUESTO ====================
+    document.getElementById('formPresupuesto').addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!cajaAbierta) {
+        alert('⚠️ Debe abrir la caja antes de crear presupuestos');
+        return;
+      }
+      
+      const items = obtenerItems();
+      if (items.length === 0) {
+        alert('⚠️ Debe agregar al menos un item al presupuesto');
+        return;
+      }
+      
+      const total = calcularTotalGeneral();
+      const nuevoPresupuesto = {
+        id: nextIdPresupuesto++,
+        cliente: document.getElementById('clientePresupuesto').value,
+        telefono: document.getElementById('telefonoPresupuesto').value || 'No especificado',
+        vehiculo: document.getElementById('vehiculoPresupuesto').value,
+        descripcion: document.getElementById('descripcionPresupuesto').value || 'Sin descripción',
+        items: items,
+        total: total,
+        empleado: document.getElementById('empleadoPresupuesto').value,
+        telefonoEmpleado: document.getElementById('telefonoEmpleadoPresupuesto').value,
+        estado: 'Pendiente',
+        fecha: new Date().toLocaleString()
+      };
+      presupuestos.push(nuevoPresupuesto);
+      guardarDatos();
+      cargarPresupuestos();
+      limpiarFormPresupuesto();
+      alert('✅ Presupuesto creado');
+    });
+
+    function limpiarFormPresupuesto() {
+      document.getElementById('clientePresupuesto').value = '';
+      document.getElementById('telefonoPresupuesto').value = '';
+      document.getElementById('vehiculoPresupuesto').value = '';
+      document.getElementById('descripcionPresupuesto').value = '';
+      document.getElementById('empleadoPresupuesto').value = '';
+      document.getElementById('telefonoEmpleadoPresupuesto').value = '';
+      
+      const container = document.getElementById('itemsContainer');
+      while (container.children.length > 1) {
+        container.removeChild(container.lastChild);
+      }
+      const firstItem = container.firstChild;
+      if (firstItem) {
+        firstItem.querySelector('.item-descripcion').value = '';
+        firstItem.querySelector('.item-cantidad').value = '1';
+        firstItem.querySelector('.item-precio').value = '0';
+        firstItem.querySelector('.item-total').textContent = '$0.00';
+      }
+      document.getElementById('totalPresupuesto').value = '0.00';
+    }
+
+    function cargarPresupuestos() {
+      const tbody = document.getElementById('listaPresupuestos');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      presupuestos.forEach(p => {
+        const row = tbody.insertRow();
+        const numItems = p.items ? p.items.length : 0;
+        row.innerHTML = `
+          <td>${p.id}</td>
+          <td>${p.fecha}</td>
+          <td>${p.cliente}</td>
+          <td>${p.telefono || '-'}</td>
+          <td>${p.vehiculo}</td>
+          <td><button class="btn-info" onclick="verItems(${p.id})" style="padding:3px 8px;font-size:11px;">${numItems} items</button></td>
+          <td style="color:#FF6D00;font-weight:bold;">$${p.total.toFixed(2)}</td>
+          <td>${p.empleado || '-'}</td>
+          <td><select onchange="cambiarEstadoPresupuesto(${p.id}, this.value)" style="background:#1a1a1a;color:white;">
+            <option value="Pendiente" ${p.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+            <option value="Aprobado" ${p.estado === 'Aprobado' ? 'selected' : ''}>Aprobado</option>
+            <option value="Pagado" ${p.estado === 'Pagado' ? 'selected' : ''}>Pagado</option>
+            <option value="Rechazado" ${p.estado === 'Rechazado' ? 'selected' : ''}>Rechazado</option>
+          </select></td>
+          <td class="action-buttons">
+            <button class="btn-pdf" onclick="generarPDF(${p.id})">📄 PDF</button>
+            <button class="btn-success" onclick="marcarPagado(${p.id})" ${p.estado === 'Pagado' ? 'disabled' : ''}>💰 Pagar</button>
+            <button class="btn-danger" onclick="eliminarPresupuesto(${p.id})">🗑️</button>
+          </td>
+        `;
+      });
+    }
+
+    function verItems(id) {
+      const p = presupuestos.find(p => p.id === id);
+      if (!p || !p.items || p.items.length === 0) {
+        document.getElementById('detalleItems').innerHTML = '<p style="color:#999;">No hay items registrados</p>';
+      } else {
+        let html = '<table style="width:100%;border-collapse:collapse;margin-top:10px;">';
+        html += '<tr style="border-bottom:2px solid #FF6D00;"><th style="text-align:left;color:#FF6D00;">Descripción</th><th style="text-align:center;color:#FF6D00;">Cant</th><th style="text-align:right;color:#FF6D00;">Precio</th><th style="text-align:right;color:#FF6D00;">Subtotal</th></tr>';
+        p.items.forEach(item => {
+          html += `<tr style="border-bottom:1px solid #333;">
+            <td style="color:#fff;">${item.descripcion}</td>
+            <td style="text-align:center;color:#fff;">${item.cantidad}</td>
+            <td style="text-align:right;color:#fff;">$${item.precio.toFixed(2)}</td>
+            <td style="text-align:right;color:#FF6D00;font-weight:bold;">$${item.subtotal.toFixed(2)}</td>
+          </tr>`;
+        });
+        html += `<tr style="border-top:3px solid #FF6D00;"><td colspan="3" style="text-align:right;font-weight:bold;color:#fff;">TOTAL</td>
+          <td style="text-align:right;font-weight:bold;color:#FF6D00;font-size:18px;">$${p.total.toFixed(2)}</td></tr>`;
+        html += '</table>';
+        document.getElementById('detalleItems').innerHTML = html;
+      }
+      document.getElementById('modalItems').style.display = 'flex';
+    }
+
+    function cerrarModalItems() {
+      document.getElementById('modalItems').style.display = 'none';
+    }
+
+    function cambiarEstadoPresupuesto(id, nuevoEstado) {
+      const presupuesto = presupuestos.find(p => p.id === id);
+      if (presupuesto) {
+        presupuesto.estado = nuevoEstado;
+        guardarDatos();
+        cargarPresupuestos();
+      }
+    }
+
+    function marcarPagado(id) {
+      if (!cajaAbierta) {
+        alert('⚠️ Debe abrir la caja para registrar pagos');
+        return;
+      }
+      const presupuesto = presupuestos.find(p => p.id === id);
+      if (presupuesto && presupuesto.estado !== 'Pagado') {
+        const medio = prompt('Medio de pago:\n1-Efectivo\n2-Transferencia\n3-Débito\n4-Crédito');
+        let medioPago = '';
+        if (medio === '1') medioPago = 'efectivo';
+        else if (medio === '2') medioPago = 'transferencia';
+        else if (medio === '3') medioPago = 'debito';
+        else if (medio === '4') medioPago = 'credito';
+        else { alert('Opción inválida'); return; }
+        
+        presupuesto.estado = 'Pagado';
+        guardarDatos();
+        cargarPresupuestos();
+        
+        movimientos.push({
+          id: nextIdMovimiento++, tipo: 'ingreso', medioPago: medioPago,
+          concepto: `Pago presupuesto #${presupuesto.id} - ${presupuesto.cliente}`,
+          monto: presupuesto.total, referencia: `#${presupuesto.id}`,
+          fecha: new Date().toLocaleString(), hora: new Date().toLocaleTimeString()
+        });
+        guardarDatos();
+        cargarCaja();
+        alert(`✅ Ingreso de $${presupuesto.total.toFixed(2)} registrado`);
+      }
+    }
+
+    function eliminarPresupuesto(id) {
+      if (confirm('¿Eliminar este presupuesto?')) {
+        presupuestos = presupuestos.filter(p => p.id !== id);
+        guardarDatos();
+        cargarPresupuestos();
+      }
+    }
+
+    // ==================== GENERAR PDF ====================
+    function generarPDF(id) {
+      const presupuesto = presupuestos.find(p => p.id === id);
+      if (!presupuesto) {
+        alert('❌ Presupuesto no encontrado');
+        return;
+      }
+
+      document.getElementById('pdf-id').textContent = String(presupuesto.id).padStart(4, '0');
+      document.getElementById('pdf-fecha').textContent = presupuesto.fecha;
+      document.getElementById('pdf-cliente').textContent = presupuesto.cliente;
+      document.getElementById('pdf-telefono').textContent = presupuesto.telefono || 'No especificado';
+      document.getElementById('pdf-vehiculo').textContent = presupuesto.vehiculo;
+      document.getElementById('pdf-descripcion').textContent = presupuesto.descripcion || 'Sin descripción';
+      document.getElementById('pdf-empleado').textContent = presupuesto.empleado || 'No especificado';
+      document.getElementById('pdf-telefonoEmpleado').textContent = presupuesto.telefonoEmpleado || 'No especificado';
+      document.getElementById('pdf-total').textContent = `$${presupuesto.total.toFixed(2)}`;
+
+      const tbody = document.getElementById('pdf-items-body');
+      if (!presupuesto.items || presupuesto.items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#999;">No hay items registrados</td></tr>`;
+      } else {
+        tbody.innerHTML = '';
+        presupuesto.items.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td style="color:#333;">${item.descripcion}</td>
+            <td style="text-align:center;color:#333;">${item.cantidad}</td>
+            <td style="text-align:right;color:#333;">$${item.precio.toFixed(2)}</td>
+            <td style="text-align:right;color:#333;">$${item.subtotal.toFixed(2)}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      const pdfContent = document.getElementById('pdf-content');
+      pdfContent.style.display = 'block';
+      pdfContent.style.position = 'absolute';
+      pdfContent.style.left = '-9999px';
+      pdfContent.style.top = '0';
+      pdfContent.style.width = '900px';
+
+      html2canvas(pdfContent, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false
+      }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`Presupuesto_${String(presupuesto.id).padStart(4, '0')}_${presupuesto.cliente}.pdf`);
+        
+        pdfContent.style.display = 'none';
+        pdfContent.style.position = 'static';
+        pdfContent.style.left = 'auto';
+        pdfContent.style.top = 'auto';
+      }).catch(error => {
+        console.error('Error generando PDF:', error);
+        alert('❌ Error al generar el PDF. Intente nuevamente.');
+        pdfContent.style.display = 'none';
+        pdfContent.style.position = 'static';
+        pdfContent.style.left = 'auto';
+        pdfContent.style.top = 'auto';
+      });
+    }
+
+    // ==================== VERIFICAR VENCIMIENTOS ====================
     function verificarVencimientosService() {
       const hoy = new Date();
       const alertas = [];
@@ -869,7 +1493,7 @@
       return { texto: "✅ AL DÍA", clase: "" };
     }
 
-    // Service Functions
+    // ==================== SERVICE FUNCTIONS ====================
     document.getElementById('formService').addEventListener('submit', (e) => {
       e.preventDefault();
       const nuevoService = {
@@ -898,8 +1522,11 @@
       document.getElementById('kilometrajeService').value = '0';
       document.getElementById('productosService').value = '';
       document.getElementById('precioService').value = '0';
-      document.getElementById('fechaService').value = '';
-      document.getElementById('proximoService').value = '';
+      const hoy = new Date().toISOString().split('T')[0];
+      document.getElementById('fechaService').value = hoy;
+      const proximo = new Date();
+      proximo.setMonth(proximo.getMonth() + 6);
+      document.getElementById('proximoService').value = proximo.toISOString().split('T')[0];
     }
 
     function cargarServices() {
@@ -913,7 +1540,7 @@
         const row = tbody.insertRow();
         if (estado.texto !== "✅ AL DÍA") {
           row.classList.add('alerta-vencimiento');
-          alertasHtml += `<div style="background:#2a1a0a; padding:10px; margin:5px; border-radius:8px; border-left:4px solid #FF6D00;">
+          alertasHtml += `<div style="background:#2a1a0a;padding:10px;margin:5px;border-radius:8px;border-left:4px solid #FF6D00;color:#ffffff;">
             📞 ${s.cliente} | ${s.vehiculo} | ${estado.texto} (${s.proximoService}) | Tel: ${s.telefono}
           </div>`;
         }
@@ -938,7 +1565,7 @@
       
       const alertaDiv = document.getElementById('serviceAlerta');
       if (alertaDiv) {
-        alertaDiv.innerHTML = alertasHtml ? `<div style="margin-bottom:15px;"><strong>📢 CLIENTES PARA CONTACTAR:</strong><br>${alertasHtml}</div>` : '';
+        alertaDiv.innerHTML = alertasHtml ? `<div style="margin-bottom:15px;"><strong style="color:#FF6D00;">📢 CLIENTES PARA CONTACTAR:</strong><br>${alertasHtml}</div>` : '';
       }
     }
 
@@ -1025,7 +1652,7 @@
       }
     }
 
-    // Aplicar aumento porcentaje
+    // ==================== STOCK FUNCTIONS ====================
     function aplicarAumentoPorcentaje() {
       const porcentaje = parseFloat(document.getElementById('porcentajeAjuste').value);
       const categoria = document.getElementById('categoriaAjuste').value;
@@ -1049,192 +1676,6 @@
       alert(`✅ Se actualizaron ${productosAfectados} productos con un ${porcentaje > 0 ? 'aumento' : 'descuento'} del ${Math.abs(porcentaje)}%`);
     }
 
-    function actualizarPrecioIndividual() {
-      const nuevoPrecio = parseFloat(document.getElementById('nuevoPrecioIndividual').value);
-      if (isNaN(nuevoPrecio) || nuevoPrecio < 0) {
-        alert('❌ Ingrese un precio válido');
-        return;
-      }
-      const producto = stock.find(p => p.id === productoSeleccionadoId);
-      if (producto) {
-        producto.precioUnitario = nuevoPrecio;
-        guardarDatos();
-        cargarStock();
-        verDetalle(productoSeleccionadoId);
-        alert(`✅ Precio actualizado a $${nuevoPrecio.toFixed(2)}`);
-      }
-    }
-
-    function verificarPassword() {
-      const password = document.getElementById('passwordInput').value;
-      const errorMsg = document.getElementById('errorMsg');
-      
-      if (password === CONTRASENA_CORRECTA) {
-        document.getElementById('loginOverlay').style.display = 'none';
-        document.getElementById('mainContent').style.display = 'block';
-        errorMsg.textContent = '';
-        inicializarDatos();
-        cargarTodosLosDatos();
-        actualizarInterfazCaja();
-        verificarVencimientosService();
-        
-        setInterval(() => {
-          if (cajaAbierta) {
-            verificarVencimientosService();
-          }
-        }, 3600000);
-      } else {
-        errorMsg.textContent = '❌ Contraseña incorrecta';
-        document.getElementById('passwordInput').value = '';
-      }
-    }
-
-    function cerrarSesion() {
-      document.getElementById('loginOverlay').style.display = 'flex';
-      document.getElementById('mainContent').style.display = 'none';
-      document.getElementById('passwordInput').value = '';
-    }
-
-    function cambiarPanel(panel) {
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      
-      if (panel === 'service') {
-        document.getElementById('panelService').classList.add('active');
-        document.querySelectorAll('.tab-btn')[0].classList.add('active');
-        cargarServices();
-      } else if (panel === 'presupuestos') {
-        document.getElementById('panelPresupuestos').classList.add('active');
-        document.querySelectorAll('.tab-btn')[1].classList.add('active');
-        cargarPresupuestos();
-      } else if (panel === 'stock') {
-        document.getElementById('panelStock').classList.add('active');
-        document.querySelectorAll('.tab-btn')[2].classList.add('active');
-        cargarStock();
-      } else if (panel === 'caja') {
-        document.getElementById('panelCaja').classList.add('active');
-        document.querySelectorAll('.tab-btn')[3].classList.add('active');
-        cargarCaja();
-        cargarCierres();
-      }
-    }
-
-    function calcularTotalPresupuesto() {
-      const manoObra = parseFloat(document.getElementById('manoObra').value) || 0;
-      const repuestos = parseFloat(document.getElementById('repuestos').value) || 0;
-      document.getElementById('totalPresupuesto').value = (manoObra + repuestos).toFixed(2);
-    }
-
-    // Presupuestos
-    document.getElementById('formPresupuesto').addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!cajaAbierta) {
-        alert('⚠️ Debe abrir la caja antes de crear presupuestos');
-        return;
-      }
-      const nuevoPresupuesto = {
-        id: nextIdPresupuesto++,
-        cliente: document.getElementById('clientePresupuesto').value,
-        vehiculo: document.getElementById('vehiculoPresupuesto').value,
-        descripcion: document.getElementById('descripcionPresupuesto').value,
-        manoObra: parseFloat(document.getElementById('manoObra').value),
-        repuestos: parseFloat(document.getElementById('repuestos').value),
-        total: parseFloat(document.getElementById('totalPresupuesto').value),
-        estado: 'Pendiente',
-        fecha: new Date().toLocaleString()
-      };
-      presupuestos.push(nuevoPresupuesto);
-      guardarDatos();
-      cargarPresupuestos();
-      limpiarFormPresupuesto();
-      alert('✅ Presupuesto creado');
-    });
-
-    function limpiarFormPresupuesto() {
-      document.getElementById('clientePresupuesto').value = '';
-      document.getElementById('vehiculoPresupuesto').value = '';
-      document.getElementById('descripcionPresupuesto').value = '';
-      document.getElementById('manoObra').value = '0';
-      document.getElementById('repuestos').value = '0';
-      document.getElementById('totalPresupuesto').value = '0';
-    }
-
-    function cargarPresupuestos() {
-      const tbody = document.getElementById('listaPresupuestos');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      presupuestos.forEach(p => {
-        const row = tbody.insertRow();
-        row.innerHTML = `
-          <td>${p.id}</td>
-          <td>${p.fecha}</td>
-          <td>${p.cliente}</td>
-          <td>${p.vehiculo}</td>
-          <td>${p.descripcion.substring(0, 30)}${p.descripcion.length > 30 ? '...' : ''}</td>
-          <td>$${p.manoObra.toFixed(2)}</td>
-          <td>$${p.repuestos.toFixed(2)}</td>
-          <td>$${p.total.toFixed(2)}</td>
-          <td><select onchange="cambiarEstadoPresupuesto(${p.id}, this.value)" style="background:#1a1a1a;color:white;">
-            <option value="Pendiente" ${p.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
-            <option value="Aprobado" ${p.estado === 'Aprobado' ? 'selected' : ''}>Aprobado</option>
-            <option value="Pagado" ${p.estado === 'Pagado' ? 'selected' : ''}>Pagado</option>
-            <option value="Rechazado" ${p.estado === 'Rechazado' ? 'selected' : ''}>Rechazado</option>
-          </select></td>
-          <td><button class="btn-success" onclick="marcarPagado(${p.id})" ${p.estado === 'Pagado' ? 'disabled' : ''}>💰 Pagar</button>
-          <button class="btn-danger" onclick="eliminarPresupuesto(${p.id})">🗑️</button></td>
-        `;
-      });
-    }
-
-    function cambiarEstadoPresupuesto(id, nuevoEstado) {
-      const presupuesto = presupuestos.find(p => p.id === id);
-      if (presupuesto) {
-        presupuesto.estado = nuevoEstado;
-        guardarDatos();
-        cargarPresupuestos();
-      }
-    }
-
-    function marcarPagado(id) {
-      if (!cajaAbierta) {
-        alert('⚠️ Debe abrir la caja para registrar pagos');
-        return;
-      }
-      const presupuesto = presupuestos.find(p => p.id === id);
-      if (presupuesto && presupuesto.estado !== 'Pagado') {
-        const medio = prompt('Medio de pago:\n1-Efectivo\n2-Transferencia\n3-Débito\n4-Crédito');
-        let medioPago = '';
-        if (medio === '1') medioPago = 'efectivo';
-        else if (medio === '2') medioPago = 'transferencia';
-        else if (medio === '3') medioPago = 'debito';
-        else if (medio === '4') medioPago = 'credito';
-        else { alert('Opción inválida'); return; }
-        
-        presupuesto.estado = 'Pagado';
-        guardarDatos();
-        cargarPresupuestos();
-        
-        movimientos.push({
-          id: nextIdMovimiento++, tipo: 'ingreso', medioPago: medioPago,
-          concepto: `Pago presupuesto #${presupuesto.id} - ${presupuesto.cliente}`,
-          monto: presupuesto.total, referencia: `#${presupuesto.id}`,
-          fecha: new Date().toLocaleString(), hora: new Date().toLocaleTimeString()
-        });
-        guardarDatos();
-        cargarCaja();
-        alert(`✅ Ingreso de $${presupuesto.total.toFixed(2)} registrado`);
-      }
-    }
-
-    function eliminarPresupuesto(id) {
-      if (confirm('¿Eliminar?')) {
-        presupuestos = presupuestos.filter(p => p.id !== id);
-        guardarDatos();
-        cargarPresupuestos();
-      }
-    }
-
-    // Stock
     document.getElementById('formStock').addEventListener('submit', (e) => {
       e.preventDefault();
       stock.push({
@@ -1394,7 +1835,23 @@
       if (valorElem) valorElem.textContent = `$${total.toFixed(2)}`;
     }
 
-    // Caja
+    function actualizarPrecioIndividual() {
+      const nuevoPrecio = parseFloat(document.getElementById('nuevoPrecioIndividual').value);
+      if (isNaN(nuevoPrecio) || nuevoPrecio < 0) {
+        alert('❌ Ingrese un precio válido');
+        return;
+      }
+      const producto = stock.find(p => p.id === productoSeleccionadoId);
+      if (producto) {
+        producto.precioUnitario = nuevoPrecio;
+        guardarDatos();
+        cargarStock();
+        verDetalle(productoSeleccionadoId);
+        alert(`✅ Precio actualizado a $${nuevoPrecio.toFixed(2)}`);
+      }
+    }
+
+    // ==================== CAJA FUNCTIONS ====================
     function abrirCaja() {
       if (cajaAbierta) { alert('Ya está abierta'); return; }
       cajaAbierta = true;
@@ -1461,32 +1918,29 @@
       cargarCierres();
     }
 
-    const formMovimiento = document.getElementById('formMovimiento');
-    if (formMovimiento) {
-      formMovimiento.addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (!cajaAbierta) { alert('Abra la caja primero'); return; }
-        const tipo = document.getElementById('tipoMovimiento').value;
-        const monto = parseFloat(document.getElementById('montoMovimiento').value);
-        if (tipo === 'egreso') {
-          const actual = movimientos.reduce((s, m) => s + (m.tipo === 'ingreso' ? m.monto : -m.monto), 0);
-          if (monto > actual) { alert('Saldo insuficiente'); return; }
-        }
-        movimientos.push({
-          id: nextIdMovimiento++, tipo: tipo,
-          medioPago: tipo === 'ingreso' ? document.getElementById('medioPago').value : null,
-          concepto: document.getElementById('conceptoMovimiento').value,
-          monto: monto, referencia: document.getElementById('referenciaMovimiento').value || '-',
-          fecha: new Date().toLocaleString(), hora: new Date().toLocaleTimeString()
-        });
-        guardarDatos();
-        cargarCaja();
-        document.getElementById('conceptoMovimiento').value = '';
-        document.getElementById('montoMovimiento').value = '0';
-        document.getElementById('referenciaMovimiento').value = '';
-        alert('✅ Movimiento registrado');
+    document.getElementById('formMovimiento').addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!cajaAbierta) { alert('Abra la caja primero'); return; }
+      const tipo = document.getElementById('tipoMovimiento').value;
+      const monto = parseFloat(document.getElementById('montoMovimiento').value);
+      if (tipo === 'egreso') {
+        const actual = movimientos.reduce((s, m) => s + (m.tipo === 'ingreso' ? m.monto : -m.monto), 0);
+        if (monto > actual) { alert('Saldo insuficiente'); return; }
+      }
+      movimientos.push({
+        id: nextIdMovimiento++, tipo: tipo,
+        medioPago: tipo === 'ingreso' ? document.getElementById('medioPago').value : null,
+        concepto: document.getElementById('conceptoMovimiento').value,
+        monto: monto, referencia: document.getElementById('referenciaMovimiento').value || '-',
+        fecha: new Date().toLocaleString(), hora: new Date().toLocaleTimeString()
       });
-    }
+      guardarDatos();
+      cargarCaja();
+      document.getElementById('conceptoMovimiento').value = '';
+      document.getElementById('montoMovimiento').value = '0';
+      document.getElementById('referenciaMovimiento').value = '';
+      alert('✅ Movimiento registrado');
+    });
 
     function getMedioPagoIcono(medio) {
       if (!medio) return '-';
@@ -1506,21 +1960,13 @@
       const desglose = { efectivo: 0, transferencia: 0, debito: 0, credito: 0 };
       movimientos.forEach(m => { if (m.tipo === 'ingreso' && m.medioPago) desglose[m.medioPago] += m.monto; });
       
-      const cajaActualElem = document.getElementById('cajaActual');
-      const totalIngresosElem = document.getElementById('totalIngresos');
-      const totalEgresosElem = document.getElementById('totalEgresos');
-      const totalEfectivoElem = document.getElementById('totalEfectivo');
-      const totalTransferenciaElem = document.getElementById('totalTransferencia');
-      const totalDebitoElem = document.getElementById('totalDebito');
-      const totalCreditoElem = document.getElementById('totalCredito');
-      
-      if (cajaActualElem) cajaActualElem.textContent = `$${actual.toFixed(2)}`;
-      if (totalIngresosElem) totalIngresosElem.textContent = `$${ingresos.toFixed(2)}`;
-      if (totalEgresosElem) totalEgresosElem.textContent = `$${egresos.toFixed(2)}`;
-      if (totalEfectivoElem) totalEfectivoElem.textContent = `$${desglose.efectivo.toFixed(2)}`;
-      if (totalTransferenciaElem) totalTransferenciaElem.textContent = `$${desglose.transferencia.toFixed(2)}`;
-      if (totalDebitoElem) totalDebitoElem.textContent = `$${desglose.debito.toFixed(2)}`;
-      if (totalCreditoElem) totalCreditoElem.textContent = `$${desglose.credito.toFixed(2)}`;
+      document.getElementById('cajaActual').textContent = `$${actual.toFixed(2)}`;
+      document.getElementById('totalIngresos').textContent = `$${ingresos.toFixed(2)}`;
+      document.getElementById('totalEgresos').textContent = `$${egresos.toFixed(2)}`;
+      document.getElementById('totalEfectivo').textContent = `$${desglose.efectivo.toFixed(2)}`;
+      document.getElementById('totalTransferencia').textContent = `$${desglose.transferencia.toFixed(2)}`;
+      document.getElementById('totalDebito').textContent = `$${desglose.debito.toFixed(2)}`;
+      document.getElementById('totalCredito').textContent = `$${desglose.credito.toFixed(2)}`;
       
       const tbody = document.getElementById('listaMovimientos');
       if (tbody) {
@@ -1569,6 +2015,61 @@
       }
     }
 
+    // ==================== VERIFICAR PASSWORD Y LOGIN ====================
+    function verificarPassword() {
+      const password = document.getElementById('passwordInput').value;
+      const errorMsg = document.getElementById('errorMsg');
+      
+      if (password === CONTRASENA_CORRECTA) {
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        errorMsg.textContent = '';
+        inicializarDatos();
+        cargarTodosLosDatos();
+        actualizarInterfazCaja();
+        verificarVencimientosService();
+        
+        setInterval(() => {
+          if (cajaAbierta) {
+            verificarVencimientosService();
+          }
+        }, 3600000);
+      } else {
+        errorMsg.textContent = '❌ Contraseña incorrecta';
+        document.getElementById('passwordInput').value = '';
+      }
+    }
+
+    function cerrarSesion() {
+      document.getElementById('loginOverlay').style.display = 'flex';
+      document.getElementById('mainContent').style.display = 'none';
+      document.getElementById('passwordInput').value = '';
+    }
+
+    function cambiarPanel(panel) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      
+      if (panel === 'service') {
+        document.getElementById('panelService').classList.add('active');
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        cargarServices();
+      } else if (panel === 'presupuestos') {
+        document.getElementById('panelPresupuestos').classList.add('active');
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        cargarPresupuestos();
+      } else if (panel === 'stock') {
+        document.getElementById('panelStock').classList.add('active');
+        document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        cargarStock();
+      } else if (panel === 'caja') {
+        document.getElementById('panelCaja').classList.add('active');
+        document.querySelectorAll('.tab-btn')[3].classList.add('active');
+        cargarCaja();
+        cargarCierres();
+      }
+    }
+
     function cargarTodosLosDatos() {
       cargarServices();
       cargarPresupuestos();
@@ -1577,24 +2078,18 @@
       cargarCierres();
     }
 
-    const manoObraInput = document.getElementById('manoObra');
-    const repuestosInput = document.getElementById('repuestos');
-    if (manoObraInput) manoObraInput.addEventListener('input', calcularTotalPresupuesto);
-    if (repuestosInput) repuestosInput.addEventListener('input', calcularTotalPresupuesto);
-    
-    // Establecer fecha actual por defecto en el formulario de service
-    const fechaServiceInput = document.getElementById('fechaService');
-    if (fechaServiceInput) {
+    // Inicializar con un item por defecto
+    window.onload = function() {
       const hoy = new Date().toISOString().split('T')[0];
-      fechaServiceInput.value = hoy;
-      
-      const proximoServiceInput = document.getElementById('proximoService');
-      if (proximoServiceInput) {
+      const fechaService = document.getElementById('fechaService');
+      if (fechaService) fechaService.value = hoy;
+      const proximoService = document.getElementById('proximoService');
+      if (proximoService) {
         const proximo = new Date();
         proximo.setMonth(proximo.getMonth() + 6);
-        proximoServiceInput.value = proximo.toISOString().split('T')[0];
+        proximoService.value = proximo.toISOString().split('T')[0];
       }
-    }
+    };
   </script>
 </body>
 </html>
