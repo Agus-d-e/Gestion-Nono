@@ -238,6 +238,11 @@
       color: white;
     }
 
+    .btn-pago {
+      background: #28a745;
+      color: white;
+    }
+
     .buscador-container {
       margin-bottom: 20px;
       display: flex;
@@ -632,6 +637,11 @@
       border-left: 4px solid #FF6D00;
     }
 
+    .saldo-positivo {
+      color: #28a745;
+      font-weight: bold;
+    }
+
     @media (max-width: 768px) {
       .stats { grid-template-columns: 1fr; }
       .tab-btn { flex: 1; text-align: center; font-size: 11px; padding: 8px 4px; }
@@ -720,7 +730,7 @@
               <th>Vence</th>
               <th>Estado</th>
               <th>Items</th>
-              <th>Total</th>
+              <th>Saldo</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -1073,26 +1083,28 @@
       <p><strong>📅 Fecha Apertura:</strong> <span id="pdf-cuenta-apertura"></span></p>
       <p><strong>⏰ Vence:</strong> <span id="pdf-cuenta-vencimiento"></span></p>
       <p><strong>📊 Estado:</strong> <span id="pdf-cuenta-estado" style="font-weight:bold;"></span></p>
+      <p><strong>💰 Saldo Actual:</strong> <span id="pdf-cuenta-saldo" style="font-size:18px;font-weight:bold;"></span></p>
     </div>
 
-    <h3 style="color:#FF6D00; margin-bottom:10px;">📦 Detalle de Retiros</h3>
+    <h3 style="color:#FF6D00; margin-bottom:10px;">📦 Detalle de Movimientos</h3>
     <table class="tabla-items-pdf">
       <thead>
         <tr>
-          <th style="width:50%;">Descripción</th>
-          <th style="width:15%;text-align:center;">Cantidad</th>
-          <th style="width:20%;text-align:right;">Precio Unit.</th>
+          <th style="width:40%;">Descripción</th>
+          <th style="width:15%;text-align:center;">Tipo</th>
+          <th style="width:15%;text-align:right;">Cantidad</th>
+          <th style="width:15%;text-align:right;">Precio Unit.</th>
           <th style="width:15%;text-align:right;">Subtotal</th>
         </tr>
       </thead>
       <tbody id="pdf-cuenta-items-body">
         <tr>
-          <td colspan="4" style="text-align:center;color:#999;">No hay items registrados</td>
+          <td colspan="5" style="text-align:center;color:#999;">No hay movimientos registrados</td>
         </tr>
       </tbody>
       <tfoot>
         <tr class="total-row">
-          <td colspan="3" class="label" style="text-align:right;font-size:18px;">TOTAL ADEUDADO</td>
+          <td colspan="4" class="label" style="text-align:right;font-size:18px;">SALDO ACTUAL</td>
           <td class="valor" style="text-align:right;font-size:22px;" id="pdf-cuenta-total">$0.00</td>
         </tr>
       </tfoot>
@@ -1211,6 +1223,33 @@
     </div>
   </div>
 
+  <!-- Modal para registrar pago a cuenta -->
+  <div id="modalPagarCuenta" class="modal">
+    <div class="modal-content">
+      <h3>💰 Registrar Pago a Cuenta</h3>
+      <div id="infoPagoCuenta" style="color:#ffffff; margin-bottom:15px;"></div>
+      <div class="form-group">
+        <label>Monto a Pagar ($):</label>
+        <input type="number" id="montoPagoCuenta" step="0.01" placeholder="Ingrese el monto">
+      </div>
+      <div class="form-group">
+        <label>Medio de Pago:</label>
+        <select id="medioPagoCuenta">
+          <option value="efectivo">💵 Efectivo</option>
+          <option value="transferencia">🏦 Transferencia</option>
+          <option value="debito">💳 Débito</option>
+          <option value="credito">💎 Crédito</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Observaciones:</label>
+        <input type="text" id="observacionesPago" placeholder="Ej: Pago parcial, abono, etc.">
+      </div>
+      <button onclick="registrarPagoCuenta()" class="btn-success">✅ REGISTRAR PAGO</button>
+      <button onclick="cerrarModalPagarCuenta()" class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+
   <div id="modalVerCuenta" class="modal">
     <div class="modal-content">
       <h3>📊 Detalle de Cuenta</h3>
@@ -1245,7 +1284,7 @@
       const savedMovimientos = localStorage.getItem('movimientos_taller_v3');
       const savedCierres = localStorage.getItem('cierres_taller');
       const savedServices = localStorage.getItem('services_taller');
-      const savedCuentas = localStorage.getItem('cuentas_taller');
+      const savedCuentas = localStorage.getItem('cuentas_taller_v2');
       const savedCajaEstado = localStorage.getItem('caja_estado_taller');
       
       if (savedPresupuestos) {
@@ -1325,7 +1364,7 @@
       localStorage.setItem('movimientos_taller_v3', JSON.stringify(movimientos));
       localStorage.setItem('cierres_taller', JSON.stringify(cierres));
       localStorage.setItem('services_taller', JSON.stringify(services));
-      localStorage.setItem('cuentas_taller', JSON.stringify(cuentas));
+      localStorage.setItem('cuentas_taller_v2', JSON.stringify(cuentas));
       localStorage.setItem('nextIdPresupuesto_taller', nextIdPresupuesto);
       localStorage.setItem('nextIdStock_taller', nextIdStock);
       localStorage.setItem('nextIdMovimiento_taller', nextIdMovimiento);
@@ -1346,9 +1385,17 @@
       return { texto: "✅ ACTIVA", clase: "" };
     }
 
-    function calcularTotalCuenta(items) {
+    function calcularSaldoCuenta(items) {
       if (!items || items.length === 0) return 0;
-      return items.reduce((sum, item) => sum + (item.cantidad * item.precio), 0);
+      let saldo = 0;
+      items.forEach(item => {
+        if (item.tipo === 'retiro') {
+          saldo += item.cantidad * item.precio;
+        } else if (item.tipo === 'pago') {
+          saldo -= item.monto || (item.cantidad * item.precio);
+        }
+      });
+      return saldo;
     }
 
     document.getElementById('formCuenta').addEventListener('submit', (e) => {
@@ -1387,15 +1434,18 @@
       let proximas = 0;
       
       cuentas.forEach(c => {
-        const total = calcularTotalCuenta(c.items);
-        c.total = total;
+        const saldo = calcularSaldoCuenta(c.items);
+        c.total = saldo;
         const estado = getEstadoCuenta(c.fechaVencimiento);
         const row = tbody.insertRow();
         row.className = estado.clase;
         
-        totalDeuda += total;
+        totalDeuda += saldo > 0 ? saldo : 0;
         if (estado.texto.includes('VENCIDA')) vencidas++;
         if (estado.texto.includes('VENCE EN')) proximas++;
+        
+        const saldoColor = saldo < 0 ? 'style="color:#28a745;font-weight:bold;"' : 'style="color:#FF6D00;font-weight:bold;"';
+        const saldoTexto = saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`;
         
         row.innerHTML = `
           <td>${c.id}</td>
@@ -1404,12 +1454,13 @@
           <td>${c.fechaApertura}</td>
           <td>${c.fechaVencimiento}</td>
           <td>${estado.texto}</td>
-          <td><button class="btn-info" onclick="verItemsCuenta(${c.id})" style="padding:3px 8px;font-size:11px;">${c.items ? c.items.length : 0} items</button></td>
-          <td style="color:#FF6D00;font-weight:bold;">$${total.toFixed(2)}</td>
+          <td><button class="btn-info" onclick="verItemsCuenta(${c.id})" style="padding:3px 8px;font-size:11px;">${c.items ? c.items.length : 0} mov.</button></td>
+          <td ${saldoColor}>${saldoTexto}</td>
           <td class="action-buttons">
             <button class="btn-info" onclick="verCuentaDetalle(${c.id})">📊 Ver</button>
             <button class="btn-pdf" onclick="generarPDFCuenta(${c.id})">📄 PDF</button>
             <button class="btn-warning" onclick="agregarItemCuentaModal(${c.id})">➕ Item</button>
+            <button class="btn-pago" onclick="pagarCuentaModal(${c.id})">💰 Pagar</button>
             <button class="btn-danger" onclick="eliminarCuenta(${c.id})">🗑️</button>
           </td>
         `;
@@ -1446,11 +1497,13 @@
       });
       
       filtrados.forEach(c => {
-        const total = calcularTotalCuenta(c.items);
-        c.total = total;
+        const saldo = calcularSaldoCuenta(c.items);
+        c.total = saldo;
         const estado = getEstadoCuenta(c.fechaVencimiento);
         const row = tbody.insertRow();
         row.className = estado.clase;
+        const saldoColor = saldo < 0 ? 'style="color:#28a745;font-weight:bold;"' : 'style="color:#FF6D00;font-weight:bold;"';
+        const saldoTexto = saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`;
         row.innerHTML = `
           <td>${c.id}</td>
           <td>${c.cliente}</td>
@@ -1458,12 +1511,13 @@
           <td>${c.fechaApertura}</td>
           <td>${c.fechaVencimiento}</td>
           <td>${estado.texto}</td>
-          <td><button class="btn-info" onclick="verItemsCuenta(${c.id})" style="padding:3px 8px;font-size:11px;">${c.items ? c.items.length : 0} items</button></td>
-          <td style="color:#FF6D00;font-weight:bold;">$${total.toFixed(2)}</td>
+          <td><button class="btn-info" onclick="verItemsCuenta(${c.id})" style="padding:3px 8px;font-size:11px;">${c.items ? c.items.length : 0} mov.</button></td>
+          <td ${saldoColor}>${saldoTexto}</td>
           <td class="action-buttons">
             <button class="btn-info" onclick="verCuentaDetalle(${c.id})">📊 Ver</button>
             <button class="btn-pdf" onclick="generarPDFCuenta(${c.id})">📄 PDF</button>
             <button class="btn-warning" onclick="agregarItemCuentaModal(${c.id})">➕ Item</button>
+            <button class="btn-pago" onclick="pagarCuentaModal(${c.id})">💰 Pagar</button>
             <button class="btn-danger" onclick="eliminarCuenta(${c.id})">🗑️</button>
           </td>
         `;
@@ -1480,10 +1534,11 @@
       cuentaSeleccionadaId = id;
       const cuenta = cuentas.find(c => c.id === id);
       if (cuenta) {
+        const saldo = calcularSaldoCuenta(cuenta.items);
         document.getElementById('infoClienteCuenta').innerHTML = `
           <p><strong>Cliente:</strong> ${cuenta.cliente}</p>
           <p><strong>Teléfono:</strong> ${cuenta.telefono}</p>
-          <p><strong>Deuda Actual:</strong> $${calcularTotalCuenta(cuenta.items).toFixed(2)}</p>
+          <p><strong>Saldo Actual:</strong> ${saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`}</p>
         `;
         document.getElementById('itemCuentaDescripcion').value = '';
         document.getElementById('itemCuentaCantidad').value = '1';
@@ -1510,6 +1565,7 @@
       
       if (!cuenta.items) cuenta.items = [];
       cuenta.items.push({
+        tipo: 'retiro',
         descripcion: descripcion,
         cantidad: cantidad,
         precio: precio,
@@ -1528,26 +1584,109 @@
       cuentaSeleccionadaId = null;
     }
 
+    // ==================== PAGOS A CUENTA ====================
+    function pagarCuentaModal(id) {
+      cuentaSeleccionadaId = id;
+      const cuenta = cuentas.find(c => c.id === id);
+      if (cuenta) {
+        const saldo = calcularSaldoCuenta(cuenta.items);
+        document.getElementById('infoPagoCuenta').innerHTML = `
+          <p><strong>Cliente:</strong> ${cuenta.cliente}</p>
+          <p><strong>Teléfono:</strong> ${cuenta.telefono}</p>
+          <p><strong>Saldo Actual:</strong> ${saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`}</p>
+          ${saldo > 0 ? `<p style="color:#FF6D00;"><strong>⚠️ Debe: $${saldo.toFixed(2)}</strong></p>` : ''}
+          ${saldo < 0 ? `<p style="color:#28a745;"><strong>✅ Saldo a favor: $${Math.abs(saldo).toFixed(2)}</strong></p>` : ''}
+        `;
+        document.getElementById('montoPagoCuenta').value = '';
+        document.getElementById('observacionesPago').value = '';
+        document.getElementById('modalPagarCuenta').style.display = 'flex';
+      }
+    }
+
+    function registrarPagoCuenta() {
+      const cuenta = cuentas.find(c => c.id === cuentaSeleccionadaId);
+      if (!cuenta) {
+        alert('❌ Cuenta no encontrada');
+        return;
+      }
+      
+      if (!cajaAbierta) {
+        alert('⚠️ Debe abrir la caja para registrar pagos');
+        return;
+      }
+      
+      const monto = parseFloat(document.getElementById('montoPagoCuenta').value);
+      const medioPago = document.getElementById('medioPagoCuenta').value;
+      const observaciones = document.getElementById('observacionesPago').value || 'Pago a cuenta';
+      
+      if (isNaN(monto) || monto <= 0) {
+        alert('❌ Ingrese un monto válido');
+        return;
+      }
+      
+      const saldo = calcularSaldoCuenta(cuenta.items);
+      if (monto > saldo && saldo > 0) {
+        const confirmar = confirm(`⚠️ El monto a pagar ($${monto.toFixed(2)}) es mayor que la deuda ($${saldo.toFixed(2)}). Se generará saldo a favor. ¿Desea continuar?`);
+        if (!confirmar) return;
+      }
+      
+      if (!cuenta.items) cuenta.items = [];
+      cuenta.items.push({
+        tipo: 'pago',
+        descripcion: `PAGO - ${observaciones}`,
+        cantidad: 1,
+        precio: monto,
+        subtotal: -monto,
+        monto: monto,
+        medioPago: medioPago,
+        fecha: new Date().toLocaleString()
+      });
+      
+      // Registrar en movimientos de caja
+      movimientos.push({
+        id: nextIdMovimiento++, tipo: 'ingreso', medioPago: medioPago,
+        concepto: `Pago a cuenta - ${cuenta.cliente} (Cuenta #${cuenta.id})`,
+        monto: monto, referencia: `Cuenta #${cuenta.id}`,
+        fecha: new Date().toLocaleString(), hora: new Date().toLocaleTimeString()
+      });
+      
+      guardarDatos();
+      cargarCuentas();
+      cargarCaja();
+      cerrarModalPagarCuenta();
+      alert(`✅ Pago de $${monto.toFixed(2)} registrado exitosamente`);
+    }
+
+    function cerrarModalPagarCuenta() {
+      document.getElementById('modalPagarCuenta').style.display = 'none';
+      cuentaSeleccionadaId = null;
+    }
+
     function verItemsCuenta(id) {
       const cuenta = cuentas.find(c => c.id === id);
       if (!cuenta || !cuenta.items || cuenta.items.length === 0) {
-        document.getElementById('detalleItems').innerHTML = '<p style="color:#999;">No hay items en esta cuenta</p>';
+        document.getElementById('detalleItems').innerHTML = '<p style="color:#999;">No hay movimientos en esta cuenta</p>';
       } else {
         let html = `<p style="color:#FF6D00;"><strong>Cliente:</strong> ${cuenta.cliente}</p>`;
         html += `<p style="color:#FF6D00;"><strong>Vence:</strong> ${cuenta.fechaVencimiento}</p>`;
         html += '<table style="width:100%;border-collapse:collapse;margin-top:10px;">';
-        html += '<tr style="border-bottom:2px solid #FF6D00;"><th style="text-align:left;color:#FF6D00;">Descripción</th><th style="text-align:center;color:#FF6D00;">Cant</th><th style="text-align:right;color:#FF6D00;">Precio</th><th style="text-align:right;color:#FF6D00;">Subtotal</th></tr>';
+        html += '<tr style="border-bottom:2px solid #FF6D00;"><th style="text-align:left;color:#FF6D00;">Fecha</th><th style="text-align:left;color:#FF6D00;">Descripción</th><th style="text-align:center;color:#FF6D00;">Tipo</th><th style="text-align:right;color:#FF6D00;">Monto</th></tr>';
         cuenta.items.forEach(item => {
+          const tipo = item.tipo === 'retiro' ? '🔴 Retiro' : '🟢 Pago';
+          const color = item.tipo === 'retiro' ? '#FF6D00' : '#28a745';
+          const monto = item.tipo === 'retiro' ? `+${item.subtotal.toFixed(2)}` : `-${item.subtotal.toFixed(2)}`;
           html += `<tr style="border-bottom:1px solid #333;">
+            <td style="color:#fff;font-size:12px;">${item.fecha || 'N/A'}</td>
             <td style="color:#fff;">${item.descripcion}</td>
-            <td style="text-align:center;color:#fff;">${item.cantidad}</td>
-            <td style="text-align:right;color:#fff;">$${item.precio.toFixed(2)}</td>
-            <td style="text-align:right;color:#FF6D00;font-weight:bold;">$${item.subtotal.toFixed(2)}</td>
+            <td style="text-align:center;color:${color};">${tipo}</td>
+            <td style="text-align:right;color:${color};font-weight:bold;">$${monto}</td>
           </tr>`;
         });
-        const total = calcularTotalCuenta(cuenta.items);
-        html += `<tr style="border-top:3px solid #FF6D00;"><td colspan="3" style="text-align:right;font-weight:bold;color:#fff;">TOTAL ADEUDADO</td>
-          <td style="text-align:right;font-weight:bold;color:#FF6D00;font-size:18px;">$${total.toFixed(2)}</td></tr>`;
+        const saldo = calcularSaldoCuenta(cuenta.items);
+        const saldoColor = saldo < 0 ? '#28a745' : '#FF6D00';
+        const saldoTexto = saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`;
+        html += `<tr style="border-top:3px solid #FF6D00;"><td colspan="3" style="text-align:right;font-weight:bold;color:#fff;">SALDO ACTUAL</td>
+          <td style="text-align:right;font-weight:bold;color:${saldoColor};font-size:18px;">${saldoTexto}</td></tr>`;
         html += '</table>';
         document.getElementById('detalleItems').innerHTML = html;
       }
@@ -1558,35 +1697,41 @@
       const cuenta = cuentas.find(c => c.id === id);
       if (!cuenta) return;
       
-      const total = calcularTotalCuenta(cuenta.items);
+      const saldo = calcularSaldoCuenta(cuenta.items);
       const estado = getEstadoCuenta(cuenta.fechaVencimiento);
+      const saldoColor = saldo < 0 ? '#28a745' : '#FF6D00';
+      const saldoTexto = saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`;
+      
       let html = `
         <p><strong style="color:#FF6D00;">👤 Cliente:</strong> <span style="color:#fff;">${cuenta.cliente}</span></p>
         <p><strong style="color:#FF6D00;">📞 Teléfono:</strong> <span style="color:#fff;">${cuenta.telefono}</span></p>
         <p><strong style="color:#FF6D00;">📅 Apertura:</strong> <span style="color:#fff;">${cuenta.fechaApertura}</span></p>
         <p><strong style="color:#FF6D00;">⏰ Vence:</strong> <span style="color:#fff;">${cuenta.fechaVencimiento}</span></p>
         <p><strong style="color:#FF6D00;">📊 Estado:</strong> <span style="color:#fff;">${estado.texto}</span></p>
-        <p><strong style="color:#FF6D00;">💰 Total Adeudado:</strong> <span style="color:#28a745;font-size:20px;">$${total.toFixed(2)}</span></p>
+        <p><strong style="color:#FF6D00;">💰 Saldo:</strong> <span style="color:${saldoColor};font-size:20px;">${saldoTexto}</span></p>
         <hr style="border-color:#333;margin:15px 0;">
-        <h4 style="color:#FF6D00;">📦 Items Retirados:</h4>
+        <h4 style="color:#FF6D00;">📦 Movimientos:</h4>
       `;
       
       if (cuenta.items && cuenta.items.length > 0) {
         html += '<table style="width:100%;border-collapse:collapse;margin-top:10px;">';
-        html += '<tr style="border-bottom:2px solid #FF6D00;"><th style="text-align:left;color:#FF6D00;">Descripción</th><th style="text-align:center;color:#FF6D00;">Cant</th><th style="text-align:right;color:#FF6D00;">Precio</th><th style="text-align:right;color:#FF6D00;">Subtotal</th></tr>';
+        html += '<tr style="border-bottom:2px solid #FF6D00;"><th style="text-align:left;color:#FF6D00;">Fecha</th><th style="text-align:left;color:#FF6D00;">Descripción</th><th style="text-align:center;color:#FF6D00;">Tipo</th><th style="text-align:right;color:#FF6D00;">Monto</th></tr>';
         cuenta.items.forEach(item => {
+          const tipo = item.tipo === 'retiro' ? '🔴 Retiro' : '🟢 Pago';
+          const color = item.tipo === 'retiro' ? '#FF6D00' : '#28a745';
+          const monto = item.tipo === 'retiro' ? `+${item.subtotal.toFixed(2)}` : `-${item.subtotal.toFixed(2)}`;
           html += `<tr style="border-bottom:1px solid #333;">
+            <td style="color:#fff;font-size:12px;">${item.fecha || 'N/A'}</td>
             <td style="color:#fff;">${item.descripcion}</td>
-            <td style="text-align:center;color:#fff;">${item.cantidad}</td>
-            <td style="text-align:right;color:#fff;">$${item.precio.toFixed(2)}</td>
-            <td style="text-align:right;color:#FF6D00;font-weight:bold;">$${item.subtotal.toFixed(2)}</td>
+            <td style="text-align:center;color:${color};">${tipo}</td>
+            <td style="text-align:right;color:${color};font-weight:bold;">$${monto}</td>
           </tr>`;
         });
-        html += `<tr style="border-top:3px solid #FF6D00;"><td colspan="3" style="text-align:right;font-weight:bold;color:#fff;">TOTAL</td>
-          <td style="text-align:right;font-weight:bold;color:#FF6D00;font-size:18px;">$${total.toFixed(2)}</td></tr>`;
+        html += `<tr style="border-top:3px solid #FF6D00;"><td colspan="3" style="text-align:right;font-weight:bold;color:#fff;">SALDO</td>
+          <td style="text-align:right;font-weight:bold;color:${saldoColor};font-size:18px;">${saldoTexto}</td></tr>`;
         html += '</table>';
       } else {
-        html += '<p style="color:#999;">No hay items registrados</p>';
+        html += '<p style="color:#999;">No hay movimientos registrados</p>';
       }
       
       document.getElementById('detalleCuenta').innerHTML = html;
@@ -1598,7 +1743,7 @@
     }
 
     function eliminarCuenta(id) {
-      if (confirm('¿Eliminar esta cuenta y todos sus items?')) {
+      if (confirm('¿Eliminar esta cuenta y todos sus movimientos?')) {
         cuentas = cuentas.filter(c => c.id !== id);
         guardarDatos();
         cargarCuentas();
@@ -1613,7 +1758,7 @@
         return;
       }
 
-      const total = calcularTotalCuenta(cuenta.items);
+      const saldo = calcularSaldoCuenta(cuenta.items);
       const estado = getEstadoCuenta(cuenta.fechaVencimiento);
 
       document.getElementById('pdf-cuenta-id').textContent = String(cuenta.id).padStart(4, '0');
@@ -1624,20 +1769,28 @@
       document.getElementById('pdf-cuenta-vencimiento').textContent = cuenta.fechaVencimiento;
       document.getElementById('pdf-cuenta-estado').textContent = estado.texto;
       document.getElementById('pdf-cuenta-estado').style.color = estado.texto.includes('VENCIDA') ? '#dc3545' : '#28a745';
-      document.getElementById('pdf-cuenta-total').textContent = `$${total.toFixed(2)}`;
+      
+      const saldoColor = saldo < 0 ? '#28a745' : (saldo > 0 ? '#dc3545' : '#666');
+      document.getElementById('pdf-cuenta-saldo').textContent = saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`;
+      document.getElementById('pdf-cuenta-saldo').style.color = saldoColor;
+      document.getElementById('pdf-cuenta-total').textContent = saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`;
 
       const tbody = document.getElementById('pdf-cuenta-items-body');
       if (!cuenta.items || cuenta.items.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#999;">No hay items registrados</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#999;">No hay movimientos registrados</td></tr>`;
       } else {
         tbody.innerHTML = '';
         cuenta.items.forEach(item => {
           const tr = document.createElement('tr');
+          const tipo = item.tipo === 'retiro' ? 'Retiro' : 'Pago';
+          const color = item.tipo === 'retiro' ? '#dc3545' : '#28a745';
+          const monto = item.tipo === 'retiro' ? `+${item.subtotal.toFixed(2)}` : `-${item.subtotal.toFixed(2)}`;
           tr.innerHTML = `
             <td style="color:#333;">${item.descripcion}</td>
+            <td style="text-align:center;color:${color};font-weight:bold;">${tipo}</td>
             <td style="text-align:center;color:#333;">${item.cantidad}</td>
             <td style="text-align:right;color:#333;">$${item.precio.toFixed(2)}</td>
-            <td style="text-align:right;color:#333;">$${item.subtotal.toFixed(2)}</td>
+            <td style="text-align:right;color:${color};font-weight:bold;">$${monto}</td>
           `;
           tbody.appendChild(tr);
         });
