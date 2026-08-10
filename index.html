@@ -129,10 +129,10 @@
     .tab-btn {
       background: #1a1a1a;
       border: none;
-      padding: 12px 20px;
+      padding: 12px 16px;
       border-radius: 10px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: bold;
       color: #cccccc;
       transition: all 0.3s;
@@ -294,6 +294,15 @@
       font-weight: bold;
     }
 
+    .vencido {
+      background-color: #3d1a1a;
+      border-left: 4px solid #dc3545;
+    }
+
+    .vencido td {
+      color: #ff6b6b;
+    }
+
     .resumen-caja {
       background: #1a1a1a;
       padding: 20px;
@@ -373,7 +382,7 @@
       background: #1a1a1a;
       padding: 30px;
       border-radius: 15px;
-      max-width: 600px;
+      max-width: 700px;
       width: 95%;
       border: 2px solid #FF6D00;
       max-height: 85vh;
@@ -452,8 +461,8 @@
       margin: 0;
     }
 
-    /* Estilos para el PDF - SIN LOGO */
-    #pdf-content {
+    /* Estilos para el PDF - OCULTOS */
+    #pdf-content, #pdf-content-cuenta {
       display: none;
       background: white;
       padding: 50px;
@@ -464,21 +473,21 @@
       line-height: 1.6;
     }
 
-    #pdf-content .header-pdf {
+    #pdf-content .header-pdf, #pdf-content-cuenta .header-pdf {
       border-bottom: 4px solid #FF6D00;
       padding-bottom: 20px;
       margin-bottom: 25px;
       text-align: center;
     }
 
-    #pdf-content .header-pdf h1 {
+    #pdf-content .header-pdf h1, #pdf-content-cuenta .header-pdf h1 {
       font-size: 28px;
       color: #FF6D00;
       margin: 0;
       letter-spacing: 2px;
     }
 
-    #pdf-content .header-pdf .no-factura {
+    #pdf-content .header-pdf .no-factura, #pdf-content-cuenta .header-pdf .no-factura {
       font-size: 16px;
       color: #dc3545;
       font-weight: bold;
@@ -486,19 +495,19 @@
       letter-spacing: 1px;
     }
 
-    #pdf-content .numero-presupuesto {
+    #pdf-content .numero-presupuesto, #pdf-content-cuenta .numero-presupuesto {
       text-align: center;
       font-size: 14px;
       color: #666;
       margin-top: 10px;
     }
 
-    #pdf-content .numero-presupuesto strong {
+    #pdf-content .numero-presupuesto strong, #pdf-content-cuenta .numero-presupuesto strong {
       color: #FF6D00;
       font-size: 18px;
     }
 
-    #pdf-content .info-cliente-pdf {
+    #pdf-content .info-cliente-pdf, #pdf-content-cuenta .info-cliente-pdf {
       background: #f8f9fa;
       padding: 20px;
       border-radius: 10px;
@@ -506,12 +515,12 @@
       border-left: 5px solid #FF6D00;
     }
 
-    #pdf-content .info-cliente-pdf p {
+    #pdf-content .info-cliente-pdf p, #pdf-content-cuenta .info-cliente-pdf p {
       margin: 5px 0;
       font-size: 14px;
     }
 
-    #pdf-content .info-cliente-pdf strong {
+    #pdf-content .info-cliente-pdf strong, #pdf-content-cuenta .info-cliente-pdf strong {
       color: #333;
       font-weight: 600;
     }
@@ -533,14 +542,14 @@
       color: #333;
     }
 
-    #pdf-content .tabla-items-pdf {
+    #pdf-content .tabla-items-pdf, #pdf-content-cuenta .tabla-items-pdf {
       width: 100%;
       border-collapse: collapse;
       margin: 25px 0;
       font-size: 14px;
     }
 
-    #pdf-content .tabla-items-pdf th {
+    #pdf-content .tabla-items-pdf th, #pdf-content-cuenta .tabla-items-pdf th {
       background: #FF6D00;
       color: white;
       padding: 12px 15px;
@@ -548,56 +557,57 @@
       font-weight: 600;
     }
 
-    #pdf-content .tabla-items-pdf td {
+    #pdf-content .tabla-items-pdf td, #pdf-content-cuenta .tabla-items-pdf td {
       padding: 12px 15px;
       border-bottom: 1px solid #e9ecef;
     }
 
-    #pdf-content .tabla-items-pdf tr:nth-child(even) {
+    #pdf-content .tabla-items-pdf tr:nth-child(even), #pdf-content-cuenta .tabla-items-pdf tr:nth-child(even) {
       background: #f8f9fa;
     }
 
-    #pdf-content .tabla-items-pdf .total-row td {
+    #pdf-content .tabla-items-pdf .total-row td, #pdf-content-cuenta .tabla-items-pdf .total-row td {
       font-weight: bold;
       font-size: 16px;
       border-top: 3px solid #FF6D00;
       padding-top: 15px;
     }
 
-    #pdf-content .tabla-items-pdf .total-row .label {
+    #pdf-content .tabla-items-pdf .total-row .label, #pdf-content-cuenta .tabla-items-pdf .total-row .label {
       color: #333;
     }
 
-    #pdf-content .tabla-items-pdf .total-row .valor {
+    #pdf-content .tabla-items-pdf .total-row .valor, #pdf-content-cuenta .tabla-items-pdf .total-row .valor {
       color: #FF6D00;
       font-size: 20px;
     }
 
-    #pdf-content .footer-pdf {
+    #pdf-content .footer-pdf, #pdf-content-cuenta .footer-pdf {
       margin-top: 30px;
       padding-top: 25px;
       border-top: 2px solid #eee;
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
+      flex-wrap: wrap;
     }
 
-    #pdf-content .footer-pdf .empleado-info {
+    #pdf-content .footer-pdf .empleado-info, #pdf-content-cuenta .footer-pdf .empleado-info {
       font-size: 14px;
       color: #555;
     }
 
-    #pdf-content .footer-pdf .empleado-info strong {
+    #pdf-content .footer-pdf .empleado-info strong, #pdf-content-cuenta .footer-pdf .empleado-info strong {
       color: #333;
     }
 
-    #pdf-content .footer-pdf .validez {
+    #pdf-content .footer-pdf .validez, #pdf-content-cuenta .footer-pdf .validez {
       text-align: right;
       font-size: 12px;
       color: #999;
     }
 
-    #pdf-content .footer-pdf .no-factura-footer {
+    #pdf-content .footer-pdf .no-factura-footer, #pdf-content-cuenta .footer-pdf .no-factura-footer {
       text-align: center;
       font-size: 11px;
       color: #dc3545;
@@ -605,6 +615,21 @@
       width: 100%;
       padding-top: 10px;
       border-top: 1px solid #eee;
+    }
+
+    /* Cuentas Corrientes */
+    .cuenta-vencida {
+      background-color: #3d1a1a;
+      border-left: 4px solid #dc3545;
+    }
+
+    .cuenta-vencida td {
+      color: #ff6b6b;
+    }
+
+    .cuenta-cercana {
+      background-color: #2a1a0a;
+      border-left: 4px solid #FF6D00;
     }
 
     @media (max-width: 768px) {
@@ -637,13 +662,75 @@
 
     <div class="nav-tabs">
       <button class="tab-btn" onclick="cambiarPanel('service')">🔧 SERVICE</button>
-      <button class="tab-btn active" onclick="cambiarPanel('presupuestos')">📋 PRESUPUESTOS</button>
+      <button class="tab-btn" onclick="cambiarPanel('presupuestos')">📋 PRESUPUESTOS</button>
       <button class="tab-btn" onclick="cambiarPanel('stock')">📦 STOCK</button>
       <button class="tab-btn" onclick="cambiarPanel('caja')">💰 CAJA</button>
+      <button class="tab-btn active" onclick="cambiarPanel('cuentas')">📊 CUENTAS</button>
+    </div>
+
+    <!-- Panel Cuentas Corrientes -->
+    <div id="panelCuentas" class="panel active">
+      <h2>📊 Gestión de Cuentas Corrientes</h2>
+      
+      <div class="resumen-caja" style="border-color:#28a745;">
+        <h3>📊 Resumen de Cuentas</h3>
+        <div class="stats">
+          <div class="stat-card"><strong>📋 TOTAL CUENTAS:</strong><br><span id="totalCuentas" style="font-size:24px;color:#FF6D00;">0</span></div>
+          <div class="stat-card"><strong>💰 DEUDA TOTAL:</strong><br><span id="deudaTotal" style="font-size:24px;color:#28a745;">$0</span></div>
+          <div class="stat-card"><strong>⚠️ CUENTAS VENCIDAS:</strong><br><span id="cuentasVencidas" style="font-size:24px;color:#dc3545;">0</span></div>
+          <div class="stat-card"><strong>🔔 PRÓXIMAS A VENCER:</strong><br><span id="cuentasProximas" style="font-size:24px;color:#FF6D00;">0</span></div>
+        </div>
+      </div>
+
+      <form id="formCuenta">
+        <h3>📝 Abrir Nueva Cuenta</h3>
+        <div class="form-group">
+          <label>Nombre del Cliente:</label>
+          <input type="text" id="clienteCuenta" required placeholder="Nombre completo">
+        </div>
+        <div class="form-group">
+          <label>Teléfono:</label>
+          <input type="tel" id="telefonoCuenta" placeholder="Ej: 1234567890">
+        </div>
+        <button type="submit">➕ ABRIR CUENTA</button>
+        <button type="button" onclick="limpiarFormCuenta()">🗑️ LIMPIAR</button>
+      </form>
+
+      <div class="buscador-container">
+        <input type="text" id="buscadorCuentas" placeholder="🔍 Buscar por cliente o teléfono..." onkeyup="filtrarCuentas()">
+        <select id="filtroCuentas" onchange="filtrarCuentas()">
+          <option value="">Todas</option>
+          <option value="activa">Activas</option>
+          <option value="vencida">Vencidas</option>
+          <option value="proxima">Próximas a vencer (7 días)</option>
+        </select>
+        <button type="button" class="btn-info" onclick="limpiarFiltrosCuentas()">🗑️ Limpiar</button>
+      </div>
+
+      <div class="table-container">
+        <h3>📋 Lista de Cuentas Corrientes</h3>
+        <div id="cuentasAlerta"></div>
+        <table id="tablaCuentas">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Teléfono</th>
+              <th>Fecha Apertura</th>
+              <th>Vence</th>
+              <th>Estado</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="listaCuentas"></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Panel Presupuestos -->
-    <div id="panelPresupuestos" class="panel active">
+    <div id="panelPresupuestos" class="panel">
       <h2>📋 Gestión de Presupuestos</h2>
       <form id="formPresupuesto">
         <div class="form-group">
@@ -970,7 +1057,59 @@
     </footer>
   </div>
 
-  <!-- Contenido para PDF - SIN LOGO Y SIN SUBTÍTULO -->
+  <!-- Contenido para PDF - Cuenta Corriente (OCULTO) -->
+  <div id="pdf-content-cuenta">
+    <div class="header-pdf">
+      <h1>REPUESTOS Y LUBRICANTES EL NONO</h1>
+      <div class="no-factura">📄 EXTRACTO DE CUENTA CORRIENTE</div>
+      <div class="numero-presupuesto">
+        CUENTA N° <strong id="pdf-cuenta-id">000</strong> &nbsp;|&nbsp; Fecha: <span id="pdf-cuenta-fecha"></span>
+      </div>
+    </div>
+
+    <div class="info-cliente-pdf">
+      <p><strong>👤 Cliente:</strong> <span id="pdf-cuenta-cliente"></span></p>
+      <p><strong>📞 Teléfono:</strong> <span id="pdf-cuenta-telefono"></span></p>
+      <p><strong>📅 Fecha Apertura:</strong> <span id="pdf-cuenta-apertura"></span></p>
+      <p><strong>⏰ Vence:</strong> <span id="pdf-cuenta-vencimiento"></span></p>
+      <p><strong>📊 Estado:</strong> <span id="pdf-cuenta-estado" style="font-weight:bold;"></span></p>
+    </div>
+
+    <h3 style="color:#FF6D00; margin-bottom:10px;">📦 Detalle de Retiros</h3>
+    <table class="tabla-items-pdf">
+      <thead>
+        <tr>
+          <th style="width:50%;">Descripción</th>
+          <th style="width:15%;text-align:center;">Cantidad</th>
+          <th style="width:20%;text-align:right;">Precio Unit.</th>
+          <th style="width:15%;text-align:right;">Subtotal</th>
+        </tr>
+      </thead>
+      <tbody id="pdf-cuenta-items-body">
+        <tr>
+          <td colspan="4" style="text-align:center;color:#999;">No hay items registrados</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td colspan="3" class="label" style="text-align:right;font-size:18px;">TOTAL ADEUDADO</td>
+          <td class="valor" style="text-align:right;font-size:22px;" id="pdf-cuenta-total">$0.00</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="footer-pdf">
+      <div class="validez" style="width:100%;text-align:center;">
+        <p>Esta cuenta tiene un plazo máximo de 30 días para su cancelación.</p>
+        <p style="margin-top:5px;">© 2024 - El Nono</p>
+      </div>
+      <div class="no-factura-footer" style="width:100%;">
+        Este documento es un extracto de cuenta corriente y no constituye una factura legal
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido para PDF - Presupuesto (OCULTO) -->
   <div id="pdf-content">
     <div class="header-pdf">
       <h1>REPUESTOS Y LUBRICANTES EL NONO</h1>
@@ -1050,6 +1189,36 @@
     </div>
   </div>
 
+  <!-- Modal para agregar items a cuenta -->
+  <div id="modalAgregarItem" class="modal">
+    <div class="modal-content">
+      <h3>➕ Agregar Item a Cuenta</h3>
+      <div id="infoClienteCuenta" style="color:#ffffff; margin-bottom:15px;"></div>
+      <div class="form-group">
+        <label>Descripción del Item:</label>
+        <input type="text" id="itemCuentaDescripcion" placeholder="Ej: Cambio de aceite, Filtro, etc.">
+      </div>
+      <div class="form-group">
+        <label>Cantidad:</label>
+        <input type="number" id="itemCuentaCantidad" value="1" min="1">
+      </div>
+      <div class="form-group">
+        <label>Precio Unitario ($):</label>
+        <input type="number" id="itemCuentaPrecio" step="0.01" value="0">
+      </div>
+      <button onclick="agregarItemCuenta()" class="btn-success">✅ AGREGAR</button>
+      <button onclick="cerrarModalAgregarItem()" class="btn-secondary">Cerrar</button>
+    </div>
+  </div>
+
+  <div id="modalVerCuenta" class="modal">
+    <div class="modal-content">
+      <h3>📊 Detalle de Cuenta</h3>
+      <div id="detalleCuenta" style="color:#ffffff;"></div>
+      <button onclick="cerrarModalVerCuenta()" class="btn-secondary" style="margin-top:15px;">Cerrar</button>
+    </div>
+  </div>
+
   <script>
     const CONTRASENA_CORRECTA = "153624";
     
@@ -1058,6 +1227,7 @@
     let movimientos = [];
     let cierres = [];
     let services = [];
+    let cuentas = [];
     let cajaAbierta = false;
     let fechaCajaActual = null;
     let nextIdPresupuesto = 1;
@@ -1065,7 +1235,9 @@
     let nextIdMovimiento = 1;
     let nextIdCierre = 1;
     let nextIdService = 1;
+    let nextIdCuenta = 1;
     let productoSeleccionadoId = null;
+    let cuentaSeleccionadaId = null;
 
     function inicializarDatos() {
       const savedPresupuestos = localStorage.getItem('presupuestos_taller_v3');
@@ -1073,6 +1245,7 @@
       const savedMovimientos = localStorage.getItem('movimientos_taller_v3');
       const savedCierres = localStorage.getItem('cierres_taller');
       const savedServices = localStorage.getItem('services_taller');
+      const savedCuentas = localStorage.getItem('cuentas_taller');
       const savedCajaEstado = localStorage.getItem('caja_estado_taller');
       
       if (savedPresupuestos) {
@@ -1123,6 +1296,14 @@
         nextIdService = 3;
       }
       
+      if (savedCuentas) {
+        cuentas = JSON.parse(savedCuentas);
+        nextIdCuenta = parseInt(localStorage.getItem('nextIdCuenta_taller')) || 1;
+      } else {
+        cuentas = [];
+        nextIdCuenta = 1;
+      }
+      
       if (savedCajaEstado) {
         const estado = JSON.parse(savedCajaEstado);
         cajaAbierta = estado.abierta;
@@ -1144,12 +1325,358 @@
       localStorage.setItem('movimientos_taller_v3', JSON.stringify(movimientos));
       localStorage.setItem('cierres_taller', JSON.stringify(cierres));
       localStorage.setItem('services_taller', JSON.stringify(services));
+      localStorage.setItem('cuentas_taller', JSON.stringify(cuentas));
       localStorage.setItem('nextIdPresupuesto_taller', nextIdPresupuesto);
       localStorage.setItem('nextIdStock_taller', nextIdStock);
       localStorage.setItem('nextIdMovimiento_taller', nextIdMovimiento);
       localStorage.setItem('nextIdCierre_taller', nextIdCierre);
       localStorage.setItem('nextIdService_taller', nextIdService);
+      localStorage.setItem('nextIdCuenta_taller', nextIdCuenta);
       localStorage.setItem('caja_estado_taller', JSON.stringify({ abierta: cajaAbierta, fecha: fechaCajaActual }));
+    }
+
+    // ==================== CUENTAS CORRIENTES ====================
+    function getEstadoCuenta(fechaVencimiento) {
+      const hoy = new Date();
+      const vencimiento = new Date(fechaVencimiento);
+      const diff = Math.ceil((vencimiento - hoy) / (1000 * 60 * 60 * 24));
+      
+      if (diff < 0) return { texto: "⚠️ VENCIDA", clase: "vencido" };
+      if (diff <= 7) return { texto: `🔔 VENCE EN ${diff} DÍAS`, clase: "cuenta-cercana" };
+      return { texto: "✅ ACTIVA", clase: "" };
+    }
+
+    function calcularTotalCuenta(items) {
+      if (!items || items.length === 0) return 0;
+      return items.reduce((sum, item) => sum + (item.cantidad * item.precio), 0);
+    }
+
+    document.getElementById('formCuenta').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const hoy = new Date();
+      const vencimiento = new Date();
+      vencimiento.setDate(vencimiento.getDate() + 30);
+      
+      const nuevaCuenta = {
+        id: nextIdCuenta++,
+        cliente: document.getElementById('clienteCuenta').value,
+        telefono: document.getElementById('telefonoCuenta').value || 'No especificado',
+        fechaApertura: hoy.toLocaleDateString(),
+        fechaVencimiento: vencimiento.toLocaleDateString(),
+        items: [],
+        total: 0
+      };
+      cuentas.push(nuevaCuenta);
+      guardarDatos();
+      cargarCuentas();
+      limpiarFormCuenta();
+      alert('✅ Cuenta abierta exitosamente');
+    });
+
+    function limpiarFormCuenta() {
+      document.getElementById('clienteCuenta').value = '';
+      document.getElementById('telefonoCuenta').value = '';
+    }
+
+    function cargarCuentas() {
+      const tbody = document.getElementById('listaCuentas');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      let totalDeuda = 0;
+      let vencidas = 0;
+      let proximas = 0;
+      
+      cuentas.forEach(c => {
+        const total = calcularTotalCuenta(c.items);
+        c.total = total;
+        const estado = getEstadoCuenta(c.fechaVencimiento);
+        const row = tbody.insertRow();
+        row.className = estado.clase;
+        
+        totalDeuda += total;
+        if (estado.texto.includes('VENCIDA')) vencidas++;
+        if (estado.texto.includes('VENCE EN')) proximas++;
+        
+        row.innerHTML = `
+          <td>${c.id}</td>
+          <td>${c.cliente}</td>
+          <td>${c.telefono}</td>
+          <td>${c.fechaApertura}</td>
+          <td>${c.fechaVencimiento}</td>
+          <td>${estado.texto}</td>
+          <td><button class="btn-info" onclick="verItemsCuenta(${c.id})" style="padding:3px 8px;font-size:11px;">${c.items ? c.items.length : 0} items</button></td>
+          <td style="color:#FF6D00;font-weight:bold;">$${total.toFixed(2)}</td>
+          <td class="action-buttons">
+            <button class="btn-info" onclick="verCuentaDetalle(${c.id})">📊 Ver</button>
+            <button class="btn-pdf" onclick="generarPDFCuenta(${c.id})">📄 PDF</button>
+            <button class="btn-warning" onclick="agregarItemCuentaModal(${c.id})">➕ Item</button>
+            <button class="btn-danger" onclick="eliminarCuenta(${c.id})">🗑️</button>
+          </td>
+        `;
+      });
+      
+      document.getElementById('totalCuentas').textContent = cuentas.length;
+      document.getElementById('deudaTotal').textContent = `$${totalDeuda.toFixed(2)}`;
+      document.getElementById('cuentasVencidas').textContent = vencidas;
+      document.getElementById('cuentasProximas').textContent = proximas;
+    }
+
+    function filtrarCuentas() {
+      const busqueda = document.getElementById('buscadorCuentas').value.toLowerCase();
+      const filtro = document.getElementById('filtroCuentas').value;
+      const hoy = new Date();
+      
+      const tbody = document.getElementById('listaCuentas');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      
+      const filtrados = cuentas.filter(c => {
+        let ok = true;
+        if (busqueda) {
+          ok = c.cliente.toLowerCase().includes(busqueda) || c.telefono.includes(busqueda);
+        }
+        if (ok && filtro) {
+          const vencimiento = new Date(c.fechaVencimiento);
+          const diff = Math.ceil((vencimiento - hoy) / (1000 * 60 * 60 * 24));
+          if (filtro === 'activa') ok = diff >= 0;
+          else if (filtro === 'vencida') ok = diff < 0;
+          else if (filtro === 'proxima') ok = diff >= 0 && diff <= 7;
+        }
+        return ok;
+      });
+      
+      filtrados.forEach(c => {
+        const total = calcularTotalCuenta(c.items);
+        c.total = total;
+        const estado = getEstadoCuenta(c.fechaVencimiento);
+        const row = tbody.insertRow();
+        row.className = estado.clase;
+        row.innerHTML = `
+          <td>${c.id}</td>
+          <td>${c.cliente}</td>
+          <td>${c.telefono}</td>
+          <td>${c.fechaApertura}</td>
+          <td>${c.fechaVencimiento}</td>
+          <td>${estado.texto}</td>
+          <td><button class="btn-info" onclick="verItemsCuenta(${c.id})" style="padding:3px 8px;font-size:11px;">${c.items ? c.items.length : 0} items</button></td>
+          <td style="color:#FF6D00;font-weight:bold;">$${total.toFixed(2)}</td>
+          <td class="action-buttons">
+            <button class="btn-info" onclick="verCuentaDetalle(${c.id})">📊 Ver</button>
+            <button class="btn-pdf" onclick="generarPDFCuenta(${c.id})">📄 PDF</button>
+            <button class="btn-warning" onclick="agregarItemCuentaModal(${c.id})">➕ Item</button>
+            <button class="btn-danger" onclick="eliminarCuenta(${c.id})">🗑️</button>
+          </td>
+        `;
+      });
+    }
+
+    function limpiarFiltrosCuentas() {
+      document.getElementById('buscadorCuentas').value = '';
+      document.getElementById('filtroCuentas').value = '';
+      cargarCuentas();
+    }
+
+    function agregarItemCuentaModal(id) {
+      cuentaSeleccionadaId = id;
+      const cuenta = cuentas.find(c => c.id === id);
+      if (cuenta) {
+        document.getElementById('infoClienteCuenta').innerHTML = `
+          <p><strong>Cliente:</strong> ${cuenta.cliente}</p>
+          <p><strong>Teléfono:</strong> ${cuenta.telefono}</p>
+          <p><strong>Deuda Actual:</strong> $${calcularTotalCuenta(cuenta.items).toFixed(2)}</p>
+        `;
+        document.getElementById('itemCuentaDescripcion').value = '';
+        document.getElementById('itemCuentaCantidad').value = '1';
+        document.getElementById('itemCuentaPrecio').value = '0';
+        document.getElementById('modalAgregarItem').style.display = 'flex';
+      }
+    }
+
+    function agregarItemCuenta() {
+      const cuenta = cuentas.find(c => c.id === cuentaSeleccionadaId);
+      if (!cuenta) {
+        alert('❌ Cuenta no encontrada');
+        return;
+      }
+      
+      const descripcion = document.getElementById('itemCuentaDescripcion').value || 'Item sin descripción';
+      const cantidad = parseFloat(document.getElementById('itemCuentaCantidad').value) || 1;
+      const precio = parseFloat(document.getElementById('itemCuentaPrecio').value) || 0;
+      
+      if (precio <= 0) {
+        alert('❌ El precio debe ser mayor a 0');
+        return;
+      }
+      
+      if (!cuenta.items) cuenta.items = [];
+      cuenta.items.push({
+        descripcion: descripcion,
+        cantidad: cantidad,
+        precio: precio,
+        subtotal: cantidad * precio,
+        fecha: new Date().toLocaleString()
+      });
+      
+      guardarDatos();
+      cargarCuentas();
+      cerrarModalAgregarItem();
+      alert('✅ Item agregado a la cuenta');
+    }
+
+    function cerrarModalAgregarItem() {
+      document.getElementById('modalAgregarItem').style.display = 'none';
+      cuentaSeleccionadaId = null;
+    }
+
+    function verItemsCuenta(id) {
+      const cuenta = cuentas.find(c => c.id === id);
+      if (!cuenta || !cuenta.items || cuenta.items.length === 0) {
+        document.getElementById('detalleItems').innerHTML = '<p style="color:#999;">No hay items en esta cuenta</p>';
+      } else {
+        let html = `<p style="color:#FF6D00;"><strong>Cliente:</strong> ${cuenta.cliente}</p>`;
+        html += `<p style="color:#FF6D00;"><strong>Vence:</strong> ${cuenta.fechaVencimiento}</p>`;
+        html += '<table style="width:100%;border-collapse:collapse;margin-top:10px;">';
+        html += '<tr style="border-bottom:2px solid #FF6D00;"><th style="text-align:left;color:#FF6D00;">Descripción</th><th style="text-align:center;color:#FF6D00;">Cant</th><th style="text-align:right;color:#FF6D00;">Precio</th><th style="text-align:right;color:#FF6D00;">Subtotal</th></tr>';
+        cuenta.items.forEach(item => {
+          html += `<tr style="border-bottom:1px solid #333;">
+            <td style="color:#fff;">${item.descripcion}</td>
+            <td style="text-align:center;color:#fff;">${item.cantidad}</td>
+            <td style="text-align:right;color:#fff;">$${item.precio.toFixed(2)}</td>
+            <td style="text-align:right;color:#FF6D00;font-weight:bold;">$${item.subtotal.toFixed(2)}</td>
+          </tr>`;
+        });
+        const total = calcularTotalCuenta(cuenta.items);
+        html += `<tr style="border-top:3px solid #FF6D00;"><td colspan="3" style="text-align:right;font-weight:bold;color:#fff;">TOTAL ADEUDADO</td>
+          <td style="text-align:right;font-weight:bold;color:#FF6D00;font-size:18px;">$${total.toFixed(2)}</td></tr>`;
+        html += '</table>';
+        document.getElementById('detalleItems').innerHTML = html;
+      }
+      document.getElementById('modalItems').style.display = 'flex';
+    }
+
+    function verCuentaDetalle(id) {
+      const cuenta = cuentas.find(c => c.id === id);
+      if (!cuenta) return;
+      
+      const total = calcularTotalCuenta(cuenta.items);
+      const estado = getEstadoCuenta(cuenta.fechaVencimiento);
+      let html = `
+        <p><strong style="color:#FF6D00;">👤 Cliente:</strong> <span style="color:#fff;">${cuenta.cliente}</span></p>
+        <p><strong style="color:#FF6D00;">📞 Teléfono:</strong> <span style="color:#fff;">${cuenta.telefono}</span></p>
+        <p><strong style="color:#FF6D00;">📅 Apertura:</strong> <span style="color:#fff;">${cuenta.fechaApertura}</span></p>
+        <p><strong style="color:#FF6D00;">⏰ Vence:</strong> <span style="color:#fff;">${cuenta.fechaVencimiento}</span></p>
+        <p><strong style="color:#FF6D00;">📊 Estado:</strong> <span style="color:#fff;">${estado.texto}</span></p>
+        <p><strong style="color:#FF6D00;">💰 Total Adeudado:</strong> <span style="color:#28a745;font-size:20px;">$${total.toFixed(2)}</span></p>
+        <hr style="border-color:#333;margin:15px 0;">
+        <h4 style="color:#FF6D00;">📦 Items Retirados:</h4>
+      `;
+      
+      if (cuenta.items && cuenta.items.length > 0) {
+        html += '<table style="width:100%;border-collapse:collapse;margin-top:10px;">';
+        html += '<tr style="border-bottom:2px solid #FF6D00;"><th style="text-align:left;color:#FF6D00;">Descripción</th><th style="text-align:center;color:#FF6D00;">Cant</th><th style="text-align:right;color:#FF6D00;">Precio</th><th style="text-align:right;color:#FF6D00;">Subtotal</th></tr>';
+        cuenta.items.forEach(item => {
+          html += `<tr style="border-bottom:1px solid #333;">
+            <td style="color:#fff;">${item.descripcion}</td>
+            <td style="text-align:center;color:#fff;">${item.cantidad}</td>
+            <td style="text-align:right;color:#fff;">$${item.precio.toFixed(2)}</td>
+            <td style="text-align:right;color:#FF6D00;font-weight:bold;">$${item.subtotal.toFixed(2)}</td>
+          </tr>`;
+        });
+        html += `<tr style="border-top:3px solid #FF6D00;"><td colspan="3" style="text-align:right;font-weight:bold;color:#fff;">TOTAL</td>
+          <td style="text-align:right;font-weight:bold;color:#FF6D00;font-size:18px;">$${total.toFixed(2)}</td></tr>`;
+        html += '</table>';
+      } else {
+        html += '<p style="color:#999;">No hay items registrados</p>';
+      }
+      
+      document.getElementById('detalleCuenta').innerHTML = html;
+      document.getElementById('modalVerCuenta').style.display = 'flex';
+    }
+
+    function cerrarModalVerCuenta() {
+      document.getElementById('modalVerCuenta').style.display = 'none';
+    }
+
+    function eliminarCuenta(id) {
+      if (confirm('¿Eliminar esta cuenta y todos sus items?')) {
+        cuentas = cuentas.filter(c => c.id !== id);
+        guardarDatos();
+        cargarCuentas();
+      }
+    }
+
+    // ==================== GENERAR PDF CUENTA ====================
+    function generarPDFCuenta(id) {
+      const cuenta = cuentas.find(c => c.id === id);
+      if (!cuenta) {
+        alert('❌ Cuenta no encontrada');
+        return;
+      }
+
+      const total = calcularTotalCuenta(cuenta.items);
+      const estado = getEstadoCuenta(cuenta.fechaVencimiento);
+
+      document.getElementById('pdf-cuenta-id').textContent = String(cuenta.id).padStart(4, '0');
+      document.getElementById('pdf-cuenta-fecha').textContent = new Date().toLocaleString();
+      document.getElementById('pdf-cuenta-cliente').textContent = cuenta.cliente;
+      document.getElementById('pdf-cuenta-telefono').textContent = cuenta.telefono;
+      document.getElementById('pdf-cuenta-apertura').textContent = cuenta.fechaApertura;
+      document.getElementById('pdf-cuenta-vencimiento').textContent = cuenta.fechaVencimiento;
+      document.getElementById('pdf-cuenta-estado').textContent = estado.texto;
+      document.getElementById('pdf-cuenta-estado').style.color = estado.texto.includes('VENCIDA') ? '#dc3545' : '#28a745';
+      document.getElementById('pdf-cuenta-total').textContent = `$${total.toFixed(2)}`;
+
+      const tbody = document.getElementById('pdf-cuenta-items-body');
+      if (!cuenta.items || cuenta.items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#999;">No hay items registrados</td></tr>`;
+      } else {
+        tbody.innerHTML = '';
+        cuenta.items.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td style="color:#333;">${item.descripcion}</td>
+            <td style="text-align:center;color:#333;">${item.cantidad}</td>
+            <td style="text-align:right;color:#333;">$${item.precio.toFixed(2)}</td>
+            <td style="text-align:right;color:#333;">$${item.subtotal.toFixed(2)}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      const pdfContent = document.getElementById('pdf-content-cuenta');
+      pdfContent.style.display = 'block';
+      pdfContent.style.position = 'absolute';
+      pdfContent.style.left = '-9999px';
+      pdfContent.style.top = '0';
+      pdfContent.style.width = '900px';
+
+      html2canvas(pdfContent, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false
+      }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`Cuenta_${String(cuenta.id).padStart(4, '0')}_${cuenta.cliente}.pdf`);
+        
+        pdfContent.style.display = 'none';
+        pdfContent.style.position = 'static';
+        pdfContent.style.left = 'auto';
+        pdfContent.style.top = 'auto';
+      }).catch(error => {
+        console.error('Error generando PDF:', error);
+        alert('❌ Error al generar el PDF. Intente nuevamente.');
+        pdfContent.style.display = 'none';
+        pdfContent.style.position = 'static';
+        pdfContent.style.left = 'auto';
+        pdfContent.style.top = 'auto';
+      });
     }
 
     // ==================== ITEMS DEL PRESUPUESTO ====================
@@ -1389,7 +1916,7 @@
       }
     }
 
-    // ==================== GENERAR PDF ====================
+    // ==================== GENERAR PDF PRESUPUESTO ====================
     function generarPDF(id) {
       const presupuesto = presupuestos.find(p => p.id === id);
       if (!presupuesto) {
@@ -2067,6 +2594,10 @@
         document.querySelectorAll('.tab-btn')[3].classList.add('active');
         cargarCaja();
         cargarCierres();
+      } else if (panel === 'cuentas') {
+        document.getElementById('panelCuentas').classList.add('active');
+        document.querySelectorAll('.tab-btn')[4].classList.add('active');
+        cargarCuentas();
       }
     }
 
@@ -2076,9 +2607,9 @@
       cargarStock();
       cargarCaja();
       cargarCierres();
+      cargarCuentas();
     }
 
-    // Inicializar con un item por defecto
     window.onload = function() {
       const hoy = new Date().toISOString().split('T')[0];
       const fechaService = document.getElementById('fechaService');
