@@ -129,10 +129,10 @@
     .tab-btn {
       background: #1a1a1a;
       border: none;
-      padding: 12px 16px;
+      padding: 12px 14px;
       border-radius: 10px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: bold;
       color: #cccccc;
       transition: all 0.3s;
@@ -161,7 +161,8 @@
       display: block;
     }
 
-    .panel h2, .panel h3 {
+    .panel h2,
+    .panel h3 {
       color: #FF6D00;
       margin-bottom: 20px;
     }
@@ -177,7 +178,9 @@
       color: #cccccc;
     }
 
-    input, select, textarea {
+    input,
+    select,
+    textarea {
       width: 100%;
       padding: 10px;
       border: 2px solid #222;
@@ -186,7 +189,9 @@
       color: white;
     }
 
-    input:focus, select:focus, textarea:focus {
+    input:focus,
+    select:focus,
+    textarea:focus {
       outline: none;
       border-color: #FF6D00;
     }
@@ -270,7 +275,8 @@
       border-collapse: collapse;
     }
 
-    th, td {
+    th,
+    td {
       padding: 12px;
       text-align: left;
       border-bottom: 1px solid #222;
@@ -365,10 +371,22 @@
       font-weight: bold;
     }
 
-    .medio-efectivo { background: #28a745; color: white; }
-    .medio-transferencia { background: #17a2b8; color: white; }
-    .medio-debito { background: #6f42c1; color: white; }
-    .medio-credito { background: #fd7e14; color: white; }
+    .medio-efectivo {
+      background: #28a745;
+      color: white;
+    }
+    .medio-transferencia {
+      background: #17a2b8;
+      color: white;
+    }
+    .medio-debito {
+      background: #6f42c1;
+      color: white;
+    }
+    .medio-credito {
+      background: #fd7e14;
+      color: white;
+    }
 
     .modal {
       display: none;
@@ -377,7 +395,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.9);
+      background: rgba(0, 0, 0, 0.9);
       z-index: 2000;
       justify-content: center;
       align-items: center;
@@ -415,7 +433,6 @@
       margin-top: 20px;
     }
 
-    /* Estilos para items del presupuesto */
     .items-container {
       background: #1a1a1a;
       border: 1px solid #333;
@@ -466,8 +483,10 @@
       margin: 0;
     }
 
-    /* Estilos para el PDF - OCULTOS */
-    #pdf-content, #pdf-content-cuenta {
+    #pdf-content,
+    #pdf-content-cuenta,
+    #pdf-content-reporte,
+    #pdf-content-cierres {
       display: none;
       background: white;
       padding: 50px;
@@ -478,21 +497,30 @@
       line-height: 1.6;
     }
 
-    #pdf-content .header-pdf, #pdf-content-cuenta .header-pdf {
+    #pdf-content .header-pdf,
+    #pdf-content-cuenta .header-pdf,
+    #pdf-content-reporte .header-pdf,
+    #pdf-content-cierres .header-pdf {
       border-bottom: 4px solid #FF6D00;
       padding-bottom: 20px;
       margin-bottom: 25px;
       text-align: center;
     }
 
-    #pdf-content .header-pdf h1, #pdf-content-cuenta .header-pdf h1 {
+    #pdf-content .header-pdf h1,
+    #pdf-content-cuenta .header-pdf h1,
+    #pdf-content-reporte .header-pdf h1,
+    #pdf-content-cierres .header-pdf h1 {
       font-size: 28px;
       color: #FF6D00;
       margin: 0;
       letter-spacing: 2px;
     }
 
-    #pdf-content .header-pdf .no-factura, #pdf-content-cuenta .header-pdf .no-factura {
+    #pdf-content .header-pdf .no-factura,
+    #pdf-content-cuenta .header-pdf .no-factura,
+    #pdf-content-reporte .header-pdf .no-factura,
+    #pdf-content-cierres .header-pdf .no-factura {
       font-size: 16px;
       color: #dc3545;
       font-weight: bold;
@@ -500,19 +528,28 @@
       letter-spacing: 1px;
     }
 
-    #pdf-content .numero-presupuesto, #pdf-content-cuenta .numero-presupuesto {
+    #pdf-content .numero-presupuesto,
+    #pdf-content-cuenta .numero-presupuesto,
+    #pdf-content-reporte .numero-presupuesto,
+    #pdf-content-cierres .numero-presupuesto {
       text-align: center;
       font-size: 14px;
       color: #666;
       margin-top: 10px;
     }
 
-    #pdf-content .numero-presupuesto strong, #pdf-content-cuenta .numero-presupuesto strong {
+    #pdf-content .numero-presupuesto strong,
+    #pdf-content-cuenta .numero-presupuesto strong,
+    #pdf-content-reporte .numero-presupuesto strong,
+    #pdf-content-cierres .numero-presupuesto strong {
       color: #FF6D00;
       font-size: 18px;
     }
 
-    #pdf-content .info-cliente-pdf, #pdf-content-cuenta .info-cliente-pdf {
+    #pdf-content .info-cliente-pdf,
+    #pdf-content-cuenta .info-cliente-pdf,
+    #pdf-content-reporte .info-cliente-pdf,
+    #pdf-content-cierres .info-cliente-pdf {
       background: #f8f9fa;
       padding: 20px;
       border-radius: 10px;
@@ -520,41 +557,20 @@
       border-left: 5px solid #FF6D00;
     }
 
-    #pdf-content .info-cliente-pdf p, #pdf-content-cuenta .info-cliente-pdf p {
-      margin: 5px 0;
-      font-size: 14px;
-    }
-
-    #pdf-content .info-cliente-pdf strong, #pdf-content-cuenta .info-cliente-pdf strong {
-      color: #333;
-      font-weight: 600;
-    }
-
-    #pdf-content .detalle-trabajo-pdf {
-      margin: 25px 0;
-      padding: 20px;
-      background: #f8f9fa;
-      border-radius: 10px;
-    }
-
-    #pdf-content .detalle-trabajo-pdf p {
-      margin: 5px 0;
-      font-size: 14px;
-      line-height: 1.8;
-    }
-
-    #pdf-content .detalle-trabajo-pdf strong {
-      color: #333;
-    }
-
-    #pdf-content .tabla-items-pdf, #pdf-content-cuenta .tabla-items-pdf {
+    #pdf-content .tabla-items-pdf,
+    #pdf-content-cuenta .tabla-items-pdf,
+    #pdf-content-reporte .tabla-items-pdf,
+    #pdf-content-cierres .tabla-items-pdf {
       width: 100%;
       border-collapse: collapse;
       margin: 25px 0;
       font-size: 14px;
     }
 
-    #pdf-content .tabla-items-pdf th, #pdf-content-cuenta .tabla-items-pdf th {
+    #pdf-content .tabla-items-pdf th,
+    #pdf-content-cuenta .tabla-items-pdf th,
+    #pdf-content-reporte .tabla-items-pdf th,
+    #pdf-content-cierres .tabla-items-pdf th {
       background: #FF6D00;
       color: white;
       padding: 12px 15px;
@@ -562,32 +578,50 @@
       font-weight: 600;
     }
 
-    #pdf-content .tabla-items-pdf td, #pdf-content-cuenta .tabla-items-pdf td {
+    #pdf-content .tabla-items-pdf td,
+    #pdf-content-cuenta .tabla-items-pdf td,
+    #pdf-content-reporte .tabla-items-pdf td,
+    #pdf-content-cierres .tabla-items-pdf td {
       padding: 12px 15px;
       border-bottom: 1px solid #e9ecef;
     }
 
-    #pdf-content .tabla-items-pdf tr:nth-child(even), #pdf-content-cuenta .tabla-items-pdf tr:nth-child(even) {
+    #pdf-content .tabla-items-pdf tr:nth-child(even),
+    #pdf-content-cuenta .tabla-items-pdf tr:nth-child(even),
+    #pdf-content-reporte .tabla-items-pdf tr:nth-child(even),
+    #pdf-content-cierres .tabla-items-pdf tr:nth-child(even) {
       background: #f8f9fa;
     }
 
-    #pdf-content .tabla-items-pdf .total-row td, #pdf-content-cuenta .tabla-items-pdf .total-row td {
+    #pdf-content .tabla-items-pdf .total-row td,
+    #pdf-content-cuenta .tabla-items-pdf .total-row td,
+    #pdf-content-reporte .tabla-items-pdf .total-row td,
+    #pdf-content-cierres .tabla-items-pdf .total-row td {
       font-weight: bold;
       font-size: 16px;
       border-top: 3px solid #FF6D00;
       padding-top: 15px;
     }
 
-    #pdf-content .tabla-items-pdf .total-row .label, #pdf-content-cuenta .tabla-items-pdf .total-row .label {
+    #pdf-content .tabla-items-pdf .total-row .label,
+    #pdf-content-cuenta .tabla-items-pdf .total-row .label,
+    #pdf-content-reporte .tabla-items-pdf .total-row .label,
+    #pdf-content-cierres .tabla-items-pdf .total-row .label {
       color: #333;
     }
 
-    #pdf-content .tabla-items-pdf .total-row .valor, #pdf-content-cuenta .tabla-items-pdf .total-row .valor {
+    #pdf-content .tabla-items-pdf .total-row .valor,
+    #pdf-content-cuenta .tabla-items-pdf .total-row .valor,
+    #pdf-content-reporte .tabla-items-pdf .total-row .valor,
+    #pdf-content-cierres .tabla-items-pdf .total-row .valor {
       color: #FF6D00;
       font-size: 20px;
     }
 
-    #pdf-content .footer-pdf, #pdf-content-cuenta .footer-pdf {
+    #pdf-content .footer-pdf,
+    #pdf-content-cuenta .footer-pdf,
+    #pdf-content-reporte .footer-pdf,
+    #pdf-content-cierres .footer-pdf {
       margin-top: 30px;
       padding-top: 25px;
       border-top: 2px solid #eee;
@@ -597,22 +631,10 @@
       flex-wrap: wrap;
     }
 
-    #pdf-content .footer-pdf .empleado-info, #pdf-content-cuenta .footer-pdf .empleado-info {
-      font-size: 14px;
-      color: #555;
-    }
-
-    #pdf-content .footer-pdf .empleado-info strong, #pdf-content-cuenta .footer-pdf .empleado-info strong {
-      color: #333;
-    }
-
-    #pdf-content .footer-pdf .validez, #pdf-content-cuenta .footer-pdf .validez {
-      text-align: right;
-      font-size: 12px;
-      color: #999;
-    }
-
-    #pdf-content .footer-pdf .no-factura-footer, #pdf-content-cuenta .footer-pdf .no-factura-footer {
+    #pdf-content .footer-pdf .no-factura-footer,
+    #pdf-content-cuenta .footer-pdf .no-factura-footer,
+    #pdf-content-reporte .footer-pdf .no-factura-footer,
+    #pdf-content-cierres .footer-pdf .no-factura-footer {
       text-align: center;
       font-size: 11px;
       color: #dc3545;
@@ -622,7 +644,29 @@
       border-top: 1px solid #eee;
     }
 
-    /* Cuentas Corrientes */
+    #pdf-content-cierres .cierre-bloque {
+      margin-bottom: 35px;
+      page-break-inside: avoid;
+    }
+
+    #pdf-content-cierres .cierre-titulo {
+      background: #FF6D00;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 6px 6px 0 0;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    #pdf-content-cierres .cierre-resumen {
+      background: #f8f9fa;
+      padding: 10px 15px;
+      font-size: 13px;
+      color: #333;
+      border: 1px solid #eee;
+      border-top: none;
+    }
+
     .cuenta-vencida {
       background-color: #3d1a1a;
       border-left: 4px solid #dc3545;
@@ -642,14 +686,174 @@
       font-weight: bold;
     }
 
+    .reporte-materiales {
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      border: 1px solid #FF6D00;
+    }
+
+    .reporte-materiales h3 {
+      color: #FF6D00;
+      margin-bottom: 15px;
+    }
+
+    .reporte-totales {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .reporte-total-item {
+      background: #0a0a0a;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      color: white;
+      text-align: center;
+    }
+
+    .reporte-total-item .cantidad {
+      font-size: 22px;
+      font-weight: bold;
+      color: #FF6D00;
+    }
+
+    .reporte-fecha-selector {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .reporte-fecha-selector input[type="date"] {
+      width: auto;
+      padding: 8px 12px;
+      background: #1a1a1a;
+      color: white;
+      border: 2px solid #222;
+      border-radius: 8px;
+    }
+
+    .imagenes-preview-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .imagen-preview-item {
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+
+    .imagen-preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 2px solid #FF6D00;
+    }
+
+    .imagen-preview-item .btn-quitar-imagen {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #dc3545;
+      color: white;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      font-size: 12px;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+    }
+
+    .thumb-stock {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 5px;
+      border: 1px solid #FF6D00;
+      cursor: pointer;
+    }
+
+    .detalle-imagenes-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .detalle-imagenes-grid img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid #FF6D00;
+    }
+
+    .codigo-venta-info {
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+
+    .codigo-venta-ok {
+      background: #0f2a17;
+      border: 1px solid #28a745;
+      color: #7be495;
+    }
+
+    .codigo-venta-error {
+      background: #3d1a1a;
+      border: 1px solid #dc3545;
+      color: #ff9b9b;
+    }
+
     @media (max-width: 768px) {
-      .stats { grid-template-columns: 1fr; }
-      .tab-btn { flex: 1; text-align: center; font-size: 11px; padding: 8px 4px; }
-      header h1 { font-size: 16px; }
-      .item-row { flex-direction: column; align-items: stretch; }
-      .item-row .item-cantidad, 
-      .item-row .item-precio, 
-      .item-row .item-total { width: 100%; min-width: auto; }
+      .stats {
+        grid-template-columns: 1fr;
+      }
+      .tab-btn {
+        flex: 1;
+        text-align: center;
+        font-size: 10px;
+        padding: 6px 2px;
+      }
+      header h1 {
+        font-size: 16px;
+      }
+      .item-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .item-row .item-cantidad,
+      .item-row .item-precio,
+      .item-row .item-total {
+        width: 100%;
+        min-width: auto;
+      }
+      .reporte-totales {
+        grid-template-columns: 1fr 1fr;
+      }
+      .reporte-fecha-selector {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .reporte-fecha-selector input[type="date"] {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -672,16 +876,143 @@
 
     <div class="nav-tabs">
       <button class="tab-btn" onclick="cambiarPanel('service')">🔧 SERVICE</button>
-      <button class="tab-btn" onclick="cambiarPanel('presupuestos')">📋 PRESUPUESTOS</button>
+      <button class="tab-btn" onclick="cambiarPanel('presupuestos')">📋 PRESUP.</button>
       <button class="tab-btn" onclick="cambiarPanel('stock')">📦 STOCK</button>
-      <button class="tab-btn" onclick="cambiarPanel('caja')">💰 CAJA</button>
-      <button class="tab-btn active" onclick="cambiarPanel('cuentas')">📊 CUENTAS</button>
+      <button class="tab-btn active" onclick="cambiarPanel('caja')">💰 CAJA</button>
+      <button class="tab-btn" onclick="cambiarPanel('cuentas')">📊 CUENTAS</button>
+    </div>
+
+    <!-- Panel Caja -->
+    <div id="panelCaja" class="panel active">
+      <h2>💰 Gestión de Caja y Finanzas</h2>
+
+      <div class="caja-control">
+        <button id="btnAbrirCaja" onclick="abrirCaja()">🔓 ABRIR CAJA</button>
+        <button id="btnCerrarCaja" onclick="cerrarCaja()" style="display:none;">🔒 CERRAR CAJA</button>
+        <div id="cajaEstado" class="caja-estado"></div>
+      </div>
+
+      <div class="resumen-caja">
+        <h3>📊 Resumen del Día</h3>
+        <div class="stats">
+          <div class="stat-card"><strong>💰 CAJA ACTUAL:</strong><br><span id="cajaActual" style="font-size:24px;color:#FF6D00;">$0</span></div>
+          <div class="stat-card"><strong>📈 INGRESOS HOY:</strong><br><span id="totalIngresos" style="font-size:24px;color:#28a745;">$0</span></div>
+          <div class="stat-card"><strong>📉 EGRESOS HOY:</strong><br><span id="totalEgresos" style="font-size:24px;color:#dc3545;">$0</span></div>
+          <div class="stat-card"><strong>💼 VALOR INVENTARIO:</strong><br><span id="valorInventario" style="font-size:24px;color:#ffc107;">$0</span></div>
+        </div>
+      </div>
+
+      <div class="resumen-caja">
+        <h3>📊 DESGLOSE POR MEDIO DE PAGO - HOY</h3>
+        <div class="stats">
+          <div class="stat-card"><strong>💵 EFECTIVO:</strong><br><span id="totalEfectivo" style="font-size:20px;">$0</span></div>
+          <div class="stat-card"><strong>🏦 TRANSFERENCIA:</strong><br><span id="totalTransferencia" style="font-size:20px;">$0</span></div>
+          <div class="stat-card"><strong>💳 DÉBITO:</strong><br><span id="totalDebito" style="font-size:20px;">$0</span></div>
+          <div class="stat-card"><strong>💎 CRÉDITO:</strong><br><span id="totalCredito" style="font-size:20px;">$0</span></div>
+        </div>
+      </div>
+
+      <!-- Reporte de Movimientos -->
+      <div class="reporte-materiales">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:15px;">
+          <h3 style="margin:0;">📦 Reporte de Movimientos</h3>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button onclick="generarPDFReporte()" class="btn-pdf" style="font-size:13px; padding:6px 15px;">📄 PDF</button>
+            <button onclick="toggleReporte()" class="btn-info" style="font-size:13px; padding:6px 15px;" id="btnToggleReporte">📋 Mostrar Detalle</button>
+          </div>
+        </div>
+        <div class="reporte-fecha-selector">
+          <label style="color:#cccccc;">Seleccionar fecha:</label>
+          <input type="date" id="fechaReporte" onchange="actualizarReporte()">
+          <button onclick="setFechaHoy()" class="btn-secondary" style="padding:6px 12px; font-size:12px; margin:0;">📅 Hoy</button>
+          <button onclick="setFechaAyer()" class="btn-secondary" style="padding:6px 12px; font-size:12px; margin:0;">📅 Ayer</button>
+        </div>
+        <div id="reporteResumen" style="color:#cccccc; font-size:14px;">
+          <p>Cargando reporte...</p>
+        </div>
+        <div id="reporteDetalle" style="display:none; margin-top:15px;">
+          <div class="table-container" style="margin-top:0;">
+            <table id="tablaReporte">
+              <thead>
+                <tr>
+                  <th>Concepto</th>
+                  <th style="text-align:center;">Tipo</th>
+                  <th style="text-align:right;">Monto</th>
+                </tr>
+              </thead>
+              <tbody id="listaReporte"></tbody>
+            </table>
+          </div>
+          <div class="reporte-totales" id="reporteTotales"></div>
+        </div>
+      </div>
+
+      <form id="formMovimiento">
+        <h3>Registrar Movimiento</h3>
+        <div class="form-group">
+          <label>Tipo:</label>
+          <select id="tipoMovimiento">
+            <option value="ingreso">💰 Ingreso</option>
+            <option value="egreso">💸 Egreso</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Medio de Pago:</label>
+          <select id="medioPago">
+            <option value="efectivo">💵 Efectivo</option>
+            <option value="transferencia">🏦 Transferencia</option>
+            <option value="debito">💳 Débito</option>
+            <option value="credito">💎 Crédito</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Concepto:</label>
+          <input type="text" id="conceptoMovimiento" required placeholder="Ej: Pago de presupuesto">
+        </div>
+        <div class="form-group">
+          <label>Monto ($):</label>
+          <input type="number" id="montoMovimiento" required step="0.01" value="0">
+        </div>
+        <div class="form-group">
+          <label>Referencia:</label>
+          <input type="text" id="referenciaMovimiento" placeholder="N° presupuesto, factura">
+        </div>
+        <div class="form-group">
+          <label>Código de Producto Vendido (opcional):</label>
+          <input type="text" id="codigoProductoVenta" placeholder="Ej: MOT-001 - descuenta stock automáticamente" oninput="verificarCodigoProductoVenta()">
+          <div id="infoCodigoProductoVenta"></div>
+        </div>
+        <div class="form-group" id="grupoCantidadProductoVenta" style="display:none;">
+          <label>Cantidad Vendida:</label>
+          <input type="number" id="cantidadProductoVenta" min="1" step="1" value="1" oninput="verificarCodigoProductoVenta()">
+        </div>
+        <button type="submit">✅ REGISTRAR MOVIMIENTO</button>
+      </form>
+
+      <div class="table-container">
+        <h3>📋 Historial de Movimientos</h3>
+        <table id="tablaMovimientos">
+          <thead><tr><th>Fecha</th><th>Hora</th><th>Tipo</th><th>Medio Pago</th><th>Concepto</th><th>Monto</th><th>Referencia</th><th>Acciones</th></tr></thead>
+          <tbody id="listaMovimientos"></tbody>
+        </table>
+      </div>
+
+      <div class="table-container">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <h3 style="margin:0;">📋 Historial de Cierres de Caja</h3>
+          <button onclick="generarPDFTodosCierres()" class="btn-pdf" style="font-size:13px; padding:6px 15px;">📄 EXPORTAR TODOS LOS CIERRES (PDF)</button>
+        </div>
+        <table id="tablaCierres">
+          <thead><tr><th>Fecha Cierre</th><th>Total Ventas</th><th>Efectivo</th><th>Transferencia</th><th>Débito</th><th>Crédito</th><th>Total Egresos</th><th>Saldo Final</th><th>Acciones</th></tr></thead>
+          <tbody id="listaCierres"></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Panel Cuentas Corrientes -->
-    <div id="panelCuentas" class="panel active">
+    <div id="panelCuentas" class="panel">
       <h2>📊 Gestión de Cuentas Corrientes</h2>
-      
+
       <div class="resumen-caja" style="border-color:#28a745;">
         <h3>📊 Resumen de Cuentas</h3>
         <div class="stats">
@@ -890,7 +1221,7 @@
     <!-- Panel Stock -->
     <div id="panelStock" class="panel">
       <h2>📦 Control de Inventario</h2>
-      
+
       <div class="acciones-precios" style="background:#1a1a1a; padding:20px; border-radius:10px; margin-bottom:20px; border:1px solid #FF6D00;">
         <h4 style="color:#FF6D00; margin-bottom:15px;">💰 AJUSTE MASIVO DE PRECIOS</h4>
         <div style="display:flex; gap:15px; flex-wrap:wrap; align-items:flex-end;">
@@ -948,6 +1279,11 @@
             <option value="Otros">Otros</option>
           </select>
         </div>
+        <div class="form-group">
+          <label>Imágenes de Referencia (opcional):</label>
+          <input type="file" id="imagenesStock" accept="image/*" multiple onchange="previsualizarImagenesStock(event)">
+          <div id="previewImagenesStock" class="imagenes-preview-container"></div>
+        </div>
         <button type="submit">➕ AGREGAR PRODUCTO</button>
         <button type="button" onclick="limpiarFormStock()">🗑️ LIMPIAR</button>
       </form>
@@ -976,88 +1312,8 @@
         <h3>📋 Inventario Actual</h3>
         <div id="stockAlerta"></div>
         <table id="tablaStock">
-          <thead><tr><th>Código</th><th>Producto</th><th>Descripción</th><th>Cantidad</th><th>Precio</th><th>Categoría</th><th>Valor Total</th><th>Acciones</th></tr></thead>
+          <thead><tr><th>Img</th><th>Código</th><th>Producto</th><th>Descripción</th><th>Cantidad</th><th>Precio</th><th>Categoría</th><th>Valor Total</th><th>Acciones</th></tr></thead>
           <tbody id="listaStock"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Panel Caja -->
-    <div id="panelCaja" class="panel">
-      <h2>💰 Gestión de Caja y Finanzas</h2>
-      
-      <div class="caja-control">
-        <button id="btnAbrirCaja" onclick="abrirCaja()">🔓 ABRIR CAJA</button>
-        <button id="btnCerrarCaja" onclick="cerrarCaja()" style="display:none;">🔒 CERRAR CAJA</button>
-        <div id="cajaEstado" class="caja-estado"></div>
-      </div>
-      
-      <div class="resumen-caja">
-        <h3>📊 Resumen del Día</h3>
-        <div class="stats">
-          <div class="stat-card"><strong>💰 CAJA ACTUAL:</strong><br><span id="cajaActual" style="font-size:24px;color:#FF6D00;">$0</span></div>
-          <div class="stat-card"><strong>📈 INGRESOS HOY:</strong><br><span id="totalIngresos" style="font-size:24px;color:#28a745;">$0</span></div>
-          <div class="stat-card"><strong>📉 EGRESOS HOY:</strong><br><span id="totalEgresos" style="font-size:24px;color:#dc3545;">$0</span></div>
-          <div class="stat-card"><strong>💼 VALOR INVENTARIO:</strong><br><span id="valorInventario" style="font-size:24px;color:#ffc107;">$0</span></div>
-        </div>
-      </div>
-
-      <div class="resumen-caja">
-        <h3>📊 DESGLOSE POR MEDIO DE PAGO - HOY</h3>
-        <div class="stats">
-          <div class="stat-card"><strong>💵 EFECTIVO:</strong><br><span id="totalEfectivo" style="font-size:20px;">$0</span></div>
-          <div class="stat-card"><strong>🏦 TRANSFERENCIA:</strong><br><span id="totalTransferencia" style="font-size:20px;">$0</span></div>
-          <div class="stat-card"><strong>💳 DÉBITO:</strong><br><span id="totalDebito" style="font-size:20px;">$0</span></div>
-          <div class="stat-card"><strong>💎 CRÉDITO:</strong><br><span id="totalCredito" style="font-size:20px;">$0</span></div>
-        </div>
-      </div>
-
-      <form id="formMovimiento">
-        <h3>Registrar Movimiento</h3>
-        <div class="form-group">
-          <label>Tipo:</label>
-          <select id="tipoMovimiento">
-            <option value="ingreso">💰 Ingreso</option>
-            <option value="egreso">💸 Egreso</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Medio de Pago:</label>
-          <select id="medioPago">
-            <option value="efectivo">💵 Efectivo</option>
-            <option value="transferencia">🏦 Transferencia</option>
-            <option value="debito">💳 Débito</option>
-            <option value="credito">💎 Crédito</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Concepto:</label>
-          <input type="text" id="conceptoMovimiento" required placeholder="Ej: Pago de presupuesto">
-        </div>
-        <div class="form-group">
-          <label>Monto ($):</label>
-          <input type="number" id="montoMovimiento" required step="0.01" value="0">
-        </div>
-        <div class="form-group">
-          <label>Referencia:</label>
-          <input type="text" id="referenciaMovimiento" placeholder="N° presupuesto, factura">
-        </div>
-        <button type="submit">✅ REGISTRAR MOVIMIENTO</button>
-      </form>
-
-      <div class="table-container">
-        <h3>📋 Historial de Movimientos del Día</h3>
-        <table id="tablaMovimientos">
-          <thead><tr><th>Hora</th><th>Tipo</th><th>Medio Pago</th><th>Concepto</th><th>Monto</th><th>Referencia</th><th>Acciones</th></tr></thead>
-          <tbody id="listaMovimientos"></tbody>
-        </table>
-      </div>
-      
-      <div class="table-container">
-        <h3>📋 Historial de Cierres de Caja</h3>
-        <table id="tablaCierres">
-          <thead><tr><th>Fecha Cierre</th><th>Total Ventas</th><th>Efectivo</th><th>Transferencia</th><th>Débito</th><th>Crédito</th><th>Total Egresos</th><th>Saldo Final</th></tr></thead>
-          <tbody id="listaCierres"></tbody>
         </table>
       </div>
     </div>
@@ -1065,6 +1321,78 @@
     <footer>
       <p>Desarrollado con ❤️ - Sistema Integral de Gestión para Taller Mecánico</p>
     </footer>
+  </div>
+
+  <!-- Contenido para PDF - Reporte de Movimientos -->
+  <div id="pdf-content-reporte">
+    <div class="header-pdf">
+      <h1>REPUESTOS Y LUBRICANTES EL NONO</h1>
+      <div class="no-factura">📄 REPORTE DE MOVIMIENTOS</div>
+      <div class="numero-presupuesto">
+        Fecha: <span id="pdf-reporte-fecha"></span>
+      </div>
+    </div>
+
+    <div class="info-cliente-pdf">
+      <p><strong>📊 Reporte de Movimientos de Caja</strong></p>
+      <p><strong>📅 Fecha:</strong> <span id="pdf-reporte-fecha2"></span></p>
+    </div>
+
+    <h3 style="color:#FF6D00; margin-bottom:10px;">💰 Movimientos Registrados</h3>
+    <table class="tabla-items-pdf">
+      <thead>
+        <tr>
+          <th style="width:45%;">Concepto</th>
+          <th style="width:15%;text-align:center;">Tipo</th>
+          <th style="width:15%;text-align:center;">Medio Pago</th>
+          <th style="width:15%;text-align:right;">Monto</th>
+        </tr>
+      </thead>
+      <tbody id="pdf-reporte-items-body">
+        <tr>
+          <td colspan="4" style="text-align:center;color:#999;">No hay movimientos registrados en esta fecha</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td colspan="3" class="label" style="text-align:right;font-size:18px;">TOTAL</td>
+          <td class="valor" style="text-align:right;font-size:22px;" id="pdf-reporte-total">$0.00</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="footer-pdf">
+      <div class="validez" style="width:100%;text-align:center;">
+        <p>Reporte generado automáticamente - Sistema de Gestión Taller Mecánico</p>
+        <p style="margin-top:5px;">© 2024 - El Nono</p>
+      </div>
+      <div class="no-factura-footer" style="width:100%;">
+        Este es un reporte interno de movimientos de caja
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido para PDF - Todos los Cierres de Caja (OCULTO) -->
+  <div id="pdf-content-cierres">
+    <div class="header-pdf">
+      <h1>REPUESTOS Y LUBRICANTES EL NONO</h1>
+      <div class="no-factura" id="pdf-cierres-titulo-doc">📄 REPORTE GENERAL DE CIERRES DE CAJA</div>
+      <div class="numero-presupuesto">
+        Generado: <span id="pdf-cierres-fecha"></span>
+      </div>
+    </div>
+
+    <div id="pdf-cierres-body"></div>
+
+    <div class="footer-pdf">
+      <div class="validez" style="width:100%;text-align:center;">
+        <p>Reporte generado automáticamente - Sistema de Gestión Taller Mecánico</p>
+        <p style="margin-top:5px;">© 2024 - El Nono</p>
+      </div>
+      <div class="no-factura-footer" style="width:100%;">
+        Este es un reporte interno de cierres de caja
+      </div>
+    </div>
   </div>
 
   <!-- Contenido para PDF - Cuenta Corriente (OCULTO) -->
@@ -1258,9 +1586,17 @@
     </div>
   </div>
 
+  <div id="modalImagenesProducto" class="modal">
+    <div class="modal-content">
+      <h3>🖼️ Imágenes del Producto</h3>
+      <div id="detalleImagenesProducto" class="detalle-imagenes-grid"></div>
+      <button onclick="cerrarModalImagenesProducto()" class="btn-secondary" style="margin-top:15px;">Cerrar</button>
+    </div>
+  </div>
+
   <script>
     const CONTRASENA_CORRECTA = "153624";
-    
+
     let presupuestos = [];
     let stock = [];
     let movimientos = [];
@@ -1277,16 +1613,18 @@
     let nextIdCuenta = 1;
     let productoSeleccionadoId = null;
     let cuentaSeleccionadaId = null;
+    let reporteVisible = false;
+    let imagenesNuevoProducto = [];
 
     function inicializarDatos() {
       const savedPresupuestos = localStorage.getItem('presupuestos_taller_v3');
       const savedStock = localStorage.getItem('stock_taller_v4');
-      const savedMovimientos = localStorage.getItem('movimientos_taller_v3');
+      const savedMovimientos = localStorage.getItem('movimientos_taller_v4');
       const savedCierres = localStorage.getItem('cierres_taller');
       const savedServices = localStorage.getItem('services_taller');
       const savedCuentas = localStorage.getItem('cuentas_taller_v2');
       const savedCajaEstado = localStorage.getItem('caja_estado_taller');
-      
+
       if (savedPresupuestos) {
         presupuestos = JSON.parse(savedPresupuestos);
         nextIdPresupuesto = parseInt(localStorage.getItem('nextIdPresupuesto_taller')) || 1;
@@ -1294,20 +1632,20 @@
         presupuestos = [];
         nextIdPresupuesto = 1;
       }
-      
+
       if (savedStock) {
         stock = JSON.parse(savedStock);
         nextIdStock = parseInt(localStorage.getItem('nextIdStock_taller')) || 1;
       } else {
         stock = [
-          { id: 1, codigoInterno: 'MOT-001', producto: 'Aceite de motor 5W30', descripcion: 'Sintético. Equivalente: Mobil 1, Castrol Edge', cantidad: 12, precioUnitario: 25.50, categoria: 'Lubricantes' },
-          { id: 2, codigoInterno: 'FIL-002', producto: 'Filtro de aceite', descripcion: 'Equivalente: Bosch 0986AF, Mann HU 719/7x', cantidad: 8, precioUnitario: 12.00, categoria: 'Motor' },
-          { id: 3, codigoInterno: 'FRE-003', producto: 'Pastillas de freno', descripcion: 'Delanteras. Equivalente: Brembo P06023', cantidad: 3, precioUnitario: 45.00, categoria: 'Frenos' },
-          { id: 4, codigoInterno: 'MOT-004', producto: 'Bujías', descripcion: 'Iridio. Equivalente: NGK IFR6T11', cantidad: 15, precioUnitario: 8.50, categoria: 'Motor' }
+          { id: 1, codigoInterno: 'MOT-001', producto: 'Aceite de motor 5W30', descripcion: 'Sintético. Equivalente: Mobil 1, Castrol Edge', cantidad: 12, precioUnitario: 25.50, categoria: 'Lubricantes', imagenes: [] },
+          { id: 2, codigoInterno: 'FIL-002', producto: 'Filtro de aceite', descripcion: 'Equivalente: Bosch 0986AF, Mann HU 719/7x', cantidad: 8, precioUnitario: 12.00, categoria: 'Motor', imagenes: [] },
+          { id: 3, codigoInterno: 'FRE-003', producto: 'Pastillas de freno', descripcion: 'Delanteras. Equivalente: Brembo P06023', cantidad: 3, precioUnitario: 45.00, categoria: 'Frenos', imagenes: [] },
+          { id: 4, codigoInterno: 'MOT-004', producto: 'Bujías', descripcion: 'Iridio. Equivalente: NGK IFR6T11', cantidad: 15, precioUnitario: 8.50, categoria: 'Motor', imagenes: [] }
         ];
         nextIdStock = 5;
       }
-      
+
       if (savedMovimientos) {
         movimientos = JSON.parse(savedMovimientos);
         nextIdMovimiento = parseInt(localStorage.getItem('nextIdMovimiento_taller')) || 1;
@@ -1315,7 +1653,7 @@
         movimientos = [];
         nextIdMovimiento = 1;
       }
-      
+
       if (savedCierres) {
         cierres = JSON.parse(savedCierres);
         nextIdCierre = parseInt(localStorage.getItem('nextIdCierre_taller')) || 1;
@@ -1323,7 +1661,7 @@
         cierres = [];
         nextIdCierre = 1;
       }
-      
+
       if (savedServices) {
         services = JSON.parse(savedServices);
         nextIdService = parseInt(localStorage.getItem('nextIdService_taller')) || 1;
@@ -1334,7 +1672,7 @@
         ];
         nextIdService = 3;
       }
-      
+
       if (savedCuentas) {
         cuentas = JSON.parse(savedCuentas);
         nextIdCuenta = parseInt(localStorage.getItem('nextIdCuenta_taller')) || 1;
@@ -1342,26 +1680,30 @@
         cuentas = [];
         nextIdCuenta = 1;
       }
-      
+
       if (savedCajaEstado) {
         const estado = JSON.parse(savedCajaEstado);
         cajaAbierta = estado.abierta;
         fechaCajaActual = estado.fecha;
-        if (cajaAbierta && fechaCajaActual !== new Date().toLocaleDateString()) {
+        if (cajaAbierta && fechaCajaActual !== getFechaActual()) {
           cerrarCajaAutomatico();
         }
       } else {
         cajaAbierta = false;
         fechaCajaActual = null;
       }
-      
+
       guardarDatos();
+    }
+
+    function getFechaActual() {
+      return new Date().toLocaleDateString();
     }
 
     function guardarDatos() {
       localStorage.setItem('presupuestos_taller_v3', JSON.stringify(presupuestos));
       localStorage.setItem('stock_taller_v4', JSON.stringify(stock));
-      localStorage.setItem('movimientos_taller_v3', JSON.stringify(movimientos));
+      localStorage.setItem('movimientos_taller_v4', JSON.stringify(movimientos));
       localStorage.setItem('cierres_taller', JSON.stringify(cierres));
       localStorage.setItem('services_taller', JSON.stringify(services));
       localStorage.setItem('cuentas_taller_v2', JSON.stringify(cuentas));
@@ -1374,12 +1716,316 @@
       localStorage.setItem('caja_estado_taller', JSON.stringify({ abierta: cajaAbierta, fecha: fechaCajaActual }));
     }
 
+    // ==================== REPORTE DE MOVIMIENTOS ====================
+    function getFechaSeleccionada() {
+      const input = document.getElementById('fechaReporte');
+      if (input && input.value) {
+        return input.value;
+      }
+      return new Date().toISOString().split('T')[0];
+    }
+
+    function setFechaHoy() {
+      const hoy = new Date().toISOString().split('T')[0];
+      document.getElementById('fechaReporte').value = hoy;
+      actualizarReporte();
+    }
+
+    function setFechaAyer() {
+      const ayer = new Date();
+      ayer.setDate(ayer.getDate() - 1);
+      document.getElementById('fechaReporte').value = ayer.toISOString().split('T')[0];
+      actualizarReporte();
+    }
+
+    function obtenerMovimientosPorFecha(fecha) {
+      // Convertir fecha a formato dd/mm/yyyy para comparar con la fecha almacenada
+      const fechaParts = fecha.split('-');
+      const fechaFormateada = `${fechaParts[2]}/${fechaParts[1]}/${fechaParts[0]}`;
+
+      return movimientos.filter(m => {
+        if (!m.fecha) return false;
+        // Si la fecha ya tiene el formato dd/mm/yyyy, comparar directamente
+        if (m.fecha.includes('/')) {
+          return m.fecha.includes(fechaFormateada) || m.fecha.includes(fecha);
+        }
+        // Si la fecha está en formato ISO, convertir
+        return m.fecha.includes(fecha);
+      });
+    }
+
+    function actualizarReporte() {
+      const fecha = getFechaSeleccionada();
+      const movs = obtenerMovimientosPorFecha(fecha);
+      const resumenDiv = document.getElementById('reporteResumen');
+      const detalleDiv = document.getElementById('reporteDetalle');
+      const tbody = document.getElementById('listaReporte');
+      const totalesDiv = document.getElementById('reporteTotales');
+
+      if (movs.length === 0) {
+        resumenDiv.innerHTML = `<p style="color:#999;">📭 No hay movimientos registrados para el ${fecha}</p>`;
+        detalleDiv.style.display = 'none';
+        document.getElementById('btnToggleReporte').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('btnToggleReporte').style.display = 'inline-block';
+
+      const totalIngresos = movs.filter(m => m.tipo === 'ingreso').reduce((sum, m) => sum + m.monto, 0);
+      const totalEgresos = movs.filter(m => m.tipo === 'egreso').reduce((sum, m) => sum + m.monto, 0);
+      const saldo = totalIngresos - totalEgresos;
+
+      resumenDiv.innerHTML = `
+          <p style="color:#cccccc;">
+            📊 <strong style="color:#FF6D00;">${movs.length}</strong> movimientos registrados · 
+            <strong style="color:#28a745;">Ingresos: $${totalIngresos.toFixed(2)}</strong> · 
+            <strong style="color:#dc3545;">Egresos: $${totalEgresos.toFixed(2)}</strong> · 
+            <strong style="color:#FF6D00;">Saldo: $${saldo.toFixed(2)}</strong>
+          </p>
+        `;
+
+      if (reporteVisible) {
+        detalleDiv.style.display = 'block';
+        tbody.innerHTML = '';
+        movs.forEach(m => {
+          const row = tbody.insertRow();
+          const tipoTexto = m.tipo === 'ingreso' ? '💰 Ingreso' : '💸 Egreso';
+          const color = m.tipo === 'ingreso' ? '#28a745' : '#dc3545';
+          const signo = m.tipo === 'ingreso' ? '+' : '-';
+          row.innerHTML = `
+              <td>${m.concepto}</td>
+              <td style="text-align:center;color:${color};">${tipoTexto}</td>
+              <td style="text-align:right;color:${color};font-weight:bold;">${signo}$${m.monto.toFixed(2)}</td>
+            `;
+        });
+
+        totalesDiv.innerHTML = `
+            <div class="reporte-total-item"><strong>Total Movimientos</strong><br><span class="cantidad">${movs.length}</span></div>
+            <div class="reporte-total-item"><strong>💰 Ingresos</strong><br><span class="cantidad" style="color:#28a745;">$${totalIngresos.toFixed(2)}</span></div>
+            <div class="reporte-total-item"><strong>💸 Egresos</strong><br><span class="cantidad" style="color:#dc3545;">$${totalEgresos.toFixed(2)}</span></div>
+            <div class="reporte-total-item"><strong>📊 Saldo</strong><br><span class="cantidad" style="color:#FF6D00;">$${saldo.toFixed(2)}</span></div>
+          `;
+      } else {
+        detalleDiv.style.display = 'none';
+      }
+    }
+
+    function toggleReporte() {
+      reporteVisible = !reporteVisible;
+      document.getElementById('btnToggleReporte').textContent = reporteVisible ? '📋 Ocultar Detalle' : '📋 Mostrar Detalle';
+      actualizarReporte();
+    }
+
+    // ==================== HELPER PDF MULTI-PÁGINA ====================
+    function agregarImagenPDFMultiPagina(pdf, canvas) {
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pdfWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const imgData = canvas.toDataURL('image/png');
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight;
+      }
+    }
+
+    function generarPDFReporte() {
+      const fecha = getFechaSeleccionada();
+      const movs = obtenerMovimientosPorFecha(fecha);
+
+      if (movs.length === 0) {
+        alert(`📭 No hay movimientos registrados para el ${fecha}`);
+        return;
+      }
+
+      const fechaFormateada = fecha.split('-').reverse().join('/');
+      document.getElementById('pdf-reporte-fecha').textContent = fechaFormateada;
+      document.getElementById('pdf-reporte-fecha2').textContent = fechaFormateada;
+
+      const tbody = document.getElementById('pdf-reporte-items-body');
+      tbody.innerHTML = '';
+      let totalGeneral = 0;
+
+      movs.forEach(m => {
+        const tr = document.createElement('tr');
+        const tipoTexto = m.tipo === 'ingreso' ? 'Ingreso' : 'Egreso';
+        const color = m.tipo === 'ingreso' ? '#28a745' : '#dc3545';
+        const signo = m.tipo === 'ingreso' ? '+' : '-';
+        const medioPagoTexto = m.medioPago || '-';
+        tr.innerHTML = `
+            <td style="color:#333;">${m.concepto}</td>
+            <td style="text-align:center;color:${color};font-weight:bold;">${tipoTexto}</td>
+            <td style="text-align:center;color:#333;">${medioPagoTexto}</td>
+            <td style="text-align:right;color:${color};font-weight:bold;">${signo}$${m.monto.toFixed(2)}</td>
+          `;
+        tbody.appendChild(tr);
+        totalGeneral += m.tipo === 'ingreso' ? m.monto : -m.monto;
+      });
+
+      document.getElementById('pdf-reporte-total').textContent = `$${totalGeneral.toFixed(2)}`;
+
+      const pdfContent = document.getElementById('pdf-content-reporte');
+      pdfContent.style.display = 'block';
+      pdfContent.style.position = 'absolute';
+      pdfContent.style.left = '-9999px';
+      pdfContent.style.top = '0';
+      pdfContent.style.width = '900px';
+
+      html2canvas(pdfContent, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false
+      }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        const fechaArchivo = fecha.replace(/-/g, '');
+        pdf.save(`Reporte_Movimientos_${fechaArchivo}.pdf`);
+
+        pdfContent.style.display = 'none';
+        pdfContent.style.position = 'static';
+        pdfContent.style.left = 'auto';
+        pdfContent.style.top = 'auto';
+      }).catch(error => {
+        console.error('Error generando PDF:', error);
+        alert('❌ Error al generar el PDF. Intente nuevamente.');
+        pdfContent.style.display = 'none';
+        pdfContent.style.position = 'static';
+        pdfContent.style.left = 'auto';
+        pdfContent.style.top = 'auto';
+      });
+    }
+
+    // ==================== EXPORTAR CIERRES DE CAJA (individual o todos) ====================
+    function construirHtmlCierre(c) {
+      let html = `<div class="cierre-bloque">`;
+      html += `<div class="cierre-titulo">🔒 Cierre del ${c.fecha} ${c.fechaDia ? '(Día: ' + c.fechaDia + ')' : ''}</div>`;
+      html += `<div class="cierre-resumen">
+          <strong>Total Ingresos:</strong> $${c.totalIngresos.toFixed(2)} &nbsp;|&nbsp;
+          <strong>Total Egresos:</strong> $${c.totalEgresos.toFixed(2)} &nbsp;|&nbsp;
+          <strong>Saldo Final:</strong> $${c.saldoFinal.toFixed(2)} &nbsp;|&nbsp;
+          💵 Efectivo: $${c.efectivo.toFixed(2)} &nbsp; 🏦 Transf: $${c.transferencia.toFixed(2)} &nbsp; 💳 Débito: $${c.debito.toFixed(2)} &nbsp; 💎 Crédito: $${c.credito.toFixed(2)}
+        </div>`;
+
+      html += `<table class="tabla-items-pdf"><thead><tr>
+          <th style="width:45%;">Concepto de Venta / Movimiento</th>
+          <th style="width:15%;text-align:center;">Tipo</th>
+          <th style="width:20%;text-align:center;">Medio de Pago</th>
+          <th style="width:20%;text-align:right;">Valor</th>
+        </tr></thead><tbody>`;
+
+      const detalle = c.movimientosDetalle || [];
+      if (detalle.length === 0) {
+        html += `<tr><td colspan="4" style="text-align:center;color:#999;">Sin detalle de movimientos disponible para este cierre</td></tr>`;
+      } else {
+        detalle.forEach(m => {
+          const tipoTexto = m.tipo === 'ingreso' ? 'Ingreso' : 'Egreso';
+          const color = m.tipo === 'ingreso' ? '#28a745' : '#dc3545';
+          const signo = m.tipo === 'ingreso' ? '+' : '-';
+          const medioTexto = m.medioPago ? m.medioPago.charAt(0).toUpperCase() + m.medioPago.slice(1) : '-';
+          html += `<tr>
+              <td style="color:#333;">${m.concepto}</td>
+              <td style="text-align:center;color:${color};font-weight:bold;">${tipoTexto}</td>
+              <td style="text-align:center;color:#333;">${medioTexto}</td>
+              <td style="text-align:right;color:${color};font-weight:bold;">${signo}$${m.monto.toFixed(2)}</td>
+            </tr>`;
+        });
+      }
+
+      html += `</tbody><tfoot><tr class="total-row">
+          <td colspan="3" class="label" style="text-align:right;">SALDO DEL CIERRE</td>
+          <td class="valor" style="text-align:right;">$${c.saldoFinal.toFixed(2)}</td>
+        </tr></tfoot></table>`;
+      html += `</div>`;
+      return html;
+    }
+
+    function generarPDFCierresDesdeContenido(nombreArchivo) {
+      const pdfContent = document.getElementById('pdf-content-cierres');
+      pdfContent.style.display = 'block';
+      pdfContent.style.position = 'absolute';
+      pdfContent.style.left = '-9999px';
+      pdfContent.style.top = '0';
+      pdfContent.style.width = '900px';
+
+      html2canvas(pdfContent, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false
+      }).then(canvas => {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        agregarImagenPDFMultiPagina(pdf, canvas);
+        pdf.save(nombreArchivo);
+
+        pdfContent.style.display = 'none';
+        pdfContent.style.position = 'static';
+        pdfContent.style.left = 'auto';
+        pdfContent.style.top = 'auto';
+      }).catch(error => {
+        console.error('Error generando PDF:', error);
+        alert('❌ Error al generar el PDF. Intente nuevamente.');
+        pdfContent.style.display = 'none';
+        pdfContent.style.position = 'static';
+        pdfContent.style.left = 'auto';
+        pdfContent.style.top = 'auto';
+      });
+    }
+
+    function generarPDFCierreIndividual(id) {
+      const c = cierres.find(c => c.id === id);
+      if (!c) {
+        alert('❌ Cierre no encontrado');
+        return;
+      }
+
+      document.getElementById('pdf-cierres-titulo-doc').textContent = '📄 REPORTE DE CIERRE DE CAJA INDIVIDUAL';
+      document.getElementById('pdf-cierres-fecha').textContent = new Date().toLocaleString();
+      document.getElementById('pdf-cierres-body').innerHTML = construirHtmlCierre(c);
+
+      const fechaArchivo = (c.fechaDia || c.fecha).replace(/[\/\\: ]/g, '-');
+      generarPDFCierresDesdeContenido(`Cierre_Caja_${String(c.id).padStart(4, '0')}_${fechaArchivo}.pdf`);
+    }
+
+    function generarPDFTodosCierres() {
+      if (cierres.length === 0) {
+        alert('📭 No hay cierres de caja registrados todavía');
+        return;
+      }
+
+      document.getElementById('pdf-cierres-titulo-doc').textContent = '📄 REPORTE GENERAL DE CIERRES DE CAJA';
+      document.getElementById('pdf-cierres-fecha').textContent = new Date().toLocaleString();
+
+      let html = '';
+      cierres.forEach(c => {
+        html += construirHtmlCierre(c);
+      });
+      document.getElementById('pdf-cierres-body').innerHTML = html;
+
+      const fechaArchivo = new Date().toISOString().split('T')[0].replace(/-/g, '');
+      generarPDFCierresDesdeContenido(`Cierres_de_Caja_${fechaArchivo}.pdf`);
+    }
+
     // ==================== CUENTAS CORRIENTES ====================
     function getEstadoCuenta(fechaVencimiento) {
       const hoy = new Date();
       const vencimiento = new Date(fechaVencimiento);
       const diff = Math.ceil((vencimiento - hoy) / (1000 * 60 * 60 * 24));
-      
+
       if (diff < 0) return { texto: "⚠️ VENCIDA", clase: "vencido" };
       if (diff <= 7) return { texto: `🔔 VENCE EN ${diff} DÍAS`, clase: "cuenta-cercana" };
       return { texto: "✅ ACTIVA", clase: "" };
@@ -1403,7 +2049,7 @@
       const hoy = new Date();
       const vencimiento = new Date();
       vencimiento.setDate(vencimiento.getDate() + 30);
-      
+
       const nuevaCuenta = {
         id: nextIdCuenta++,
         cliente: document.getElementById('clienteCuenta').value,
@@ -1432,40 +2078,41 @@
       let totalDeuda = 0;
       let vencidas = 0;
       let proximas = 0;
-      
+
       cuentas.forEach(c => {
         const saldo = calcularSaldoCuenta(c.items);
         c.total = saldo;
         const estado = getEstadoCuenta(c.fechaVencimiento);
         const row = tbody.insertRow();
         row.className = estado.clase;
-        
+
         totalDeuda += saldo > 0 ? saldo : 0;
         if (estado.texto.includes('VENCIDA')) vencidas++;
         if (estado.texto.includes('VENCE EN')) proximas++;
-        
-        const saldoColor = saldo < 0 ? 'style="color:#28a745;font-weight:bold;"' : 'style="color:#FF6D00;font-weight:bold;"';
+
+        const saldoColor = saldo < 0 ? 'style="color:#28a745;font-weight:bold;"' :
+          'style="color:#FF6D00;font-weight:bold;"';
         const saldoTexto = saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`;
-        
+
         row.innerHTML = `
-          <td>${c.id}</td>
-          <td>${c.cliente}</td>
-          <td>${c.telefono}</td>
-          <td>${c.fechaApertura}</td>
-          <td>${c.fechaVencimiento}</td>
-          <td>${estado.texto}</td>
-          <td><button class="btn-info" onclick="verItemsCuenta(${c.id})" style="padding:3px 8px;font-size:11px;">${c.items ? c.items.length : 0} mov.</button></td>
-          <td ${saldoColor}>${saldoTexto}</td>
-          <td class="action-buttons">
-            <button class="btn-info" onclick="verCuentaDetalle(${c.id})">📊 Ver</button>
-            <button class="btn-pdf" onclick="generarPDFCuenta(${c.id})">📄 PDF</button>
-            <button class="btn-warning" onclick="agregarItemCuentaModal(${c.id})">➕ Item</button>
-            <button class="btn-pago" onclick="pagarCuentaModal(${c.id})">💰 Pagar</button>
-            <button class="btn-danger" onclick="eliminarCuenta(${c.id})">🗑️</button>
-          </td>
-        `;
+            <td>${c.id}</td>
+            <td>${c.cliente}</td>
+            <td>${c.telefono}</td>
+            <td>${c.fechaApertura}</td>
+            <td>${c.fechaVencimiento}</td>
+            <td>${estado.texto}</td>
+            <td><button class="btn-info" onclick="verItemsCuenta(${c.id})" style="padding:3px 8px;font-size:11px;">${c.items ? c.items.length : 0} mov.</button></td>
+            <td ${saldoColor}>${saldoTexto}</td>
+            <td class="action-buttons">
+              <button class="btn-info" onclick="verCuentaDetalle(${c.id})">📊 Ver</button>
+              <button class="btn-pdf" onclick="generarPDFCuenta(${c.id})">📄 PDF</button>
+              <button class="btn-warning" onclick="agregarItemCuentaModal(${c.id})">➕ Item</button>
+              <button class="btn-pago" onclick="pagarCuentaModal(${c.id})">💰 Pagar</button>
+              <button class="btn-danger" onclick="eliminarCuenta(${c.id})">🗑️</button>
+            </td>
+          `;
       });
-      
+
       document.getElementById('totalCuentas').textContent = cuentas.length;
       document.getElementById('deudaTotal').textContent = `$${totalDeuda.toFixed(2)}`;
       document.getElementById('cuentasVencidas').textContent = vencidas;
@@ -1476,11 +2123,11 @@
       const busqueda = document.getElementById('buscadorCuentas').value.toLowerCase();
       const filtro = document.getElementById('filtroCuentas').value;
       const hoy = new Date();
-      
+
       const tbody = document.getElementById('listaCuentas');
       if (!tbody) return;
       tbody.innerHTML = '';
-      
+
       const filtrados = cuentas.filter(c => {
         let ok = true;
         if (busqueda) {
@@ -1495,32 +2142,33 @@
         }
         return ok;
       });
-      
+
       filtrados.forEach(c => {
         const saldo = calcularSaldoCuenta(c.items);
         c.total = saldo;
         const estado = getEstadoCuenta(c.fechaVencimiento);
         const row = tbody.insertRow();
         row.className = estado.clase;
-        const saldoColor = saldo < 0 ? 'style="color:#28a745;font-weight:bold;"' : 'style="color:#FF6D00;font-weight:bold;"';
+        const saldoColor = saldo < 0 ? 'style="color:#28a745;font-weight:bold;"' :
+          'style="color:#FF6D00;font-weight:bold;"';
         const saldoTexto = saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`;
         row.innerHTML = `
-          <td>${c.id}</td>
-          <td>${c.cliente}</td>
-          <td>${c.telefono}</td>
-          <td>${c.fechaApertura}</td>
-          <td>${c.fechaVencimiento}</td>
-          <td>${estado.texto}</td>
-          <td><button class="btn-info" onclick="verItemsCuenta(${c.id})" style="padding:3px 8px;font-size:11px;">${c.items ? c.items.length : 0} mov.</button></td>
-          <td ${saldoColor}>${saldoTexto}</td>
-          <td class="action-buttons">
-            <button class="btn-info" onclick="verCuentaDetalle(${c.id})">📊 Ver</button>
-            <button class="btn-pdf" onclick="generarPDFCuenta(${c.id})">📄 PDF</button>
-            <button class="btn-warning" onclick="agregarItemCuentaModal(${c.id})">➕ Item</button>
-            <button class="btn-pago" onclick="pagarCuentaModal(${c.id})">💰 Pagar</button>
-            <button class="btn-danger" onclick="eliminarCuenta(${c.id})">🗑️</button>
-          </td>
-        `;
+            <td>${c.id}</td>
+            <td>${c.cliente}</td>
+            <td>${c.telefono}</td>
+            <td>${c.fechaApertura}</td>
+            <td>${c.fechaVencimiento}</td>
+            <td>${estado.texto}</td>
+            <td><button class="btn-info" onclick="verItemsCuenta(${c.id})" style="padding:3px 8px;font-size:11px;">${c.items ? c.items.length : 0} mov.</button></td>
+            <td ${saldoColor}>${saldoTexto}</td>
+            <td class="action-buttons">
+              <button class="btn-info" onclick="verCuentaDetalle(${c.id})">📊 Ver</button>
+              <button class="btn-pdf" onclick="generarPDFCuenta(${c.id})">📄 PDF</button>
+              <button class="btn-warning" onclick="agregarItemCuentaModal(${c.id})">➕ Item</button>
+              <button class="btn-pago" onclick="pagarCuentaModal(${c.id})">💰 Pagar</button>
+              <button class="btn-danger" onclick="eliminarCuenta(${c.id})">🗑️</button>
+            </td>
+          `;
       });
     }
 
@@ -1536,10 +2184,10 @@
       if (cuenta) {
         const saldo = calcularSaldoCuenta(cuenta.items);
         document.getElementById('infoClienteCuenta').innerHTML = `
-          <p><strong>Cliente:</strong> ${cuenta.cliente}</p>
-          <p><strong>Teléfono:</strong> ${cuenta.telefono}</p>
-          <p><strong>Saldo Actual:</strong> ${saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`}</p>
-        `;
+            <p><strong>Cliente:</strong> ${cuenta.cliente}</p>
+            <p><strong>Teléfono:</strong> ${cuenta.telefono}</p>
+            <p><strong>Saldo Actual:</strong> ${saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`}</p>
+          `;
         document.getElementById('itemCuentaDescripcion').value = '';
         document.getElementById('itemCuentaCantidad').value = '1';
         document.getElementById('itemCuentaPrecio').value = '0';
@@ -1553,16 +2201,16 @@
         alert('❌ Cuenta no encontrada');
         return;
       }
-      
+
       const descripcion = document.getElementById('itemCuentaDescripcion').value || 'Item sin descripción';
       const cantidad = parseFloat(document.getElementById('itemCuentaCantidad').value) || 1;
       const precio = parseFloat(document.getElementById('itemCuentaPrecio').value) || 0;
-      
+
       if (precio <= 0) {
         alert('❌ El precio debe ser mayor a 0');
         return;
       }
-      
+
       if (!cuenta.items) cuenta.items = [];
       cuenta.items.push({
         tipo: 'retiro',
@@ -1572,7 +2220,7 @@
         subtotal: cantidad * precio,
         fecha: new Date().toLocaleString()
       });
-      
+
       guardarDatos();
       cargarCuentas();
       cerrarModalAgregarItem();
@@ -1584,19 +2232,18 @@
       cuentaSeleccionadaId = null;
     }
 
-    // ==================== PAGOS A CUENTA ====================
     function pagarCuentaModal(id) {
       cuentaSeleccionadaId = id;
       const cuenta = cuentas.find(c => c.id === id);
       if (cuenta) {
         const saldo = calcularSaldoCuenta(cuenta.items);
         document.getElementById('infoPagoCuenta').innerHTML = `
-          <p><strong>Cliente:</strong> ${cuenta.cliente}</p>
-          <p><strong>Teléfono:</strong> ${cuenta.telefono}</p>
-          <p><strong>Saldo Actual:</strong> ${saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`}</p>
-          ${saldo > 0 ? `<p style="color:#FF6D00;"><strong>⚠️ Debe: $${saldo.toFixed(2)}</strong></p>` : ''}
-          ${saldo < 0 ? `<p style="color:#28a745;"><strong>✅ Saldo a favor: $${Math.abs(saldo).toFixed(2)}</strong></p>` : ''}
-        `;
+            <p><strong>Cliente:</strong> ${cuenta.cliente}</p>
+            <p><strong>Teléfono:</strong> ${cuenta.telefono}</p>
+            <p><strong>Saldo Actual:</strong> ${saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`}</p>
+            ${saldo > 0 ? `<p style="color:#FF6D00;"><strong>⚠️ Debe: $${saldo.toFixed(2)}</strong></p>` : ''}
+            ${saldo < 0 ? `<p style="color:#28a745;"><strong>✅ Saldo a favor: $${Math.abs(saldo).toFixed(2)}</strong></p>` : ''}
+          `;
         document.getElementById('montoPagoCuenta').value = '';
         document.getElementById('observacionesPago').value = '';
         document.getElementById('modalPagarCuenta').style.display = 'flex';
@@ -1609,27 +2256,28 @@
         alert('❌ Cuenta no encontrada');
         return;
       }
-      
+
       if (!cajaAbierta) {
         alert('⚠️ Debe abrir la caja para registrar pagos');
         return;
       }
-      
+
       const monto = parseFloat(document.getElementById('montoPagoCuenta').value);
       const medioPago = document.getElementById('medioPagoCuenta').value;
       const observaciones = document.getElementById('observacionesPago').value || 'Pago a cuenta';
-      
+
       if (isNaN(monto) || monto <= 0) {
         alert('❌ Ingrese un monto válido');
         return;
       }
-      
+
       const saldo = calcularSaldoCuenta(cuenta.items);
       if (monto > saldo && saldo > 0) {
-        const confirmar = confirm(`⚠️ El monto a pagar ($${monto.toFixed(2)}) es mayor que la deuda ($${saldo.toFixed(2)}). Se generará saldo a favor. ¿Desea continuar?`);
+        const confirmar = confirm(
+          `⚠️ El monto a pagar ($${monto.toFixed(2)}) es mayor que la deuda ($${saldo.toFixed(2)}). Se generará saldo a favor. ¿Desea continuar?`);
         if (!confirmar) return;
       }
-      
+
       if (!cuenta.items) cuenta.items = [];
       cuenta.items.push({
         tipo: 'pago',
@@ -1641,15 +2289,18 @@
         medioPago: medioPago,
         fecha: new Date().toLocaleString()
       });
-      
-      // Registrar en movimientos de caja
+
       movimientos.push({
-        id: nextIdMovimiento++, tipo: 'ingreso', medioPago: medioPago,
+        id: nextIdMovimiento++,
+        tipo: 'ingreso',
+        medioPago: medioPago,
         concepto: `Pago a cuenta - ${cuenta.cliente} (Cuenta #${cuenta.id})`,
-        monto: monto, referencia: `Cuenta #${cuenta.id}`,
-        fecha: new Date().toLocaleString(), hora: new Date().toLocaleTimeString()
+        monto: monto,
+        referencia: `Cuenta #${cuenta.id}`,
+        fecha: new Date().toLocaleString(),
+        hora: new Date().toLocaleTimeString()
       });
-      
+
       guardarDatos();
       cargarCuentas();
       cargarCaja();
@@ -1670,23 +2321,24 @@
         let html = `<p style="color:#FF6D00;"><strong>Cliente:</strong> ${cuenta.cliente}</p>`;
         html += `<p style="color:#FF6D00;"><strong>Vence:</strong> ${cuenta.fechaVencimiento}</p>`;
         html += '<table style="width:100%;border-collapse:collapse;margin-top:10px;">';
-        html += '<tr style="border-bottom:2px solid #FF6D00;"><th style="text-align:left;color:#FF6D00;">Fecha</th><th style="text-align:left;color:#FF6D00;">Descripción</th><th style="text-align:center;color:#FF6D00;">Tipo</th><th style="text-align:right;color:#FF6D00;">Monto</th></tr>';
+        html +=
+          '<tr style="border-bottom:2px solid #FF6D00;"><th style="text-align:left;color:#FF6D00;">Fecha</th><th style="text-align:left;color:#FF6D00;">Descripción</th><th style="text-align:center;color:#FF6D00;">Tipo</th><th style="text-align:right;color:#FF6D00;">Monto</th></tr>';
         cuenta.items.forEach(item => {
           const tipo = item.tipo === 'retiro' ? '🔴 Retiro' : '🟢 Pago';
           const color = item.tipo === 'retiro' ? '#FF6D00' : '#28a745';
           const monto = item.tipo === 'retiro' ? `+${item.subtotal.toFixed(2)}` : `-${item.subtotal.toFixed(2)}`;
           html += `<tr style="border-bottom:1px solid #333;">
-            <td style="color:#fff;font-size:12px;">${item.fecha || 'N/A'}</td>
-            <td style="color:#fff;">${item.descripcion}</td>
-            <td style="text-align:center;color:${color};">${tipo}</td>
-            <td style="text-align:right;color:${color};font-weight:bold;">$${monto}</td>
-          </tr>`;
+              <td style="color:#fff;font-size:12px;">${item.fecha || 'N/A'}</td>
+              <td style="color:#fff;">${item.descripcion}</td>
+              <td style="text-align:center;color:${color};">${tipo}</td>
+              <td style="text-align:right;color:${color};font-weight:bold;">$${monto}</td>
+            </tr>`;
         });
         const saldo = calcularSaldoCuenta(cuenta.items);
         const saldoColor = saldo < 0 ? '#28a745' : '#FF6D00';
         const saldoTexto = saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`;
         html += `<tr style="border-top:3px solid #FF6D00;"><td colspan="3" style="text-align:right;font-weight:bold;color:#fff;">SALDO ACTUAL</td>
-          <td style="text-align:right;font-weight:bold;color:${saldoColor};font-size:18px;">${saldoTexto}</td></tr>`;
+            <td style="text-align:right;font-weight:bold;color:${saldoColor};font-size:18px;">${saldoTexto}</td></tr>`;
         html += '</table>';
         document.getElementById('detalleItems').innerHTML = html;
       }
@@ -1696,44 +2348,45 @@
     function verCuentaDetalle(id) {
       const cuenta = cuentas.find(c => c.id === id);
       if (!cuenta) return;
-      
+
       const saldo = calcularSaldoCuenta(cuenta.items);
       const estado = getEstadoCuenta(cuenta.fechaVencimiento);
       const saldoColor = saldo < 0 ? '#28a745' : '#FF6D00';
       const saldoTexto = saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`;
-      
+
       let html = `
-        <p><strong style="color:#FF6D00;">👤 Cliente:</strong> <span style="color:#fff;">${cuenta.cliente}</span></p>
-        <p><strong style="color:#FF6D00;">📞 Teléfono:</strong> <span style="color:#fff;">${cuenta.telefono}</span></p>
-        <p><strong style="color:#FF6D00;">📅 Apertura:</strong> <span style="color:#fff;">${cuenta.fechaApertura}</span></p>
-        <p><strong style="color:#FF6D00;">⏰ Vence:</strong> <span style="color:#fff;">${cuenta.fechaVencimiento}</span></p>
-        <p><strong style="color:#FF6D00;">📊 Estado:</strong> <span style="color:#fff;">${estado.texto}</span></p>
-        <p><strong style="color:#FF6D00;">💰 Saldo:</strong> <span style="color:${saldoColor};font-size:20px;">${saldoTexto}</span></p>
-        <hr style="border-color:#333;margin:15px 0;">
-        <h4 style="color:#FF6D00;">📦 Movimientos:</h4>
-      `;
-      
+          <p><strong style="color:#FF6D00;">👤 Cliente:</strong> <span style="color:#fff;">${cuenta.cliente}</span></p>
+          <p><strong style="color:#FF6D00;">📞 Teléfono:</strong> <span style="color:#fff;">${cuenta.telefono}</span></p>
+          <p><strong style="color:#FF6D00;">📅 Apertura:</strong> <span style="color:#fff;">${cuenta.fechaApertura}</span></p>
+          <p><strong style="color:#FF6D00;">⏰ Vence:</strong> <span style="color:#fff;">${cuenta.fechaVencimiento}</span></p>
+          <p><strong style="color:#FF6D00;">📊 Estado:</strong> <span style="color:#fff;">${estado.texto}</span></p>
+          <p><strong style="color:#FF6D00;">💰 Saldo:</strong> <span style="color:${saldoColor};font-size:20px;">${saldoTexto}</span></p>
+          <hr style="border-color:#333;margin:15px 0;">
+          <h4 style="color:#FF6D00;">📦 Movimientos:</h4>
+        `;
+
       if (cuenta.items && cuenta.items.length > 0) {
         html += '<table style="width:100%;border-collapse:collapse;margin-top:10px;">';
-        html += '<tr style="border-bottom:2px solid #FF6D00;"><th style="text-align:left;color:#FF6D00;">Fecha</th><th style="text-align:left;color:#FF6D00;">Descripción</th><th style="text-align:center;color:#FF6D00;">Tipo</th><th style="text-align:right;color:#FF6D00;">Monto</th></tr>';
+        html +=
+          '<tr style="border-bottom:2px solid #FF6D00;"><th style="text-align:left;color:#FF6D00;">Fecha</th><th style="text-align:left;color:#FF6D00;">Descripción</th><th style="text-align:center;color:#FF6D00;">Tipo</th><th style="text-align:right;color:#FF6D00;">Monto</th></tr>';
         cuenta.items.forEach(item => {
           const tipo = item.tipo === 'retiro' ? '🔴 Retiro' : '🟢 Pago';
           const color = item.tipo === 'retiro' ? '#FF6D00' : '#28a745';
           const monto = item.tipo === 'retiro' ? `+${item.subtotal.toFixed(2)}` : `-${item.subtotal.toFixed(2)}`;
           html += `<tr style="border-bottom:1px solid #333;">
-            <td style="color:#fff;font-size:12px;">${item.fecha || 'N/A'}</td>
-            <td style="color:#fff;">${item.descripcion}</td>
-            <td style="text-align:center;color:${color};">${tipo}</td>
-            <td style="text-align:right;color:${color};font-weight:bold;">$${monto}</td>
-          </tr>`;
+              <td style="color:#fff;font-size:12px;">${item.fecha || 'N/A'}</td>
+              <td style="color:#fff;">${item.descripcion}</td>
+              <td style="text-align:center;color:${color};">${tipo}</td>
+              <td style="text-align:right;color:${color};font-weight:bold;">$${monto}</td>
+            </tr>`;
         });
         html += `<tr style="border-top:3px solid #FF6D00;"><td colspan="3" style="text-align:right;font-weight:bold;color:#fff;">SALDO</td>
-          <td style="text-align:right;font-weight:bold;color:${saldoColor};font-size:18px;">${saldoTexto}</td></tr>`;
+            <td style="text-align:right;font-weight:bold;color:${saldoColor};font-size:18px;">${saldoTexto}</td></tr>`;
         html += '</table>';
       } else {
         html += '<p style="color:#999;">No hay movimientos registrados</p>';
       }
-      
+
       document.getElementById('detalleCuenta').innerHTML = html;
       document.getElementById('modalVerCuenta').style.display = 'flex';
     }
@@ -1768,12 +2421,15 @@
       document.getElementById('pdf-cuenta-apertura').textContent = cuenta.fechaApertura;
       document.getElementById('pdf-cuenta-vencimiento').textContent = cuenta.fechaVencimiento;
       document.getElementById('pdf-cuenta-estado').textContent = estado.texto;
-      document.getElementById('pdf-cuenta-estado').style.color = estado.texto.includes('VENCIDA') ? '#dc3545' : '#28a745';
-      
+      document.getElementById('pdf-cuenta-estado').style.color = estado.texto.includes('VENCIDA') ? '#dc3545' :
+        '#28a745';
+
       const saldoColor = saldo < 0 ? '#28a745' : (saldo > 0 ? '#dc3545' : '#666');
-      document.getElementById('pdf-cuenta-saldo').textContent = saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`;
+      document.getElementById('pdf-cuenta-saldo').textContent = saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` :
+        `$${saldo.toFixed(2)}`;
       document.getElementById('pdf-cuenta-saldo').style.color = saldoColor;
-      document.getElementById('pdf-cuenta-total').textContent = saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` : `$${saldo.toFixed(2)}`;
+      document.getElementById('pdf-cuenta-total').textContent = saldo < 0 ? `$${Math.abs(saldo).toFixed(2)} (a favor)` :
+        `$${saldo.toFixed(2)}`;
 
       const tbody = document.getElementById('pdf-cuenta-items-body');
       if (!cuenta.items || cuenta.items.length === 0) {
@@ -1786,12 +2442,12 @@
           const color = item.tipo === 'retiro' ? '#dc3545' : '#28a745';
           const monto = item.tipo === 'retiro' ? `+${item.subtotal.toFixed(2)}` : `-${item.subtotal.toFixed(2)}`;
           tr.innerHTML = `
-            <td style="color:#333;">${item.descripcion}</td>
-            <td style="text-align:center;color:${color};font-weight:bold;">${tipo}</td>
-            <td style="text-align:center;color:#333;">${item.cantidad}</td>
-            <td style="text-align:right;color:#333;">$${item.precio.toFixed(2)}</td>
-            <td style="text-align:right;color:${color};font-weight:bold;">$${monto}</td>
-          `;
+              <td style="color:#333;">${item.descripcion}</td>
+              <td style="text-align:center;color:${color};font-weight:bold;">${tipo}</td>
+              <td style="text-align:center;color:#333;">${item.cantidad}</td>
+              <td style="text-align:right;color:#333;">$${item.precio.toFixed(2)}</td>
+              <td style="text-align:right;color:${color};font-weight:bold;">$${monto}</td>
+            `;
           tbody.appendChild(tr);
         });
       }
@@ -1814,10 +2470,10 @@
         const pdf = new jsPDF('p', 'mm', 'a4');
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-        
+
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
         pdf.save(`Cuenta_${String(cuenta.id).padStart(4, '0')}_${cuenta.cliente}.pdf`);
-        
+
         pdfContent.style.display = 'none';
         pdfContent.style.position = 'static';
         pdfContent.style.left = 'auto';
@@ -1839,26 +2495,26 @@
       const newItem = template.cloneNode(true);
       newItem.id = '';
       newItem.style.display = 'flex';
-      
+
       const descInput = newItem.querySelector('.item-descripcion');
       const cantInput = newItem.querySelector('.item-cantidad');
       const precInput = newItem.querySelector('.item-precio');
       const totalSpan = newItem.querySelector('.item-total');
       const removeBtn = newItem.querySelector('.btn-remove-item');
-      
+
       if (descripcion !== undefined) {
         descInput.value = descripcion || '';
         cantInput.value = cantidad || 1;
         precInput.value = precio || 0;
         actualizarItemTotal(newItem);
       }
-      
+
       cantInput.addEventListener('input', () => actualizarItemTotal(newItem));
       precInput.addEventListener('input', () => actualizarItemTotal(newItem));
       descInput.addEventListener('input', () => actualizarItemTotal(newItem));
-      
+
       removeBtn.onclick = function() { eliminarItem(this); };
-      
+
       container.appendChild(newItem);
       calcularTotalGeneral();
     }
@@ -1913,13 +2569,13 @@
         alert('⚠️ Debe abrir la caja antes de crear presupuestos');
         return;
       }
-      
+
       const items = obtenerItems();
       if (items.length === 0) {
         alert('⚠️ Debe agregar al menos un item al presupuesto');
         return;
       }
-      
+
       const total = calcularTotalGeneral();
       const nuevoPresupuesto = {
         id: nextIdPresupuesto++,
@@ -1948,7 +2604,7 @@
       document.getElementById('descripcionPresupuesto').value = '';
       document.getElementById('empleadoPresupuesto').value = '';
       document.getElementById('telefonoEmpleadoPresupuesto').value = '';
-      
+
       const container = document.getElementById('itemsContainer');
       while (container.children.length > 1) {
         container.removeChild(container.lastChild);
@@ -1971,26 +2627,26 @@
         const row = tbody.insertRow();
         const numItems = p.items ? p.items.length : 0;
         row.innerHTML = `
-          <td>${p.id}</td>
-          <td>${p.fecha}</td>
-          <td>${p.cliente}</td>
-          <td>${p.telefono || '-'}</td>
-          <td>${p.vehiculo}</td>
-          <td><button class="btn-info" onclick="verItems(${p.id})" style="padding:3px 8px;font-size:11px;">${numItems} items</button></td>
-          <td style="color:#FF6D00;font-weight:bold;">$${p.total.toFixed(2)}</td>
-          <td>${p.empleado || '-'}</td>
-          <td><select onchange="cambiarEstadoPresupuesto(${p.id}, this.value)" style="background:#1a1a1a;color:white;">
-            <option value="Pendiente" ${p.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
-            <option value="Aprobado" ${p.estado === 'Aprobado' ? 'selected' : ''}>Aprobado</option>
-            <option value="Pagado" ${p.estado === 'Pagado' ? 'selected' : ''}>Pagado</option>
-            <option value="Rechazado" ${p.estado === 'Rechazado' ? 'selected' : ''}>Rechazado</option>
-          </select></td>
-          <td class="action-buttons">
-            <button class="btn-pdf" onclick="generarPDF(${p.id})">📄 PDF</button>
-            <button class="btn-success" onclick="marcarPagado(${p.id})" ${p.estado === 'Pagado' ? 'disabled' : ''}>💰 Pagar</button>
-            <button class="btn-danger" onclick="eliminarPresupuesto(${p.id})">🗑️</button>
-          </td>
-        `;
+            <td>${p.id}</td>
+            <td>${p.fecha}</td>
+            <td>${p.cliente}</td>
+            <td>${p.telefono || '-'}</td>
+            <td>${p.vehiculo}</td>
+            <td><button class="btn-info" onclick="verItems(${p.id})" style="padding:3px 8px;font-size:11px;">${numItems} items</button></td>
+            <td style="color:#FF6D00;font-weight:bold;">$${p.total.toFixed(2)}</td>
+            <td>${p.empleado || '-'}</td>
+            <td><select onchange="cambiarEstadoPresupuesto(${p.id}, this.value)" style="background:#1a1a1a;color:white;">
+              <option value="Pendiente" ${p.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+              <option value="Aprobado" ${p.estado === 'Aprobado' ? 'selected' : ''}>Aprobado</option>
+              <option value="Pagado" ${p.estado === 'Pagado' ? 'selected' : ''}>Pagado</option>
+              <option value="Rechazado" ${p.estado === 'Rechazado' ? 'selected' : ''}>Rechazado</option>
+            </select></td>
+            <td class="action-buttons">
+              <button class="btn-pdf" onclick="generarPDF(${p.id})">📄 PDF</button>
+              <button class="btn-success" onclick="marcarPagado(${p.id})" ${p.estado === 'Pagado' ? 'disabled' : ''}>💰 Pagar</button>
+              <button class="btn-danger" onclick="eliminarPresupuesto(${p.id})">🗑️</button>
+            </td>
+          `;
       });
     }
 
@@ -2000,17 +2656,18 @@
         document.getElementById('detalleItems').innerHTML = '<p style="color:#999;">No hay items registrados</p>';
       } else {
         let html = '<table style="width:100%;border-collapse:collapse;margin-top:10px;">';
-        html += '<tr style="border-bottom:2px solid #FF6D00;"><th style="text-align:left;color:#FF6D00;">Descripción</th><th style="text-align:center;color:#FF6D00;">Cant</th><th style="text-align:right;color:#FF6D00;">Precio</th><th style="text-align:right;color:#FF6D00;">Subtotal</th></tr>';
+        html +=
+          '<tr style="border-bottom:2px solid #FF6D00;"><th style="text-align:left;color:#FF6D00;">Descripción</th><th style="text-align:center;color:#FF6D00;">Cant</th><th style="text-align:right;color:#FF6D00;">Precio</th><th style="text-align:right;color:#FF6D00;">Subtotal</th></tr>';
         p.items.forEach(item => {
           html += `<tr style="border-bottom:1px solid #333;">
-            <td style="color:#fff;">${item.descripcion}</td>
-            <td style="text-align:center;color:#fff;">${item.cantidad}</td>
-            <td style="text-align:right;color:#fff;">$${item.precio.toFixed(2)}</td>
-            <td style="text-align:right;color:#FF6D00;font-weight:bold;">$${item.subtotal.toFixed(2)}</td>
-          </tr>`;
+              <td style="color:#fff;">${item.descripcion}</td>
+              <td style="text-align:center;color:#fff;">${item.cantidad}</td>
+              <td style="text-align:right;color:#fff;">$${item.precio.toFixed(2)}</td>
+              <td style="text-align:right;color:#FF6D00;font-weight:bold;">$${item.subtotal.toFixed(2)}</td>
+            </tr>`;
         });
         html += `<tr style="border-top:3px solid #FF6D00;"><td colspan="3" style="text-align:right;font-weight:bold;color:#fff;">TOTAL</td>
-          <td style="text-align:right;font-weight:bold;color:#FF6D00;font-size:18px;">$${p.total.toFixed(2)}</td></tr>`;
+            <td style="text-align:right;font-weight:bold;color:#FF6D00;font-size:18px;">$${p.total.toFixed(2)}</td></tr>`;
         html += '</table>';
         document.getElementById('detalleItems').innerHTML = html;
       }
@@ -2044,20 +2701,26 @@
         else if (medio === '3') medioPago = 'debito';
         else if (medio === '4') medioPago = 'credito';
         else { alert('Opción inválida'); return; }
-        
+
         presupuesto.estado = 'Pagado';
         guardarDatos();
         cargarPresupuestos();
-        
+
         movimientos.push({
-          id: nextIdMovimiento++, tipo: 'ingreso', medioPago: medioPago,
+          id: nextIdMovimiento++,
+          tipo: 'ingreso',
+          medioPago: medioPago,
           concepto: `Pago presupuesto #${presupuesto.id} - ${presupuesto.cliente}`,
-          monto: presupuesto.total, referencia: `#${presupuesto.id}`,
-          fecha: new Date().toLocaleString(), hora: new Date().toLocaleTimeString()
+          monto: presupuesto.total,
+          referencia: `#${presupuesto.id}`,
+          fecha: new Date().toLocaleString(),
+          hora: new Date().toLocaleTimeString()
         });
         guardarDatos();
         cargarCaja();
         alert(`✅ Ingreso de $${presupuesto.total.toFixed(2)} registrado`);
+
+        actualizarReporte();
       }
     }
 
@@ -2095,11 +2758,11 @@
         presupuesto.items.forEach(item => {
           const tr = document.createElement('tr');
           tr.innerHTML = `
-            <td style="color:#333;">${item.descripcion}</td>
-            <td style="text-align:center;color:#333;">${item.cantidad}</td>
-            <td style="text-align:right;color:#333;">$${item.precio.toFixed(2)}</td>
-            <td style="text-align:right;color:#333;">$${item.subtotal.toFixed(2)}</td>
-          `;
+              <td style="color:#333;">${item.descripcion}</td>
+              <td style="text-align:center;color:#333;">${item.cantidad}</td>
+              <td style="text-align:right;color:#333;">$${item.precio.toFixed(2)}</td>
+              <td style="text-align:right;color:#333;">$${item.subtotal.toFixed(2)}</td>
+            `;
           tbody.appendChild(tr);
         });
       }
@@ -2122,10 +2785,10 @@
         const pdf = new jsPDF('p', 'mm', 'a4');
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-        
+
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
         pdf.save(`Presupuesto_${String(presupuesto.id).padStart(4, '0')}_${presupuesto.cliente}.pdf`);
-        
+
         pdfContent.style.display = 'none';
         pdfContent.style.position = 'static';
         pdfContent.style.left = 'auto';
@@ -2144,18 +2807,20 @@
     function verificarVencimientosService() {
       const hoy = new Date();
       const alertas = [];
-      
+
       services.forEach(service => {
         const proximo = new Date(service.proximoService);
         const diferenciaDias = Math.ceil((proximo - hoy) / (1000 * 60 * 60 * 24));
-        
+
         if (diferenciaDias < 0) {
-          alertas.push(`⚠️ VENCIDO - Cliente: ${service.cliente}, Vehículo: ${service.vehiculo}, Vencía el ${service.proximoService}`);
+          alertas.push(
+            `⚠️ VENCIDO - Cliente: ${service.cliente}, Vehículo: ${service.vehiculo}, Vencía el ${service.proximoService}`);
         } else if (diferenciaDias <= 30) {
-          alertas.push(`🔔 PRÓXIMO A VENCER - Cliente: ${service.cliente}, Vehículo: ${service.vehiculo}, Vence en ${diferenciaDias} días (${service.proximoService})`);
+          alertas.push(
+            `🔔 PRÓXIMO A VENCER - Cliente: ${service.cliente}, Vehículo: ${service.vehiculo}, Vence en ${diferenciaDias} días (${service.proximoService})`);
         }
       });
-      
+
       if (alertas.length > 0) {
         setTimeout(() => {
           alert("📢 RECORDATORIOS DE SERVICE:\n\n" + alertas.join("\n\n"));
@@ -2167,7 +2832,7 @@
       const hoy = new Date();
       const proximo = new Date(proximoService);
       const diferenciaDias = Math.ceil((proximo - hoy) / (1000 * 60 * 60 * 24));
-      
+
       if (diferenciaDias < 0) return { texto: "⚠️ VENCIDO", clase: "vencimiento-cercano" };
       if (diferenciaDias <= 30) return { texto: `🔔 VENCE EN ${diferenciaDias} DÍAS`, clase: "vencimiento-cercano" };
       return { texto: "✅ AL DÍA", clase: "" };
@@ -2214,38 +2879,40 @@
       if (!tbody) return;
       tbody.innerHTML = '';
       let alertasHtml = '';
-      
+
       services.forEach(s => {
         const estado = calcularEstadoService(s.proximoService);
         const row = tbody.insertRow();
         if (estado.texto !== "✅ AL DÍA") {
           row.classList.add('alerta-vencimiento');
           alertasHtml += `<div style="background:#2a1a0a;padding:10px;margin:5px;border-radius:8px;border-left:4px solid #FF6D00;color:#ffffff;">
-            📞 ${s.cliente} | ${s.vehiculo} | ${estado.texto} (${s.proximoService}) | Tel: ${s.telefono}
-          </div>`;
+              📞 ${s.cliente} | ${s.vehiculo} | ${estado.texto} (${s.proximoService}) | Tel: ${s.telefono}
+            </div>`;
         }
         row.innerHTML = `
-          <td>${s.id}</td>
-          <td>${s.cliente}</td>
-          <td>${s.telefono}</td>
-          <td>${s.vehiculo}</td>
-          <td>${s.kilometraje.toLocaleString()} km</td>
-          <td>${s.productos.substring(0, 40)}${s.productos.length > 40 ? '...' : ''}</td>
-          <td>$${s.precio.toFixed(2)}</td>
-          <td>${s.fecha}</td>
-          <td class="${estado.clase}">${s.proximoService}<br><small>${estado.texto}</small></td>
-          <td>${estado.texto}</td>
-          <td class="action-buttons">
-            <button class="btn-info" onclick="verDetalleService(${s.id})">🔍 Ver</button>
-            <button class="btn-warning" onclick="editarService(${s.id})">✏️</button>
-            <button class="btn-danger" onclick="eliminarService(${s.id})">🗑️</button>
-          </td>
-        `;
+            <td>${s.id}</td>
+            <td>${s.cliente}</td>
+            <td>${s.telefono}</td>
+            <td>${s.vehiculo}</td>
+            <td>${s.kilometraje.toLocaleString()} km</td>
+            <td>${s.productos.substring(0, 40)}${s.productos.length > 40 ? '...' : ''}</td>
+            <td>$${s.precio.toFixed(2)}</td>
+            <td>${s.fecha}</td>
+            <td class="${estado.clase}">${s.proximoService}<br><small>${estado.texto}</small></td>
+            <td>${estado.texto}</td>
+            <td class="action-buttons">
+              <button class="btn-info" onclick="verDetalleService(${s.id})">🔍 Ver</button>
+              <button class="btn-warning" onclick="editarService(${s.id})">✏️</button>
+              <button class="btn-danger" onclick="eliminarService(${s.id})">🗑️</button>
+            </td>
+          `;
       });
-      
+
       const alertaDiv = document.getElementById('serviceAlerta');
       if (alertaDiv) {
-        alertaDiv.innerHTML = alertasHtml ? `<div style="margin-bottom:15px;"><strong style="color:#FF6D00;">📢 CLIENTES PARA CONTACTAR:</strong><br>${alertasHtml}</div>` : '';
+        alertaDiv.innerHTML = alertasHtml ?
+          `<div style="margin-bottom:15px;"><strong style="color:#FF6D00;">📢 CLIENTES PARA CONTACTAR:</strong><br>${alertasHtml}</div>` :
+          '';
       }
     }
 
@@ -2253,17 +2920,17 @@
       const busqueda = document.getElementById('buscadorService').value.toLowerCase();
       const filtroVencimiento = document.getElementById('filtroVencimiento').value;
       const hoy = new Date();
-      
+
       const tbody = document.getElementById('listaService');
       if (!tbody) return;
       tbody.innerHTML = '';
-      
+
       const filtrados = services.filter(item => {
         let ok = true;
         if (busqueda) {
           ok = item.cliente.toLowerCase().includes(busqueda) ||
-               item.vehiculo.toLowerCase().includes(busqueda) ||
-               item.telefono.includes(busqueda);
+            item.vehiculo.toLowerCase().includes(busqueda) ||
+            item.telefono.includes(busqueda);
         }
         if (ok && filtroVencimiento) {
           const proximo = new Date(item.proximoService);
@@ -2273,28 +2940,28 @@
         }
         return ok;
       });
-      
+
       filtrados.forEach(s => {
         const estado = calcularEstadoService(s.proximoService);
         const row = tbody.insertRow();
         if (estado.texto !== "✅ AL DÍA") row.classList.add('alerta-vencimiento');
         row.innerHTML = `
-          <td>${s.id}</td>
-          <td>${s.cliente}</td>
-          <td>${s.telefono}</td>
-          <td>${s.vehiculo}</td>
-          <td>${s.kilometraje.toLocaleString()} km</td>
-          <td>${s.productos.substring(0, 40)}${s.productos.length > 40 ? '...' : ''}</td>
-          <td>$${s.precio.toFixed(2)}</td>
-          <td>${s.fecha}</td>
-          <td class="${estado.clase}">${s.proximoService}<br><small>${estado.texto}</small></td>
-          <td>${estado.texto}</td>
-          <td class="action-buttons">
-            <button class="btn-info" onclick="verDetalleService(${s.id})">🔍 Ver</button>
-            <button class="btn-warning" onclick="editarService(${s.id})">✏️</button>
-            <button class="btn-danger" onclick="eliminarService(${s.id})">🗑️</button>
-          </td>
-        `;
+            <td>${s.id}</td>
+            <td>${s.cliente}</td>
+            <td>${s.telefono}</td>
+            <td>${s.vehiculo}</td>
+            <td>${s.kilometraje.toLocaleString()} km</td>
+            <td>${s.productos.substring(0, 40)}${s.productos.length > 40 ? '...' : ''}</td>
+            <td>$${s.precio.toFixed(2)}</td>
+            <td>${s.fecha}</td>
+            <td class="${estado.clase}">${s.proximoService}<br><small>${estado.texto}</small></td>
+            <td>${estado.texto}</td>
+            <td class="action-buttons">
+              <button class="btn-info" onclick="verDetalleService(${s.id})">🔍 Ver</button>
+              <button class="btn-warning" onclick="editarService(${s.id})">✏️</button>
+              <button class="btn-danger" onclick="eliminarService(${s.id})">🗑️</button>
+            </td>
+          `;
       });
     }
 
@@ -2307,7 +2974,9 @@
     function verDetalleService(id) {
       const s = services.find(s => s.id === id);
       if (s) {
-        alert(`📋 DETALLE DE SERVICE\n\nCliente: ${s.cliente}\nTeléfono: ${s.telefono}\nVehículo: ${s.vehiculo}\nKilometraje: ${s.kilometraje.toLocaleString()} km\nProductos: ${s.productos}\nPrecio: $${s.precio.toFixed(2)}\nFecha: ${s.fecha}\nPróximo Service: ${s.proximoService}`);
+        alert(
+          `📋 DETALLE DE SERVICE\n\nCliente: ${s.cliente}\nTeléfono: ${s.telefono}\nVehículo: ${s.vehiculo}\nKilometraje: ${s.kilometraje.toLocaleString()} km\nProductos: ${s.productos}\nPrecio: $${s.precio.toFixed(2)}\nFecha: ${s.fecha}\nPróximo Service: ${s.proximoService}`
+          );
       }
     }
 
@@ -2332,16 +3001,72 @@
       }
     }
 
+    // ==================== STOCK: IMÁGENES DE REFERENCIA ====================
+    function previsualizarImagenesStock(event) {
+      const files = Array.from(event.target.files || []);
+      if (files.length === 0) return;
+
+      let pendientes = files.length;
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          imagenesNuevoProducto.push(e.target.result);
+          pendientes--;
+          if (pendientes === 0) {
+            renderPreviewImagenesStock();
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderPreviewImagenesStock() {
+      const container = document.getElementById('previewImagenesStock');
+      container.innerHTML = '';
+      imagenesNuevoProducto.forEach((img, idx) => {
+        const div = document.createElement('div');
+        div.className = 'imagen-preview-item';
+        div.innerHTML = `<img src="${img}" alt="preview">
+            <button type="button" class="btn-quitar-imagen" onclick="quitarImagenNuevoProducto(${idx})">✕</button>`;
+        container.appendChild(div);
+      });
+    }
+
+    function quitarImagenNuevoProducto(idx) {
+      imagenesNuevoProducto.splice(idx, 1);
+      renderPreviewImagenesStock();
+    }
+
+    function verImagenesProducto(id) {
+      const p = stock.find(s => s.id === id);
+      const container = document.getElementById('detalleImagenesProducto');
+      if (!p || !p.imagenes || p.imagenes.length === 0) {
+        container.innerHTML = '<p style="color:#999;">Este producto no tiene imágenes de referencia cargadas</p>';
+      } else {
+        container.innerHTML = '';
+        p.imagenes.forEach(img => {
+          const imgEl = document.createElement('img');
+          imgEl.src = img;
+          container.appendChild(imgEl);
+        });
+      }
+      document.getElementById('modalImagenesProducto').style.display = 'flex';
+    }
+
+    function cerrarModalImagenesProducto() {
+      document.getElementById('modalImagenesProducto').style.display = 'none';
+    }
+
     // ==================== STOCK FUNCTIONS ====================
     function aplicarAumentoPorcentaje() {
       const porcentaje = parseFloat(document.getElementById('porcentajeAjuste').value);
       const categoria = document.getElementById('categoriaAjuste').value;
-      
+
       if (isNaN(porcentaje)) {
         alert('❌ Ingrese un porcentaje válido');
         return;
       }
-      
+
       let productosAfectados = 0;
       stock.forEach(producto => {
         if (categoria === 'todas' || producto.categoria === categoria) {
@@ -2350,10 +3075,12 @@
           productosAfectados++;
         }
       });
-      
+
       guardarDatos();
       cargarStock();
-      alert(`✅ Se actualizaron ${productosAfectados} productos con un ${porcentaje > 0 ? 'aumento' : 'descuento'} del ${Math.abs(porcentaje)}%`);
+      alert(
+        `✅ Se actualizaron ${productosAfectados} productos con un ${porcentaje > 0 ? 'aumento' : 'descuento'} del ${Math.abs(porcentaje)}%`
+        );
     }
 
     document.getElementById('formStock').addEventListener('submit', (e) => {
@@ -2365,7 +3092,8 @@
         descripcion: document.getElementById('descripcionStock').value || null,
         cantidad: parseInt(document.getElementById('cantidadStock').value),
         precioUnitario: parseFloat(document.getElementById('precioStock').value),
-        categoria: document.getElementById('categoriaStock').value
+        categoria: document.getElementById('categoriaStock').value,
+        imagenes: imagenesNuevoProducto.slice()
       });
       guardarDatos();
       limpiarFormStock();
@@ -2379,6 +3107,9 @@
       document.getElementById('descripcionStock').value = '';
       document.getElementById('cantidadStock').value = '0';
       document.getElementById('precioStock').value = '0';
+      document.getElementById('imagenesStock').value = '';
+      imagenesNuevoProducto = [];
+      renderPreviewImagenesStock();
     }
 
     function cargarStock() {
@@ -2395,22 +3126,28 @@
         } else if (s.cantidad === 0) {
           alertas += `❌ Agotado: ${s.producto}<br>`;
         }
+        const tieneImagenes = s.imagenes && s.imagenes.length > 0;
+        const imgCell = tieneImagenes ?
+          `<img src="${s.imagenes[0]}" class="thumb-stock" onclick="verImagenesProducto(${s.id})" alt="img">` :
+          `<button class="btn-info" onclick="verImagenesProducto(${s.id})" style="padding:3px 6px;font-size:10px;">➕🖼️</button>`;
         row.innerHTML = `
-          <td>${s.codigoInterno || '-'}</td>
-          <td>${s.producto}</td>
-          <td>${s.descripcion ? s.descripcion.substring(0, 40) + (s.descripcion.length > 40 ? '...' : '') : '-'}</td>
-          <td>${s.cantidad}</td>
-          <td>$${s.precioUnitario.toFixed(2)}</td>
-          <td>${s.categoria}</td>
-          <td>$${valorTotal.toFixed(2)}</td>
-          <td class="action-buttons">
-            <button class="btn-info" onclick="verDetalle(${s.id})">🔍 Ver</button>
-            <button class="btn-warning" onclick="editarStock(${s.id})">✏️</button>
-            <button class="btn-danger" onclick="eliminarStock(${s.id})">🗑️</button>
-          </td>
-        `;
+            <td>${imgCell}</td>
+            <td>${s.codigoInterno || '-'}</td>
+            <td>${s.producto}</td>
+            <td>${s.descripcion ? s.descripcion.substring(0, 40) + (s.descripcion.length > 40 ? '...' : '') : '-'}</td>
+            <td>${s.cantidad}</td>
+            <td>$${s.precioUnitario.toFixed(2)}</td>
+            <td>${s.categoria}</td>
+            <td>$${valorTotal.toFixed(2)}</td>
+            <td class="action-buttons">
+              <button class="btn-info" onclick="verDetalle(${s.id})">🔍 Ver</button>
+              <button class="btn-warning" onclick="editarStock(${s.id})">✏️</button>
+              <button class="btn-danger" onclick="eliminarStock(${s.id})">🗑️</button>
+            </td>
+          `;
       });
-      document.getElementById('stockAlerta').innerHTML = alertas ? `<div style="background:#2a1a0a;padding:10px;border-radius:8px;color:#FF6D00;">${alertas}</div>` : '';
+      document.getElementById('stockAlerta').innerHTML = alertas ?
+        `<div style="background:#2a1a0a;padding:10px;border-radius:8px;color:#FF6D00;">${alertas}</div>` : '';
       actualizarValorInventario();
     }
 
@@ -2418,18 +3155,18 @@
       const busqueda = document.getElementById('buscadorStock').value.toLowerCase();
       const categoria = document.getElementById('filtroCategoria').value;
       const filtroStock = document.getElementById('filtroStock').value;
-      
+
       const tbody = document.getElementById('listaStock');
       if (!tbody) return;
       tbody.innerHTML = '';
-      
+
       const filtrados = stock.filter(item => {
         let ok = true;
         if (busqueda) {
           ok = (item.codigoInterno || '').toLowerCase().includes(busqueda) ||
-               item.producto.toLowerCase().includes(busqueda) ||
-               (item.descripcion || '').toLowerCase().includes(busqueda) ||
-               item.categoria.toLowerCase().includes(busqueda);
+            item.producto.toLowerCase().includes(busqueda) ||
+            (item.descripcion || '').toLowerCase().includes(busqueda) ||
+            item.categoria.toLowerCase().includes(busqueda);
         }
         if (ok && categoria) ok = item.categoria === categoria;
         if (ok && filtroStock === 'bajo') ok = item.cantidad < 5 && item.cantidad > 0;
@@ -2437,25 +3174,30 @@
         if (ok && filtroStock === 'agotado') ok = item.cantidad === 0;
         return ok;
       });
-      
+
       filtrados.forEach(s => {
         const valorTotal = s.cantidad * s.precioUnitario;
         const row = tbody.insertRow();
         if (s.cantidad < 5 && s.cantidad > 0) row.classList.add('stock-bajo');
+        const tieneImagenes = s.imagenes && s.imagenes.length > 0;
+        const imgCell = tieneImagenes ?
+          `<img src="${s.imagenes[0]}" class="thumb-stock" onclick="verImagenesProducto(${s.id})" alt="img">` :
+          `<button class="btn-info" onclick="verImagenesProducto(${s.id})" style="padding:3px 6px;font-size:10px;">➕🖼️</button>`;
         row.innerHTML = `
-          <td>${s.codigoInterno || '-'}</td>
-          <td>${s.producto}</td>
-          <td>${s.descripcion ? s.descripcion.substring(0, 40) + (s.descripcion.length > 40 ? '...' : '') : '-'}</td>
-          <td>${s.cantidad}</td>
-          <td>$${s.precioUnitario.toFixed(2)}</td>
-          <td>${s.categoria}</td>
-          <td>$${valorTotal.toFixed(2)}</td>
-          <td class="action-buttons">
-            <button class="btn-info" onclick="verDetalle(${s.id})">🔍 Ver</button>
-            <button class="btn-warning" onclick="editarStock(${s.id})">✏️</button>
-            <button class="btn-danger" onclick="eliminarStock(${s.id})">🗑️</button>
-          </td>
-        `;
+            <td>${imgCell}</td>
+            <td>${s.codigoInterno || '-'}</td>
+            <td>${s.producto}</td>
+            <td>${s.descripcion ? s.descripcion.substring(0, 40) + (s.descripcion.length > 40 ? '...' : '') : '-'}</td>
+            <td>${s.cantidad}</td>
+            <td>$${s.precioUnitario.toFixed(2)}</td>
+            <td>${s.categoria}</td>
+            <td>$${valorTotal.toFixed(2)}</td>
+            <td class="action-buttons">
+              <button class="btn-info" onclick="verDetalle(${s.id})">🔍 Ver</button>
+              <button class="btn-warning" onclick="editarStock(${s.id})">✏️</button>
+              <button class="btn-danger" onclick="eliminarStock(${s.id})">🗑️</button>
+            </td>
+          `;
       });
     }
 
@@ -2470,15 +3212,20 @@
       productoSeleccionadoId = id;
       const p = stock.find(s => s.id === id);
       if (p) {
+        const imagenesHtml = (p.imagenes && p.imagenes.length > 0) ?
+          `<p><strong style="color:#FF6D00;">🖼️ Imágenes:</strong></p>
+           <div class="detalle-imagenes-grid">${p.imagenes.map(img => `<img src="${img}">`).join('')}</div>` :
+          `<p style="color:#999;">🖼️ Sin imágenes de referencia</p>`;
         document.getElementById('detalleProducto').innerHTML = `
-          <p><strong style="color:#FF6D00;">📌 Código Interno:</strong> <span style="color:#ffffff;">${p.codigoInterno || '-'}</span></p>
-          <p><strong style="color:#FF6D00;">🏷️ Producto:</strong> <span style="color:#ffffff;">${p.producto}</span></p>
-          <p><strong style="color:#FF6D00;">📝 Descripción:</strong><br><span style="color:#ffffff;">${p.descripcion || '-'}</span></p>
-          <p><strong style="color:#FF6D00;">📦 Cantidad:</strong> <span style="color:#ffffff;">${p.cantidad}</span></p>
-          <p><strong style="color:#FF6D00;">💰 Precio Actual:</strong> <span style="color:#28a745; font-size:18px;">$${p.precioUnitario.toFixed(2)}</span></p>
-          <p><strong style="color:#FF6D00;">📂 Categoría:</strong> <span style="color:#ffffff;">${p.categoria}</span></p>
-          <p><strong style="color:#FF6D00;">💵 Valor Total:</strong> <span style="color:#ffc107;">$${(p.cantidad * p.precioUnitario).toFixed(2)}</span></p>
-        `;
+            <p><strong style="color:#FF6D00;">📌 Código Interno:</strong> <span style="color:#ffffff;">${p.codigoInterno || '-'}</span></p>
+            <p><strong style="color:#FF6D00;">🏷️ Producto:</strong> <span style="color:#ffffff;">${p.producto}</span></p>
+            <p><strong style="color:#FF6D00;">📝 Descripción:</strong><br><span style="color:#ffffff;">${p.descripcion || '-'}</span></p>
+            <p><strong style="color:#FF6D00;">📦 Cantidad:</strong> <span style="color:#ffffff;">${p.cantidad}</span></p>
+            <p><strong style="color:#FF6D00;">💰 Precio Actual:</strong> <span style="color:#28a745; font-size:18px;">$${p.precioUnitario.toFixed(2)}</span></p>
+            <p><strong style="color:#FF6D00;">📂 Categoría:</strong> <span style="color:#ffffff;">${p.categoria}</span></p>
+            <p><strong style="color:#FF6D00;">💵 Valor Total:</strong> <span style="color:#ffc107;">$${(p.cantidad * p.precioUnitario).toFixed(2)}</span></p>
+            ${imagenesHtml}
+          `;
         document.getElementById('nuevoPrecioIndividual').value = p.precioUnitario;
         document.getElementById('modalDetalle').style.display = 'flex';
       }
@@ -2531,15 +3278,51 @@
       }
     }
 
+    // ==================== VENTA DE PRODUCTO EN CAJA (código de stock) ====================
+    function buscarProductoPorCodigo(codigo) {
+      if (!codigo) return null;
+      const codigoNorm = codigo.trim().toLowerCase();
+      if (!codigoNorm) return null;
+      return stock.find(p => (p.codigoInterno || '').trim().toLowerCase() === codigoNorm) || null;
+    }
+
+    function verificarCodigoProductoVenta() {
+      const codigo = document.getElementById('codigoProductoVenta').value;
+      const infoDiv = document.getElementById('infoCodigoProductoVenta');
+      const grupoCantidad = document.getElementById('grupoCantidadProductoVenta');
+
+      if (!codigo || !codigo.trim()) {
+        infoDiv.innerHTML = '';
+        grupoCantidad.style.display = 'none';
+        return;
+      }
+
+      const producto = buscarProductoPorCodigo(codigo);
+      grupoCantidad.style.display = 'block';
+
+      if (!producto) {
+        infoDiv.innerHTML = `<div class="codigo-venta-info codigo-venta-error">❌ No se encontró ningún producto en stock con ese código</div>`;
+        return;
+      }
+
+      const cantidadVenta = parseInt(document.getElementById('cantidadProductoVenta').value) || 1;
+      if (cantidadVenta > producto.cantidad) {
+        infoDiv.innerHTML = `<div class="codigo-venta-info codigo-venta-error">⚠️ ${producto.producto} - Stock disponible: ${producto.cantidad} unidades (cantidad solicitada excede el stock)</div>`;
+      } else {
+        infoDiv.innerHTML = `<div class="codigo-venta-info codigo-venta-ok">✅ ${producto.producto} — Stock disponible: ${producto.cantidad} unidades — Precio ref.: $${producto.precioUnitario.toFixed(2)}</div>`;
+      }
+    }
+
     // ==================== CAJA FUNCTIONS ====================
     function abrirCaja() {
       if (cajaAbierta) { alert('Ya está abierta'); return; }
       cajaAbierta = true;
-      fechaCajaActual = new Date().toLocaleDateString();
+      fechaCajaActual = getFechaActual();
       movimientos = [];
       guardarDatos();
       actualizarInterfazCaja();
       alert('✅ Caja abierta');
+      setFechaHoy();
     }
 
     function cerrarCaja() {
@@ -2548,12 +3331,19 @@
       const totalEgresos = movimientos.filter(m => m.tipo === 'egreso').reduce((s, m) => s + m.monto, 0);
       const desglose = { efectivo: 0, transferencia: 0, debito: 0, credito: 0 };
       movimientos.forEach(m => { if (m.tipo === 'ingreso' && m.medioPago) desglose[m.medioPago] += m.monto; });
-      
+
       cierres.push({
-        id: nextIdCierre++, fecha: new Date().toLocaleString(), fechaDia: fechaCajaActual,
-        totalIngresos, totalEgresos, saldoFinal: totalIngresos - totalEgresos,
-        efectivo: desglose.efectivo, transferencia: desglose.transferencia,
-        debito: desglose.debito, credito: desglose.credito
+        id: nextIdCierre++,
+        fecha: new Date().toLocaleString(),
+        fechaDia: fechaCajaActual,
+        totalIngresos,
+        totalEgresos,
+        saldoFinal: totalIngresos - totalEgresos,
+        efectivo: desglose.efectivo,
+        transferencia: desglose.transferencia,
+        debito: desglose.debito,
+        credito: desglose.credito,
+        movimientosDetalle: movimientos.slice()
       });
       cajaAbierta = false;
       movimientos = [];
@@ -2569,10 +3359,17 @@
         const desglose = { efectivo: 0, transferencia: 0, debito: 0, credito: 0 };
         movimientos.forEach(m => { if (m.tipo === 'ingreso' && m.medioPago) desglose[m.medioPago] += m.monto; });
         cierres.push({
-          id: nextIdCierre++, fecha: new Date().toLocaleString(), fechaDia: fechaCajaActual,
-          totalIngresos, totalEgresos, saldoFinal: totalIngresos - totalEgresos,
-          efectivo: desglose.efectivo, transferencia: desglose.transferencia,
-          debito: desglose.debito, credito: desglose.credito
+          id: nextIdCierre++,
+          fecha: new Date().toLocaleString(),
+          fechaDia: fechaCajaActual,
+          totalIngresos,
+          totalEgresos,
+          saldoFinal: totalIngresos - totalEgresos,
+          efectivo: desglose.efectivo,
+          transferencia: desglose.transferencia,
+          debito: desglose.debito,
+          credito: desglose.credito,
+          movimientosDetalle: movimientos.slice()
         });
       }
       cajaAbierta = false;
@@ -2607,19 +3404,63 @@
         const actual = movimientos.reduce((s, m) => s + (m.tipo === 'ingreso' ? m.monto : -m.monto), 0);
         if (monto > actual) { alert('Saldo insuficiente'); return; }
       }
+
+      // Verificar código de producto vendido (opcional)
+      const codigoProducto = document.getElementById('codigoProductoVenta').value.trim();
+      let productoVendido = null;
+      let cantidadVendida = 0;
+
+      if (codigoProducto) {
+        productoVendido = buscarProductoPorCodigo(codigoProducto);
+        if (!productoVendido) {
+          alert('❌ El código de producto ingresado no se encuentra en el stock. Corrija el código o déjelo vacío para registrar el movimiento sin descontar stock.');
+          return;
+        }
+        cantidadVendida = parseInt(document.getElementById('cantidadProductoVenta').value) || 1;
+        if (cantidadVendida <= 0) {
+          alert('❌ La cantidad vendida debe ser mayor a 0');
+          return;
+        }
+        if (cantidadVendida > productoVendido.cantidad) {
+          alert(`❌ Stock insuficiente para "${productoVendido.producto}". Disponible: ${productoVendido.cantidad}, solicitado: ${cantidadVendida}`);
+          return;
+        }
+      }
+
       movimientos.push({
-        id: nextIdMovimiento++, tipo: tipo,
+        id: nextIdMovimiento++,
+        tipo: tipo,
         medioPago: tipo === 'ingreso' ? document.getElementById('medioPago').value : null,
         concepto: document.getElementById('conceptoMovimiento').value,
-        monto: monto, referencia: document.getElementById('referenciaMovimiento').value || '-',
-        fecha: new Date().toLocaleString(), hora: new Date().toLocaleTimeString()
+        monto: monto,
+        referencia: document.getElementById('referenciaMovimiento').value || '-',
+        fecha: new Date().toLocaleString(),
+        hora: new Date().toLocaleTimeString(),
+        codigoProducto: productoVendido ? productoVendido.codigoInterno : null,
+        cantidadProducto: productoVendido ? cantidadVendida : null
       });
+
+      // Descontar stock si corresponde
+      if (productoVendido) {
+        productoVendido.cantidad -= cantidadVendida;
+        cargarStock();
+      }
+
       guardarDatos();
       cargarCaja();
       document.getElementById('conceptoMovimiento').value = '';
       document.getElementById('montoMovimiento').value = '0';
       document.getElementById('referenciaMovimiento').value = '';
-      alert('✅ Movimiento registrado');
+      document.getElementById('codigoProductoVenta').value = '';
+      document.getElementById('cantidadProductoVenta').value = '1';
+      document.getElementById('infoCodigoProductoVenta').innerHTML = '';
+      document.getElementById('grupoCantidadProductoVenta').style.display = 'none';
+      if (productoVendido) {
+        alert(`✅ Movimiento registrado y se descontaron ${cantidadVendida} unidades de "${productoVendido.producto}" del stock`);
+      } else {
+        alert('✅ Movimiento registrado');
+      }
+      actualizarReporte();
     });
 
     function getMedioPagoIcono(medio) {
@@ -2639,7 +3480,7 @@
       const egresos = movimientos.filter(m => m.tipo === 'egreso').reduce((s, m) => s + m.monto, 0);
       const desglose = { efectivo: 0, transferencia: 0, debito: 0, credito: 0 };
       movimientos.forEach(m => { if (m.tipo === 'ingreso' && m.medioPago) desglose[m.medioPago] += m.monto; });
-      
+
       document.getElementById('cajaActual').textContent = `$${actual.toFixed(2)}`;
       document.getElementById('totalIngresos').textContent = `$${ingresos.toFixed(2)}`;
       document.getElementById('totalEgresos').textContent = `$${egresos.toFixed(2)}`;
@@ -2647,24 +3488,29 @@
       document.getElementById('totalTransferencia').textContent = `$${desglose.transferencia.toFixed(2)}`;
       document.getElementById('totalDebito').textContent = `$${desglose.debito.toFixed(2)}`;
       document.getElementById('totalCredito').textContent = `$${desglose.credito.toFixed(2)}`;
-      
+
       const tbody = document.getElementById('listaMovimientos');
       if (tbody) {
         tbody.innerHTML = '';
         movimientos.slice().reverse().forEach(m => {
           const row = tbody.insertRow();
+          const conceptoTexto = m.codigoProducto ?
+            `${m.concepto} <br><small style="color:#FF6D00;">📦 ${m.codigoProducto} x${m.cantidadProducto}</small>` :
+            m.concepto;
           row.innerHTML = `
-            <td>${m.hora}</td>
-            <td>${m.tipo === 'ingreso' ? '💰 Ingreso' : '💸 Egreso'}</td>
-            <td>${getMedioPagoIcono(m.medioPago)}</td>
-            <td>${m.concepto}</td>
-            <td style="color:${m.tipo === 'ingreso' ? '#28a745' : '#dc3545'}">${m.tipo === 'ingreso' ? '+' : '-'}$${m.monto.toFixed(2)}</td>
-            <td>${m.referencia}</td>
-            <td><button class="btn-danger" onclick="eliminarMovimiento(${m.id})">🗑️</button></td>
-          `;
+              <td>${m.fecha || ''}</td>
+              <td>${m.hora || ''}</td>
+              <td>${m.tipo === 'ingreso' ? '💰 Ingreso' : '💸 Egreso'}</td>
+              <td>${getMedioPagoIcono(m.medioPago)}</td>
+              <td>${conceptoTexto}</td>
+              <td style="color:${m.tipo === 'ingreso' ? '#28a745' : '#dc3545'}">${m.tipo === 'ingreso' ? '+' : '-'}$${m.monto.toFixed(2)}</td>
+              <td>${m.referencia}</td>
+              <td><button class="btn-danger" onclick="eliminarMovimiento(${m.id})">🗑️</button></td>
+            `;
         });
       }
       actualizarValorInventario();
+      actualizarReporte();
     }
 
     function cargarCierres() {
@@ -2674,15 +3520,16 @@
         cierres.slice().reverse().forEach(c => {
           const row = tbody.insertRow();
           row.innerHTML = `
-            <td>${c.fecha}</td>
-            <td>$${c.totalIngresos.toFixed(2)}</td>
-            <td>$${c.efectivo.toFixed(2)}</td>
-            <td>$${c.transferencia.toFixed(2)}</td>
-            <td>$${c.debito.toFixed(2)}</td>
-            <td>$${c.credito.toFixed(2)}</td>
-            <td>$${c.totalEgresos.toFixed(2)}</td>
-            <td>$${c.saldoFinal.toFixed(2)}</td>
-          `;
+              <td>${c.fecha}</td>
+              <td>$${c.totalIngresos.toFixed(2)}</td>
+              <td>$${c.efectivo.toFixed(2)}</td>
+              <td>$${c.transferencia.toFixed(2)}</td>
+              <td>$${c.debito.toFixed(2)}</td>
+              <td>$${c.credito.toFixed(2)}</td>
+              <td>$${c.totalEgresos.toFixed(2)}</td>
+              <td>$${c.saldoFinal.toFixed(2)}</td>
+              <td class="action-buttons"><button class="btn-pdf" onclick="generarPDFCierreIndividual(${c.id})">📄 PDF</button></td>
+            `;
         });
       }
     }
@@ -2699,7 +3546,7 @@
     function verificarPassword() {
       const password = document.getElementById('passwordInput').value;
       const errorMsg = document.getElementById('errorMsg');
-      
+
       if (password === CONTRASENA_CORRECTA) {
         document.getElementById('loginOverlay').style.display = 'none';
         document.getElementById('mainContent').style.display = 'block';
@@ -2708,12 +3555,14 @@
         cargarTodosLosDatos();
         actualizarInterfazCaja();
         verificarVencimientosService();
-        
+        setFechaHoy();
+
         setInterval(() => {
           if (cajaAbierta) {
             verificarVencimientosService();
+            actualizarReporte();
           }
-        }, 3600000);
+        }, 300000);
       } else {
         errorMsg.textContent = '❌ Contraseña incorrecta';
         document.getElementById('passwordInput').value = '';
@@ -2729,7 +3578,7 @@
     function cambiarPanel(panel) {
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      
+
       if (panel === 'service') {
         document.getElementById('panelService').classList.add('active');
         document.querySelectorAll('.tab-btn')[0].classList.add('active');
@@ -2747,6 +3596,7 @@
         document.querySelectorAll('.tab-btn')[3].classList.add('active');
         cargarCaja();
         cargarCierres();
+        setFechaHoy();
       } else if (panel === 'cuentas') {
         document.getElementById('panelCuentas').classList.add('active');
         document.querySelectorAll('.tab-btn')[4].classList.add('active');
@@ -2773,6 +3623,7 @@
         proximo.setMonth(proximo.getMonth() + 6);
         proximoService.value = proximo.toISOString().split('T')[0];
       }
+      setFechaHoy();
     };
   </script>
 </body>
