@@ -821,6 +821,156 @@
       color: #ff9b9b;
     }
 
+    .tarea-card {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-left: 4px solid #FF6D00;
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 15px;
+    }
+
+    .tarea-card.tarea-para-otro {
+      border-left-color: #17a2b8;
+    }
+
+    .tarea-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .tarea-titulo {
+      color: #FF6D00;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .tarea-meta {
+      color: #999;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .tarea-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .tarea-badge-propia {
+      background: #FF6D00;
+      color: #0a0a0a;
+    }
+
+    .tarea-badge-otro {
+      background: #17a2b8;
+      color: white;
+    }
+
+    .tarea-progreso-bar {
+      width: 100%;
+      height: 8px;
+      background: #0a0a0a;
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 10px 0;
+      border: 1px solid #333;
+    }
+
+    .tarea-progreso-fill {
+      height: 100%;
+      background: #28a745;
+      transition: width 0.3s;
+    }
+
+    .checklist-container {
+      margin: 12px 0;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+      border-bottom: 1px solid #222;
+    }
+
+    .checklist-item input[type="checkbox"] {
+      width: auto;
+      accent-color: #FF6D00;
+      cursor: pointer;
+      transform: scale(1.3);
+    }
+
+    .checklist-item span {
+      flex: 1;
+      color: #ccc;
+    }
+
+    .checklist-item.hecho span {
+      text-decoration: line-through;
+      color: #666;
+    }
+
+    .checklist-item .btn-quitar-check {
+      background: #dc3545;
+      color: white;
+      padding: 3px 8px;
+      font-size: 11px;
+      margin: 0;
+    }
+
+    .tarea-nota-box {
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    .tarea-nota-box label {
+      color: #FF6D00;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .tarea-nota-box textarea {
+      background: #1a1a1a;
+      min-height: 60px;
+    }
+
+    .tarea-acciones {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .checklist-item-nueva {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .checklist-item-nueva input {
+      flex: 1;
+    }
+
+    .checklist-item-nueva .btn-remove-item {
+      background: #dc3545;
+      color: white;
+      padding: 6px 12px;
+      font-size: 12px;
+      margin: 0;
+    }
+
     @media (max-width: 768px) {
       .stats {
         grid-template-columns: 1fr;
@@ -880,6 +1030,7 @@
       <button class="tab-btn" onclick="cambiarPanel('stock')">📦 STOCK</button>
       <button class="tab-btn active" onclick="cambiarPanel('caja')">💰 CAJA</button>
       <button class="tab-btn" onclick="cambiarPanel('cuentas')">📊 CUENTAS</button>
+      <button class="tab-btn" onclick="cambiarPanel('tareas')">✅ TAREAS</button>
     </div>
 
     <!-- Panel Caja -->
@@ -1067,6 +1218,73 @@
           </thead>
           <tbody id="listaCuentas"></tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- Panel Tareas -->
+    <div id="panelTareas" class="panel">
+      <h2>✅ Tareas y Pendientes</h2>
+
+      <div class="resumen-caja" style="border-color:#17a2b8;">
+        <h3>📊 Resumen de Tareas</h3>
+        <div class="stats">
+          <div class="stat-card"><strong>📋 TOTAL ACTIVAS:</strong><br><span id="totalTareasActivas" style="font-size:24px;color:#FF6D00;">0</span></div>
+          <div class="stat-card"><strong>🔵 PARA UN COLEGA:</strong><br><span id="totalTareasOtro" style="font-size:24px;color:#17a2b8;">0</span></div>
+          <div class="stat-card"><strong>✅ COMPLETADAS HOY:</strong><br><span id="totalTareasFinalizadasHoy" style="font-size:24px;color:#28a745;">0</span></div>
+        </div>
+      </div>
+
+      <form id="formTarea">
+        <h3>📝 Nueva Tarea</h3>
+        <div class="form-group">
+          <label>Título de la Tarea:</label>
+          <input type="text" id="tituloTarea" required placeholder="Ej: Ordenar depósito, Llamar a proveedor, etc.">
+        </div>
+        <div class="form-group">
+          <label>¿Para quién es?</label>
+          <select id="destinoTarea">
+            <option value="propia">🟠 Recordatorio para mí mismo</option>
+            <option value="otro">🔵 Pendiente para otro colega</option>
+          </select>
+        </div>
+        <div class="form-group" id="grupoNombreColega" style="display:none;">
+          <label>Nombre del colega (opcional):</label>
+          <input type="text" id="colegaTarea" placeholder="Ej: Martín">
+        </div>
+
+        <div class="form-group">
+          <label>☑️ Checklist de la Tarea:</label>
+          <div id="checklistNuevaContainer" class="items-container">
+          </div>
+          <div class="checklist-item-nueva">
+            <input type="text" id="nuevoChecklistTexto" placeholder="Ej: Revisar stock de filtros" onkeydown="if(event.key==='Enter'){event.preventDefault();agregarItemChecklistNueva();}">
+            <button type="button" class="btn-info" onclick="agregarItemChecklistNueva()">➕ Agregar</button>
+          </div>
+          <div id="listaChecklistNueva"></div>
+        </div>
+
+        <div class="form-group">
+          <label>📝 Nota Adicional (por si otro debe continuarla):</label>
+          <textarea id="notaTarea" rows="2" placeholder="Detalles, aclaraciones o contexto para quien la retome"></textarea>
+        </div>
+
+        <button type="submit">✅ CREAR TAREA</button>
+        <button type="button" onclick="limpiarFormTarea()">🗑️ LIMPIAR</button>
+      </form>
+
+      <div class="buscador-container">
+        <input type="text" id="buscadorTareas" placeholder="🔍 Buscar por título o colega..." onkeyup="filtrarTareas()">
+        <select id="filtroTareas" onchange="filtrarTareas()">
+          <option value="">Todas las activas</option>
+          <option value="propia">Para mí mismo</option>
+          <option value="otro">Para un colega</option>
+        </select>
+        <button type="button" class="btn-info" onclick="limpiarFiltrosTareas()">🗑️ Limpiar</button>
+      </div>
+
+      <div id="listaTareasContainer">
+        <h3>📋 Tareas Activas</h3>
+        <div id="listaTareas"></div>
       </div>
     </div>
 
@@ -1603,6 +1821,7 @@
     let cierres = [];
     let services = [];
     let cuentas = [];
+    let tareas = [];
     let cajaAbierta = false;
     let fechaCajaActual = null;
     let nextIdPresupuesto = 1;
@@ -1611,6 +1830,8 @@
     let nextIdCierre = 1;
     let nextIdService = 1;
     let nextIdCuenta = 1;
+    let nextIdTarea = 1;
+    let checklistNuevaTarea = [];
     let productoSeleccionadoId = null;
     let cuentaSeleccionadaId = null;
     let reporteVisible = false;
@@ -1624,6 +1845,7 @@
       const savedServices = localStorage.getItem('services_taller');
       const savedCuentas = localStorage.getItem('cuentas_taller_v2');
       const savedCajaEstado = localStorage.getItem('caja_estado_taller');
+      const savedTareas = localStorage.getItem('tareas_taller');
 
       if (savedPresupuestos) {
         presupuestos = JSON.parse(savedPresupuestos);
@@ -1693,6 +1915,14 @@
         fechaCajaActual = null;
       }
 
+      if (savedTareas) {
+        tareas = JSON.parse(savedTareas);
+        nextIdTarea = parseInt(localStorage.getItem('nextIdTarea_taller')) || 1;
+      } else {
+        tareas = [];
+        nextIdTarea = 1;
+      }
+
       guardarDatos();
     }
 
@@ -1707,12 +1937,14 @@
       localStorage.setItem('cierres_taller', JSON.stringify(cierres));
       localStorage.setItem('services_taller', JSON.stringify(services));
       localStorage.setItem('cuentas_taller_v2', JSON.stringify(cuentas));
+      localStorage.setItem('tareas_taller', JSON.stringify(tareas));
       localStorage.setItem('nextIdPresupuesto_taller', nextIdPresupuesto);
       localStorage.setItem('nextIdStock_taller', nextIdStock);
       localStorage.setItem('nextIdMovimiento_taller', nextIdMovimiento);
       localStorage.setItem('nextIdCierre_taller', nextIdCierre);
       localStorage.setItem('nextIdService_taller', nextIdService);
       localStorage.setItem('nextIdCuenta_taller', nextIdCuenta);
+      localStorage.setItem('nextIdTarea_taller', nextIdTarea);
       localStorage.setItem('caja_estado_taller', JSON.stringify({ abierta: cajaAbierta, fecha: fechaCajaActual }));
     }
 
@@ -2486,6 +2718,296 @@
         pdfContent.style.left = 'auto';
         pdfContent.style.top = 'auto';
       });
+    }
+
+    // ==================== TAREAS ====================
+    document.getElementById('destinoTarea').addEventListener('change', (e) => {
+      document.getElementById('grupoNombreColega').style.display = e.target.value === 'otro' ? 'block' : 'none';
+    });
+
+    function agregarItemChecklistNueva() {
+      const input = document.getElementById('nuevoChecklistTexto');
+      const texto = input.value.trim();
+      if (!texto) return;
+      checklistNuevaTarea.push({ texto: texto, hecho: false });
+      input.value = '';
+      renderChecklistNueva();
+    }
+
+    function quitarItemChecklistNueva(idx) {
+      checklistNuevaTarea.splice(idx, 1);
+      renderChecklistNueva();
+    }
+
+    function renderChecklistNueva() {
+      const cont = document.getElementById('listaChecklistNueva');
+      if (checklistNuevaTarea.length === 0) {
+        cont.innerHTML = '<p style="color:#666;font-size:12px;">Aún no agregaste items al checklist</p>';
+        return;
+      }
+      let html = '';
+      checklistNuevaTarea.forEach((item, idx) => {
+        html += `<div class="checklist-item">
+            <span>☐ ${item.texto}</span>
+            <button type="button" class="btn-quitar-check" onclick="quitarItemChecklistNueva(${idx})">✕</button>
+          </div>`;
+      });
+      cont.innerHTML = html;
+    }
+
+    document.getElementById('formTarea').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      if (checklistNuevaTarea.length === 0) {
+        const soloTexto = document.getElementById('nuevoChecklistTexto').value.trim();
+        if (soloTexto) {
+          checklistNuevaTarea.push({ texto: soloTexto, hecho: false });
+        }
+      }
+
+      if (checklistNuevaTarea.length === 0) {
+        alert('⚠️ Agregue al menos un item al checklist de la tarea');
+        return;
+      }
+
+      const destino = document.getElementById('destinoTarea').value;
+      const nuevaTarea = {
+        id: nextIdTarea++,
+        titulo: document.getElementById('tituloTarea').value,
+        destino: destino,
+        colega: destino === 'otro' ? (document.getElementById('colegaTarea').value || 'Sin asignar') : null,
+        checklist: checklistNuevaTarea.slice(),
+        nota: document.getElementById('notaTarea').value || '',
+        fechaCreacion: new Date().toLocaleString(),
+        fechaUltimoGuardado: null
+      };
+
+      tareas.push(nuevaTarea);
+      guardarDatos();
+      cargarTareas();
+      limpiarFormTarea();
+      alert('✅ Tarea creada');
+    });
+
+    function limpiarFormTarea() {
+      document.getElementById('tituloTarea').value = '';
+      document.getElementById('destinoTarea').value = 'propia';
+      document.getElementById('grupoNombreColega').style.display = 'none';
+      document.getElementById('colegaTarea').value = '';
+      document.getElementById('notaTarea').value = '';
+      document.getElementById('nuevoChecklistTexto').value = '';
+      checklistNuevaTarea = [];
+      renderChecklistNueva();
+    }
+
+    function calcularProgresoTarea(tarea) {
+      if (!tarea.checklist || tarea.checklist.length === 0) return 0;
+      const hechos = tarea.checklist.filter(i => i.hecho).length;
+      return Math.round((hechos / tarea.checklist.length) * 100);
+    }
+
+    function cargarTareas() {
+      const cont = document.getElementById('listaTareas');
+      if (!cont) return;
+
+      let activas = 0;
+      let paraOtro = 0;
+      let finalizadasHoy = parseInt(localStorage.getItem('tareas_finalizadas_hoy_count') || '0');
+
+      if (tareas.length === 0) {
+        cont.innerHTML = '<p style="color:#999;">📭 No hay tareas pendientes por el momento</p>';
+      } else {
+        let html = '';
+        tareas.forEach(t => {
+          activas++;
+          if (t.destino === 'otro') paraOtro++;
+          const progreso = calcularProgresoTarea(t);
+          const claseTarjeta = t.destino === 'otro' ? 'tarea-card tarea-para-otro' : 'tarea-card';
+          const badge = t.destino === 'otro' ?
+            `<span class="tarea-badge tarea-badge-otro">🔵 Pendiente para: ${t.colega}</span>` :
+            `<span class="tarea-badge tarea-badge-propia">🟠 Recordatorio propio</span>`;
+
+          let checklistHtml = '';
+          t.checklist.forEach((item, idx) => {
+            checklistHtml += `
+              <div class="checklist-item ${item.hecho ? 'hecho' : ''}">
+                <input type="checkbox" ${item.hecho ? 'checked' : ''} onchange="toggleChecklistItem(${t.id}, ${idx})">
+                <span>${item.texto}</span>
+              </div>`;
+          });
+
+          html += `
+            <div class="${claseTarjeta}">
+              <div class="tarea-header">
+                <div>
+                  <div class="tarea-titulo">${t.titulo}</div>
+                  <div class="tarea-meta">📅 Creada: ${t.fechaCreacion}${t.fechaUltimoGuardado ? ' · 💾 Último guardado: ' + t.fechaUltimoGuardado : ''}</div>
+                </div>
+                ${badge}
+              </div>
+
+              <div class="tarea-progreso-bar"><div class="tarea-progreso-fill" style="width:${progreso}%;"></div></div>
+              <div style="color:#ccc;font-size:12px;">Progreso: ${progreso}% (${t.checklist.filter(i=>i.hecho).length}/${t.checklist.length} items)</div>
+
+              <div class="checklist-container">
+                ${checklistHtml}
+              </div>
+
+              <div class="tarea-nota-box">
+                <label>📝 Nota adicional (visible para quien continúe la tarea):</label>
+                <textarea id="notaTareaEdit-${t.id}" rows="2" placeholder="Agregar contexto o aclaraciones...">${t.nota || ''}</textarea>
+              </div>
+
+              <div class="tarea-acciones">
+                <button class="btn-info" onclick="guardarProgresoTarea(${t.id})">💾 Guardar Progreso</button>
+                <button class="btn-success" onclick="finalizarTarea(${t.id})">✅ Finalizar Tarea</button>
+                <button class="btn-danger" onclick="eliminarTarea(${t.id})">🗑️ Eliminar</button>
+              </div>
+            </div>
+          `;
+        });
+        cont.innerHTML = html;
+      }
+
+      document.getElementById('totalTareasActivas').textContent = activas;
+      document.getElementById('totalTareasOtro').textContent = paraOtro;
+      document.getElementById('totalTareasFinalizadasHoy').textContent = finalizadasHoy;
+    }
+
+    function toggleChecklistItem(idTarea, idx) {
+      const tarea = tareas.find(t => t.id === idTarea);
+      if (!tarea) return;
+      tarea.checklist[idx].hecho = !tarea.checklist[idx].hecho;
+      guardarDatos();
+      cargarTareas();
+    }
+
+    function guardarProgresoTarea(idTarea) {
+      const tarea = tareas.find(t => t.id === idTarea);
+      if (!tarea) return;
+      const notaInput = document.getElementById(`notaTareaEdit-${idTarea}`);
+      tarea.nota = notaInput ? notaInput.value : tarea.nota;
+      tarea.fechaUltimoGuardado = new Date().toLocaleString();
+      guardarDatos();
+      cargarTareas();
+      alert('💾 Progreso guardado. La tarea queda disponible para continuarla en cualquier momento, por si el turno termina antes de finalizarla.');
+    }
+
+    function registrarTareaFinalizadaHoy() {
+      const hoy = getFechaActual();
+      const fechaGuardada = localStorage.getItem('tareas_finalizadas_hoy_fecha');
+      let count = parseInt(localStorage.getItem('tareas_finalizadas_hoy_count') || '0');
+      if (fechaGuardada !== hoy) {
+        count = 0;
+      }
+      count++;
+      localStorage.setItem('tareas_finalizadas_hoy_fecha', hoy);
+      localStorage.setItem('tareas_finalizadas_hoy_count', count);
+    }
+
+    function finalizarTarea(idTarea) {
+      const tarea = tareas.find(t => t.id === idTarea);
+      if (!tarea) return;
+      const progreso = calcularProgresoTarea(tarea);
+      let confirmar = true;
+      if (progreso < 100) {
+        confirmar = confirm(`⚠️ Esta tarea tiene items sin completar (${progreso}%). ¿Confirma que desea finalizarla de todas formas?`);
+      } else {
+        confirmar = confirm('✅ ¿Finalizar esta tarea? Se cerrará la actividad y no quedará un registro de la misma.');
+      }
+      if (!confirmar) return;
+
+      registrarTareaFinalizadaHoy();
+      tareas = tareas.filter(t => t.id !== idTarea);
+      guardarDatos();
+      cargarTareas();
+      alert('✅ Tarea finalizada. La actividad quedó cerrada.');
+    }
+
+    function eliminarTarea(idTarea) {
+      if (confirm('¿Eliminar esta tarea? Esta acción no se puede deshacer.')) {
+        tareas = tareas.filter(t => t.id !== idTarea);
+        guardarDatos();
+        cargarTareas();
+      }
+    }
+
+    function filtrarTareas() {
+      const busqueda = document.getElementById('buscadorTareas').value.toLowerCase();
+      const filtro = document.getElementById('filtroTareas').value;
+      const cont = document.getElementById('listaTareas');
+      if (!cont) return;
+
+      const filtradas = tareas.filter(t => {
+        let ok = true;
+        if (busqueda) {
+          ok = t.titulo.toLowerCase().includes(busqueda) || (t.colega || '').toLowerCase().includes(busqueda);
+        }
+        if (ok && filtro) {
+          ok = t.destino === filtro;
+        }
+        return ok;
+      });
+
+      if (filtradas.length === 0) {
+        cont.innerHTML = '<p style="color:#999;">📭 No se encontraron tareas con ese criterio</p>';
+        return;
+      }
+
+      let html = '';
+      filtradas.forEach(t => {
+        const progreso = calcularProgresoTarea(t);
+        const claseTarjeta = t.destino === 'otro' ? 'tarea-card tarea-para-otro' : 'tarea-card';
+        const badge = t.destino === 'otro' ?
+          `<span class="tarea-badge tarea-badge-otro">🔵 Pendiente para: ${t.colega}</span>` :
+          `<span class="tarea-badge tarea-badge-propia">🟠 Recordatorio propio</span>`;
+
+        let checklistHtml = '';
+        t.checklist.forEach((item, idx) => {
+          checklistHtml += `
+            <div class="checklist-item ${item.hecho ? 'hecho' : ''}">
+              <input type="checkbox" ${item.hecho ? 'checked' : ''} onchange="toggleChecklistItem(${t.id}, ${idx})">
+              <span>${item.texto}</span>
+            </div>`;
+        });
+
+        html += `
+          <div class="${claseTarjeta}">
+            <div class="tarea-header">
+              <div>
+                <div class="tarea-titulo">${t.titulo}</div>
+                <div class="tarea-meta">📅 Creada: ${t.fechaCreacion}${t.fechaUltimoGuardado ? ' · 💾 Último guardado: ' + t.fechaUltimoGuardado : ''}</div>
+              </div>
+              ${badge}
+            </div>
+
+            <div class="tarea-progreso-bar"><div class="tarea-progreso-fill" style="width:${progreso}%;"></div></div>
+            <div style="color:#ccc;font-size:12px;">Progreso: ${progreso}% (${t.checklist.filter(i=>i.hecho).length}/${t.checklist.length} items)</div>
+
+            <div class="checklist-container">
+              ${checklistHtml}
+            </div>
+
+            <div class="tarea-nota-box">
+              <label>📝 Nota adicional (visible para quien continúe la tarea):</label>
+              <textarea id="notaTareaEdit-${t.id}" rows="2" placeholder="Agregar contexto o aclaraciones...">${t.nota || ''}</textarea>
+            </div>
+
+            <div class="tarea-acciones">
+              <button class="btn-info" onclick="guardarProgresoTarea(${t.id})">💾 Guardar Progreso</button>
+              <button class="btn-success" onclick="finalizarTarea(${t.id})">✅ Finalizar Tarea</button>
+              <button class="btn-danger" onclick="eliminarTarea(${t.id})">🗑️ Eliminar</button>
+            </div>
+          </div>
+        `;
+      });
+      cont.innerHTML = html;
+    }
+
+    function limpiarFiltrosTareas() {
+      document.getElementById('buscadorTareas').value = '';
+      document.getElementById('filtroTareas').value = '';
+      cargarTareas();
     }
 
     // ==================== ITEMS DEL PRESUPUESTO ====================
@@ -3601,6 +4123,10 @@
         document.getElementById('panelCuentas').classList.add('active');
         document.querySelectorAll('.tab-btn')[4].classList.add('active');
         cargarCuentas();
+      } else if (panel === 'tareas') {
+        document.getElementById('panelTareas').classList.add('active');
+        document.querySelectorAll('.tab-btn')[5].classList.add('active');
+        cargarTareas();
       }
     }
 
@@ -3611,6 +4137,8 @@
       cargarCaja();
       cargarCierres();
       cargarCuentas();
+      cargarTareas();
+      renderChecklistNueva();
     }
 
     window.onload = function() {
