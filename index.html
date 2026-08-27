@@ -110,10 +110,34 @@
       font-size: 24px;
     }
 
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
     .logout-btn {
       background: #1a1a1a;
       color: #FF6D00;
       border: 1px solid #FF6D00;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .backup-btn {
+      background: #1a1a1a;
+      color: #28a745;
+      border: 1px solid #28a745;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .import-btn {
+      background: #1a1a1a;
+      color: #17a2b8;
+      border: 1px solid #17a2b8;
       padding: 10px 20px;
       border-radius: 8px;
       cursor: pointer;
@@ -1021,7 +1045,12 @@
   <div id="mainContent" class="main-content">
     <header>
       <h1>⚙️ SISTEMA INTEGRAL DE GESTIÓN - TALLER MECÁNICO</h1>
-      <button class="logout-btn" onclick="cerrarSesion()">CERRAR SESIÓN</button>
+      <div class="header-actions">
+        <button class="backup-btn" onclick="exportarDatos()">💾 EXPORTAR DATOS</button>
+        <button class="import-btn" onclick="document.getElementById('inputImportarArchivo').click()">📂 IMPORTAR DATOS</button>
+        <input type="file" id="inputImportarArchivo" accept=".json,application/json" style="display:none;" onchange="importarDatos(event)">
+        <button class="logout-btn" onclick="cerrarSesion()">CERRAR SESIÓN</button>
+      </div>
     </header>
 
     <div class="nav-tabs">
@@ -1946,6 +1975,103 @@
       localStorage.setItem('nextIdCuenta_taller', nextIdCuenta);
       localStorage.setItem('nextIdTarea_taller', nextIdTarea);
       localStorage.setItem('caja_estado_taller', JSON.stringify({ abierta: cajaAbierta, fecha: fechaCajaActual }));
+    }
+
+    // ==================== EXPORTAR / IMPORTAR DATOS (BACKUP) ====================
+    function exportarDatos() {
+      try {
+        const backup = {
+          sistema: 'taller-mecanico-backup',
+          version: 1,
+          fechaExportacion: new Date().toISOString(),
+          presupuestos, stock, movimientos, cierres, services, cuentas, tareas,
+          cajaAbierta, fechaCajaActual,
+          nextIdPresupuesto, nextIdStock, nextIdMovimiento, nextIdCierre,
+          nextIdService, nextIdCuenta, nextIdTarea
+        };
+        const contenido = JSON.stringify(backup, null, 2);
+        const blob = new Blob([contenido], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const fechaArchivo = new Date().toISOString().split('T')[0];
+        const horaArchivo = new Date().toTimeString().split(' ')[0].replace(/:/g, '-');
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Backup_Taller_${fechaArchivo}_${horaArchivo}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        alert('✅ Backup exportado. Guardá el archivo .json en un pendrive, mail o nube para pasarlo a otra computadora.');
+      } catch (error) {
+        console.error('Error exportando datos:', error);
+        alert('❌ Error al exportar los datos. Intente nuevamente.');
+      }
+    }
+
+    function importarDatos(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (!data || typeof data !== 'object') throw new Error('El archivo no tiene un formato JSON válido');
+
+          const camposEsperados = ['presupuestos', 'stock', 'movimientos', 'cierres', 'services', 'cuentas', 'tareas'];
+          const contieneDatosReconocibles = camposEsperados.some(campo => Array.isArray(data[campo]));
+          if (!contieneDatosReconocibles) {
+            throw new Error('El archivo no contiene datos reconocibles del sistema de taller');
+          }
+
+          const confirmar = confirm(
+            '⚠️ ATENCIÓN: Esto va a REEMPLAZAR todos los datos actuales (presupuestos, stock, caja, cuentas, tareas y services) por los del archivo importado.\n\n' +
+            'Se recomienda exportar primero un backup de los datos actuales por las dudas.\n\n' +
+            (data.fechaExportacion ? `Este archivo fue exportado el: ${new Date(data.fechaExportacion).toLocaleString()}\n\n` : '') +
+            '¿Desea continuar con la importación?'
+          );
+          if (!confirmar) {
+            event.target.value = '';
+            return;
+          }
+
+          const maxId = (arr) => Array.isArray(arr) && arr.length > 0 ? Math.max(...arr.map(i => i.id || 0)) : 0;
+
+          presupuestos = Array.isArray(data.presupuestos) ? data.presupuestos : [];
+          stock = Array.isArray(data.stock) ? data.stock : [];
+          movimientos = Array.isArray(data.movimientos) ? data.movimientos : [];
+          cierres = Array.isArray(data.cierres) ? data.cierres : [];
+          services = Array.isArray(data.services) ? data.services : [];
+          cuentas = Array.isArray(data.cuentas) ? data.cuentas : [];
+          tareas = Array.isArray(data.tareas) ? data.tareas : [];
+          cajaAbierta = typeof data.cajaAbierta === 'boolean' ? data.cajaAbierta : false;
+          fechaCajaActual = data.fechaCajaActual || null;
+
+          nextIdPresupuesto = data.nextIdPresupuesto || (maxId(presupuestos) + 1);
+          nextIdStock = data.nextIdStock || (maxId(stock) + 1);
+          nextIdMovimiento = data.nextIdMovimiento || (maxId(movimientos) + 1);
+          nextIdCierre = data.nextIdCierre || (maxId(cierres) + 1);
+          nextIdService = data.nextIdService || (maxId(services) + 1);
+          nextIdCuenta = data.nextIdCuenta || (maxId(cuentas) + 1);
+          nextIdTarea = data.nextIdTarea || (maxId(tareas) + 1);
+
+          guardarDatos();
+          cargarTodosLosDatos();
+          actualizarInterfazCaja();
+          setFechaHoy();
+          alert('✅ Datos importados correctamente. El sistema ya está actualizado con la información del backup.');
+        } catch (error) {
+          console.error('Error importando datos:', error);
+          alert('❌ Error al importar el archivo: ' + error.message);
+        } finally {
+          event.target.value = '';
+        }
+      };
+      reader.onerror = function() {
+        alert('❌ No se pudo leer el archivo seleccionado.');
+        event.target.value = '';
+      };
+      reader.readAsText(file);
     }
 
     // ==================== REPORTE DE MOVIMIENTOS ====================
